@@ -2,6 +2,16 @@ import React, { useState } from "react";
 import { LoginBg2, Logo } from "../assets";
 import { LoginInput } from "../Components";
 import { MdEmail, MdOutlinePassword, MdNumbers } from "react-icons/md";
+import {
+  buttonClick,
+  fadeInOut,
+  slideIn,
+  slideTop,
+  staggerFadeInOut,
+} from "../animations";
+
+// importing motion for animations :
+import { motion } from "framer-motion";
 
 const Login = () => {
   // using usestate to get the values :
@@ -26,7 +36,9 @@ const Login = () => {
           <p className="font-bold text-lg">TastyBites</p>
         </div>
         {/* welcome text */}
+
         <p className="font-bold text-xl">Welcome Back</p>
+
         {!signUp ? (
           <p className="-mt-6">Sign in Here!</p>
         ) : (
@@ -65,11 +77,52 @@ const Login = () => {
           )}
 
           {!signUp ? (
-            <p className="text-sm -mt-5 font-bold">Don't have an Account , <button className="text-red-500 underline" onClick={()=>setsignUp(true)}>Create one</button> </p>
+            <p className="text-sm -mt-5 font-bold">
+              Don't have an Account ,{" "}
+              <motion.button
+                {...buttonClick}
+                className="text-red-500 underline"
+                onClick={() => setsignUp(true)}
+              >
+                Create one
+              </motion.button>{" "}
+            </p>
           ) : (
-            <p className="text-sm -mt-4 font-bold">Already have an Account , <button className="text-red-500 underline" onClick={()=>setsignUp(false)}>Click here</button> </p>
+            <p className="text-sm -mt-4 font-bold">
+              Already have an Account ,{" "}
+              <motion.button
+                {...buttonClick}
+                className="text-red-500 underline"
+                onClick={() => setsignUp(false)}
+              >
+                Click here
+              </motion.button>{" "}
+            </p>
           )}
+          {/* button section : */}
+
+          {!signUp ? (
+            <motion.button
+              {...buttonClick}
+              className="w-[80%] bg-teal-300 p-1 rounded-lg font-bold shadow-md backdrop-blur-md cursor-pointer text-lg hover:bg-teal-200"
+            >
+              Sign In
+            </motion.button>
+          ) : (
+            <motion.button
+              {...buttonClick}
+              className="w-[80%] bg-teal-300 p-1 rounded-lg font-bold shadow-md backdrop-blur-md cursor-pointer text-lg hover:bg-teal-200"
+            >
+              Sign Up
+            </motion.button>
+          )}
+
         </div>
+
+        <div className="flex items-center justify-between gap-16"
+                
+        </div>
+
       </div>
     </div>
   );

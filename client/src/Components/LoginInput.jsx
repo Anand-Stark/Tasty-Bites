@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import {motion} from "framer-motion"
+import { fadeInOut,buttonClick,slideIn,slideTop } from "../animations";
 
 const LoginInput = ({
   placeHolder,
@@ -17,7 +19,7 @@ const LoginInput = ({
   const [isFocus, setisFocus] = useState(false);
 
   return (
-    <div
+    <motion.div {...slideIn}
       className={
         `flex flex-row items-center justify-center gap-4 bg-lightOverlay backdrop-blur-md rounded-lg w-[80%] px-4 py-2 ${isFocus ? "shadow-md shadow-red-400" : "shadow-none"} `
       }
@@ -32,7 +34,7 @@ const LoginInput = ({
         onFocus={() => setisFocus(true)}
         onBlur={() => setisFocus(false)}
       />
-    </div>
+    </motion.div>
   );
 };
 
