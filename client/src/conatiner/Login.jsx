@@ -12,6 +12,7 @@ import {
 
 // importing motion for animations :
 import { motion } from "framer-motion";
+import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
   // using usestate to get the values :
@@ -119,13 +120,23 @@ const Login = () => {
 
         </div>
 
-        <div className="flex items-center justify-between gap-16"
-                
+        <div className="flex items-center justify-between gap-14 py-2">
+          <div className="w-24 h-[1px] bg-white"></div>
+          <p className="text-white">Or</p>
+          <div className="w-24 h-[1px] bg-white"></div>
         </div>
+        
+        {/* sign in with Google */}
 
+
+        <motion.div {...buttonClick} className="flex px-[70px] py-2 gap-3 justify-center items-center rounded-2xl shadow-sm bg-lightOverlay backdrop-blur-md cursor-pointer">
+                <FcGoogle className="text-2xl"/>
+                <p className="font-bold">Google Sign In</p>
+        </motion.div>
+        
       </div>
     </div>
-  );
-};
+  )
+}
 
 export default Login;
