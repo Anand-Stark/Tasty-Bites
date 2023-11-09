@@ -14,12 +14,43 @@ import {
 import { motion } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
 
+// for firebase authentication :
+import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {app} from "../config/firebase"
+
+
 const Login = () => {
   // using usestate to get the values :
   const [userEmail, setuserEmail] = useState("");
   const [signUp, setsignUp] = useState(false);
   const [isPass, setisPass] = useState("");
   const [isConfirmedPass, setisConfirmedPass] = useState("");
+
+  // defining the login function for google-auth login :
+  const provider = new GoogleAuthProvider();
+
+  const LoginGoogle = () =>{
+    const auth = getAuth(app)
+    signInWithPopup(auth, provider)
+    .then((result) =>{
+       auth.onAuthStateChanged((cred) =>{
+         if(cred){
+           cred.getIdToken().then((token)=>{
+             console.log(token);
+           })
+         }
+       })
+    
+    })
+    .catch(err =>{
+      const errorCode = err.code;
+      const errorMessage = err.message;
+      // The email of the user's account used.
+      const email = err.customData.email;
+      // The AuthCredential type that was used.
+      const credential = GoogleAuthProvider.credentialFromError(err);
+    })
+  }
 
   return (
     <div className="w-screen h-screen relative overflow-hidden flex ">
@@ -129,7 +160,7 @@ const Login = () => {
         {/* sign in with Google */}
 
 
-        <motion.div {...buttonClick} className="flex px-[70px] py-2 gap-3 justify-center items-center rounded-2xl shadow-sm bg-lightOverlay backdrop-blur-md cursor-pointer">
+        <motion.div onClick={LoginGoogle} {...buttonClick} className="flex px-[70px] py-2 gap-3 justify-center items-center rounded-2xl shadow-sm bg-lightOverlay backdrop-blur-md cursor-pointer">
                 <FcGoogle className="text-2xl"/>
                 <p className="font-bold">Google Sign In</p>
         </motion.div>
