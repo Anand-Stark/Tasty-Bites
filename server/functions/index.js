@@ -12,8 +12,11 @@ app.use(express.json());
 // cors origin :
 const cors = require("cors");
 app.use(cors({origin:true}));
+
+// the api can be accessed from anywhere : 
 app.use((req,res,next) => {
     res.set("Access-Control-Allow-Origin","*")
+    next();
 })
 
 // firebase :
@@ -24,7 +27,9 @@ admin.initializeApp({
 
 //   making and testing the API endpoints :     
 
-
+app.get("/",(req,res) => {
+   return res.send("End Point Working");
+})
 
 exports.app = functions.https.onRequest(app)
 
