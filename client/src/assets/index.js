@@ -6,4 +6,5 @@ export {default as LoginBg} from "./img/loginBg.jpg"
 export {default as Logo} from "./img/logo.png"
 export {default as Mango} from "./img/mango.png"
 export {default as LoginBg2} from "./img/loginBg2.jpg"
+export {default as back3} from "./img/back-3.jpg"
 

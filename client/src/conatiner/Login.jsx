@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { LoginBg2, Logo } from "../assets";
+import { back3, Logo } from "../assets";
 import { LoginInput } from "../Components";
 import { MdEmail, MdOutlinePassword, MdNumbers } from "react-icons/md";
 import {
@@ -53,16 +53,16 @@ const Login = () => {
   }
 
   return (
-    <div className="w-screen h-screen relative overflow-hidden flex ">
+    <div className="w-screen h-screen relative  justify-center items-center  overflow-hidden flex ">
       {/* background image */}
       <img
-        src={LoginBg2}
+        src={back3}
         alt="Login_Page"
         className="w-full h-full object-cover absolute top-0 left-0"
       />
       {/* login screen */}
 
-      <div className="flex flex-col w-560 items-center gap-6 bg-lightOverlay z-10 w-[80%] md:w-375 h-full backdrop-blur-md">
+      <div className="flex  flex-col w-560 items-center px-4 py-5 rounded-lg gap-6 bg-lightOverlay z-10 md:w-[50%] justify-center backdrop-blur-lg">
         <div className="flex w-full justify-start items-center gap-2 p-2">
           <img src={Logo} alt="Logo" className="w-6 h-7" />
           <p className="font-bold text-lg">TastyBites</p>
@@ -136,14 +136,14 @@ const Login = () => {
           {!signUp ? (
             <motion.button
               {...buttonClick}
-              className="w-[80%] bg-teal-300 p-1 rounded-lg font-bold shadow-md backdrop-blur-md cursor-pointer text-lg hover:bg-teal-200"
+              className="w-[80%] bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 p-1 rounded-lg font-bold shadow-md backdrop-blur-md cursor-pointer text-lg "
             >
               Sign In
             </motion.button>
           ) : (
             <motion.button
               {...buttonClick}
-              className="w-[80%] bg-teal-300 p-1 rounded-lg font-bold shadow-md backdrop-blur-md cursor-pointer text-lg hover:bg-teal-200"
+              className="w-[80%] bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 p-1 rounded-lg font-bold shadow-md backdrop-blur-md cursor-pointer text-lg "
             >
               Sign Up
             </motion.button>
@@ -160,7 +160,7 @@ const Login = () => {
         {/* sign in with Google */}
 
 
-        <motion.div onClick={LoginGoogle} {...buttonClick} className="flex px-[70px] py-2 gap-3 justify-center items-center rounded-2xl shadow-sm bg-lightOverlay backdrop-blur-md cursor-pointer">
+        <motion.div onClick={LoginGoogle} {...buttonClick} className="flex px-[70px] md:w-[50%] py-2 gap-3 justify-center items-center rounded-2xl shadow-sm bg-lightOverlay backdrop-blur-md cursor-pointer">
                 <FcGoogle className="text-2xl"/>
                 <p className="font-bold">Google Sign In</p>
         </motion.div>
