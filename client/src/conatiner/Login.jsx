@@ -110,13 +110,13 @@ const Login = () => {
 
           {!signUp ? (
             <p className="text-sm -mt-5 font-bold">
-              Don't have an Account ,{" "}
+              Don't have an Account,  {"   "}
               <motion.button
                 {...buttonClick}
                 className="text-red-500 underline"
                 onClick={() => setsignUp(true)}
               >
-                Create one
+                Create Account
               </motion.button>{" "}
             </p>
           ) : (

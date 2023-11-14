@@ -6,6 +6,7 @@ const serviceAccountKey = require("./serviceAccountKey.json");
 const express = require("express");
 
 const app = express();
+const userRoutes = require("./routes/user")
 
 app.use(express.json());
 
@@ -25,11 +26,10 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccountKey)
   });
 
-//   making and testing the API endpoints :     
 
-app.get("/",(req,res) => {
-   return res.send("End Point Working");
-})
+// routes : backend apis -> 
+app.use('/api/user',userRoutes)
+
 
 exports.app = functions.https.onRequest(app)
 
