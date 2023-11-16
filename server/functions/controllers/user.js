@@ -10,13 +10,20 @@ exports.jwtVerification = async (req,res) =>{
           return res.status(500).send({msg:"no token"});
        }
 
-       const getToken = req.headers.authorization.split(" ")[1];
-       const recievedToken = await admin.auth().verifyIdToken(getToken)
+       const getToken = req.headers.authorization.split(' ')[1];
 
-       if(!recievedToken){
-          return res.status(500).json({success:false, msg:"not verified"})
+       console.log(getToken)
+       
+       try{
+
+          const recievedToken = await admin.auth().verifyIdToken(getToken)
+          if(!recievedToken) return res.status(500).json({success:false, msg: "Authorization failed"})
+
+          return res.status(200).json({success:false,msg :recievedToken})
        }
-       return res.status(200).json({success:true,msg:recievedToken});
+       catch (err){
+          return res.status(500).json({success:false, msg:"problem in recieving token"})
+       }
           
 }
 

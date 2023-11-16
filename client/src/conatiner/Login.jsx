@@ -17,6 +17,7 @@ import { FcGoogle } from "react-icons/fc";
 // for firebase authentication :
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import {app} from "../config/firebase"
+import { validateToken } from "../api";
 
 
 const Login = () => {
@@ -36,12 +37,16 @@ const Login = () => {
        auth.onAuthStateChanged((cred) =>{
          if(cred){
            cred.getIdToken().then((token)=>{
-             console.log(token);
+                validateToken(token)
+                   .then((data) => { 
+                       console.log(data);
+                   })
            })
          }
        })
     
     })
+    
     .catch(err =>{
       const errorCode = err.code;
       const errorMessage = err.message;

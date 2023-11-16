@@ -5,6 +5,6 @@ const userControl = require('../controllers/user')
 
 routes.get('/',userControl.getUser);
 
-routes.get('/jwt-verification',userControl.jwtVerification)
+routes.get('/jwtVerification',userControl.jwtVerification)
 
 module.exports = routes;
