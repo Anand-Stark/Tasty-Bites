@@ -15,9 +15,12 @@ import { motion } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
 
 // for firebase authentication :
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider,createUserWithEmailAndPassword,signInWithEmailAndPassword } from "firebase/auth";
 import {app} from "../config/firebase"
 import { validateToken } from "../api";
+
+// importing navigate 
+import {Navigate, useNavigate} from "react-router-dom"
 
 
 const Login = () => {
@@ -26,9 +29,12 @@ const Login = () => {
   const [signUp, setsignUp] = useState(false);
   const [isPass, setisPass] = useState("");
   const [isConfirmedPass, setisConfirmedPass] = useState("");
-
+  
   // defining the login function for google-auth login :
   const provider = new GoogleAuthProvider();
+
+  // using navigate :
+  const navi = useNavigate();
 
   const LoginGoogle = () =>{
     const auth = getAuth(app)
@@ -39,14 +45,15 @@ const Login = () => {
            cred.getIdToken().then((token)=>{
                 validateToken(token)
                    .then((data) => { 
-                       console.log(data);
-                   })
+                     navi("/main",{ replace: true})
+                               
+                   })    
+
            })
          }
        })
     
     })
-    
     .catch(err =>{
       const errorCode = err.code;
       const errorMessage = err.message;
@@ -56,6 +63,78 @@ const Login = () => {
       const credential = GoogleAuthProvider.credentialFromError(err);
     })
   }
+
+  // sign up using email and password: 
+
+  const signUpFirebase = () =>{ 
+      if(userEmail==="" || isPass==="" || isConfirmedPass===""){
+        console.log("some filed is missing") ; 
+      }
+      else {
+        if(isPass !== isConfirmedPass) {
+           console.log("passwords do not match");
+        }
+        else{
+          const auth = getAuth(app);
+
+          createUserWithEmailAndPassword(auth, userEmail, isPass)
+          .then((userCredential) => {
+            console.log("ok");
+            auth.onAuthStateChanged((cred) =>{
+              if(cred){
+                cred.getIdToken().then((token)=>{
+                    console.log(token);
+                     validateToken(token)
+                        .then((data) => { 
+                            
+                            setuserEmail("");
+                            setisConfirmedPass("");
+                            setisPass("");
+                            navi("/",{ replace: true})
+                        })
+                })
+              }
+            })  
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+          });
+
+        }
+      }
+  }
+
+  // sign in using email and password : 
+  const signInFirebase = () =>{
+       if(isPass==="" || userEmail===""){
+        console.log("One or more fields are empty");
+       }
+       else {
+          const auth = getAuth(app);
+          signInWithEmailAndPassword(auth,userEmail,isPass)
+          .then((res)=>{
+            auth.onAuthStateChanged((cred) =>{
+              if(cred){
+                cred.getIdToken().then((token)=>{
+                    console.log(token);
+                     validateToken(token)
+                        .then((data) => { 
+                            setuserEmail("");
+                            setisPass("");
+                            navi("/main",{ replace: true})                          
+                        })
+                })
+              }
+            })  
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+          });
+          }
+       }
+  
 
   return (
     <div className="w-screen h-screen relative  justify-center items-center  overflow-hidden flex ">
@@ -141,6 +220,7 @@ const Login = () => {
           {!signUp ? (
             <motion.button
               {...buttonClick}
+              onClick={signInFirebase}
               className="w-[80%] bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 p-1 rounded-lg font-bold shadow-md backdrop-blur-md cursor-pointer text-lg "
             >
               Sign In
@@ -148,6 +228,7 @@ const Login = () => {
           ) : (
             <motion.button
               {...buttonClick}
+              onClick={signUpFirebase}
               className="w-[80%] bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 p-1 rounded-lg font-bold shadow-md backdrop-blur-md cursor-pointer text-lg "
             >
               Sign Up
@@ -167,7 +248,7 @@ const Login = () => {
 
         <motion.div onClick={LoginGoogle} {...buttonClick} className="flex px-[70px] md:w-[50%] py-2 gap-3 justify-center items-center rounded-2xl shadow-sm bg-lightOverlay backdrop-blur-md cursor-pointer">
                 <FcGoogle className="text-2xl"/>
-                <p className="font-bold">Google Sign In</p>
+                <p className="font-bold">Sign in with Google</p>
         </motion.div>
         
       </div>
