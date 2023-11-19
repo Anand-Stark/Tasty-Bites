@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { back3, Logo } from "../assets";
 import { LoginInput } from "../Components";
 import { MdEmail, MdOutlinePassword, MdNumbers } from "react-icons/md";
@@ -13,6 +13,9 @@ import {
 // importing motion for animations :
 import { motion } from "framer-motion";
 import { FcGoogle } from "react-icons/fc";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserDetails } from "../context/actions/userActions";
+
 
 // for firebase authentication :
 import { getAuth, signInWithPopup, GoogleAuthProvider,createUserWithEmailAndPassword,signInWithEmailAndPassword } from "firebase/auth";
@@ -21,6 +24,7 @@ import { validateToken } from "../api";
 
 // importing navigate 
 import {Navigate, useNavigate} from "react-router-dom"
+
 
 
 const Login = () => {
@@ -35,6 +39,17 @@ const Login = () => {
 
   // using navigate :
   const navi = useNavigate();
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+
+  useEffect(()=>{
+    console.log(user);
+       
+       if(user){
+          console.log(user);
+          navi("/",{replace:true})
+       }
+  },[user]);
 
   const LoginGoogle = () =>{
     const auth = getAuth(app)
@@ -45,8 +60,8 @@ const Login = () => {
            cred.getIdToken().then((token)=>{
                 validateToken(token)
                    .then((data) => { 
-                     navi("/main",{ replace: true})
-                               
+                    dispatch(setUserDetails(data));
+                     navi("/main",{ replace: true})                 
                    })    
 
            })
@@ -86,11 +101,11 @@ const Login = () => {
                     console.log(token);
                      validateToken(token)
                         .then((data) => { 
-                            
+                            dispatch(setUserDetails(data));
                             setuserEmail("");
                             setisConfirmedPass("");
                             setisPass("");
-                            navi("/",{ replace: true})
+                            navi("/Login",{ replace: true})
                         })
                 })
               }
@@ -120,9 +135,10 @@ const Login = () => {
                     console.log(token);
                      validateToken(token)
                         .then((data) => { 
+                            dispatch(setUserDetails(data));
                             setuserEmail("");
                             setisPass("");
-                            navi("/main",{ replace: true})                          
+                            navi("/",{ replace: true})                          
                         })
                 })
               }
@@ -134,7 +150,6 @@ const Login = () => {
           });
           }
        }
-  
 
   return (
     <div className="w-screen h-screen relative  justify-center items-center  overflow-hidden flex ">
