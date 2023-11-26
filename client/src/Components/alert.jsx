@@ -44,10 +44,10 @@ const Alert = ({ type, message }) => {
     return (
       <motion.div
         {...fadeInOut}
-        className="fixed z-50 top-32 right-12 px-4 py-2 rounded-md backdrop-blur-sm bg-blue-300 shadow-md flex items-center gap-4"
+        className="fixed z-50 top-10 right-12 px-4 py-2 rounded-md backdrop-blur-sm bg-blue-300  shadow-md flex items-center gap-4 "
       >
         <BsExclamationTriangleFill className="text-xl text-blue-700" />
-        <p className="text-xl text-blue-700">{message}</p>
+        <p className="text-xl text-blue-  700">{message}</p>
       </motion.div>
     );
   }

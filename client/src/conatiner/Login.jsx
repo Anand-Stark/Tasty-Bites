@@ -24,6 +24,7 @@ import { validateToken } from "../api";
 
 // importing navigate 
 import {Navigate, useNavigate} from "react-router-dom"
+import { alertInfo, alertWarning } from "../context/actions/alertActions";
 
 
 
@@ -41,6 +42,7 @@ const Login = () => {
   const navi = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const alert = useSelector(state => state.alert)
 
   useEffect(()=>{
     console.log(user);
@@ -83,11 +85,11 @@ const Login = () => {
 
   const signUpFirebase = () =>{ 
       if(userEmail==="" || isPass==="" || isConfirmedPass===""){
-        console.log("some filed is missing") ; 
+         dispatch(alertInfo("Email or Password Field is Missing"))
       }
       else {
         if(isPass !== isConfirmedPass) {
-           console.log("passwords do not match");
+           dispatch(alertWarning("Passwords do not match"))
         }
         else{
           const auth = getAuth(app);
@@ -123,7 +125,7 @@ const Login = () => {
   // sign in using email and password : 
   const signInFirebase = () =>{
        if(isPass==="" || userEmail===""){
-        console.log("One or more fields are empty");
+        dispatch(alertInfo("Email or Password Field is Missing"))
        }
        else {
           const auth = getAuth(app);
