@@ -34,7 +34,7 @@ const App = () => {
 
     setInterval(() => {
       setIsLoading(false);
-    }, 1000);
+    }, 3000);
   }, []);
 
   return (
