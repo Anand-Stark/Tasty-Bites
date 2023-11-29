@@ -1,8 +1,10 @@
 import React from "react";
 import { Logo } from "../assets";
 import { Avatar } from "../assets";
-import { NavLink } from "react-router-dom";
-import { buttonClick, fadeInOut } from "../animations";
+import { NavLink, useNavigate } from "react-router-dom";
+import { buttonClick, fadeInOut, slideTop } from "../animations";
+import { app } from "../config/firebase";
+import { getAuth } from "firebase/auth";
 
 // importing react icons :
 import {
@@ -13,7 +15,7 @@ import {
   MdMenuBook,
   MdPeople,
   MdDinnerDining,
-  MdAdd
+  MdAdd,
 } from "react-icons/md";
 // import { useStateValue } from "../context/StateProvider";
 import { useState } from "react";
@@ -25,18 +27,25 @@ import { useState } from "react";
 // for animation, importing motion from framer-motion :
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserNULL } from "../context/actions/userActions";
 // import { actionType } from "../context/reducer";
 
 const Header = () => {
-  //   const firebaseAuth = getAuth(app);
+    const firebaseAuth = getAuth(app);
   //   const provider = new GoogleAuthProvider();
 
   //   // using useContext to store all the user information  :
   //   const [{ user }, dispatch] = useStateValue();
 
   //   // using use state
-  //   const [isMenu, setisMenu] = useState(false);
+  const [isMenu, setIsMenu] = useState(false);
+
+  // for user navigation :
+  const navigate = useNavigate();
+
+  // for dispatching the action
+  const dispatch = useDispatch();
 
   //   // we have to store the sign-in information in the local database  :
 
@@ -76,6 +85,17 @@ const Header = () => {
 
   // selecting the user details :
   const user = useSelector((state) => state.user);
+
+  const signOut = ()=>{
+      firebaseAuth.signOut()
+      .then(()=>{
+         dispatch(setUserNULL())
+         navigate("/Login",{replace:true})
+      })
+      .catch(err=>{
+          console.log(err);
+      })
+  }
 
   return (
     <header className="fixed z-50 w-screen bg-gradient-to-r from-yellow-500 via-orange-500 to-orange-600 p-3 px-5 md:p-2 md:px-4 ">
@@ -130,15 +150,75 @@ const Header = () => {
               <p className="text-xs text-white font-semibold ">2</p>
             </div>
           </motion.div>
-          <motion.img
-              whileTap={{ scale: 0.6 }}
-              src={user ? user.picture : Avatar}
-              className="w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-xl cursor-pointer rounded-full"
-              alt="userprofile"
-              // onClick={login}
-            />
 
-          {user ? (<></>) : (
+
+          {user ? (
+            <>
+              <div
+                className="relative cursor-pointer"
+                onMouseEnter={() => setIsMenu(true)}
+              >
+                <motion.img
+                  whileTap={{ scale: 0.6 }}
+                  src={user ? user.picture : Avatar}
+                  className="w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-xl cursor-pointer rounded-full"
+                  alt="userprofile"
+                  referrerPolicy="no-referrer"
+                />
+
+                {isMenu && (
+                  <motion.div
+                    {...slideTop}
+                    onMouseLeave={() => setIsMenu(false)}
+                    className="px-6 py-4 w-48 bg-lightOverlay backdrop-blur-lg rounded-md shadow-md absolute top-12 right-0 flex flex-col gap-4"
+                  >
+                    {/* {user?.user_id === process.env.REACT_APP_ADMIN_ID && (
+                      <Link
+                        className=" hover:text-red-500 text-xl text-textColor"
+                        to={"/dashboard/home"}
+                      >
+                        Dashboard
+                      </Link>
+                    )} */}
+
+                    <Link
+                      className=" hover:text-red-500 text-xl text-textColor"
+                      to={"/profile"}
+                    >
+                      My Profile
+                    </Link>
+                    <Link
+                      className=" hover:text-red-500 text-xl text-textColor"
+                      to={"/user-orders"}
+                    >
+                      Orders
+                    </Link>
+                    <hr />
+
+                    <motion.div
+                      {...buttonClick}
+                      onClick={signOut}
+                      className="group flex items-center justify-center px-3 py-2 rounded-md shadow-md bg-gray-100 hover:bg-gray-200 gap-3"
+                    >
+                      <MdLogout className="text-xl text-textColor group-hover::text-headingColor" />
+                      <p className="text-textColor text-xl group-hover:text-headingColor">
+                        Log Out
+                      </p>
+                    </motion.div>
+                  </motion.div>
+                )}
+              </div>
+            </>
+          ) : (
+            <>
+            <motion.img
+                  whileTap={{ scale: 0.6 }}
+                  src={Avatar}
+                  className="w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-xl cursor-pointer rounded-full"
+                  alt="userprofile"
+                  referrerPolicy="no-referrer"
+                />
+
             <NavLink to={"/login"}>
               <motion.button
                 {...buttonClick}
@@ -147,7 +227,8 @@ const Header = () => {
                 Login
               </motion.button>
             </NavLink>
-                )}
+            </>
+          )}
 
           {/* <div className="relative " onClick={Login}>
             <motion.img
