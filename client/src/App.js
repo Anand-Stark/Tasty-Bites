@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import { Login, Main } from "./conatiner";
+import { DashBoard, Login, Main } from "./conatiner";
 import { useState, useEffect } from "react";
 import { app } from "./config/firebase";
 import { getAuth } from "firebase/auth";
@@ -34,7 +34,7 @@ const App = () => {
 
     setInterval(() => {
       setIsLoading(false);
-    }, 3000);
+    }, 2000);
   }, []);
 
   return (
@@ -50,6 +50,7 @@ const App = () => {
       <Routes>
         <Route path="/*" element={<Main />} />
         <Route path="/Login" element={<Login />} />
+        <Route path="/dash-board/*" element={<DashBoard/>}/>
       </Routes>
 
       {/* <Alert type={"success"} message={"Logged in successfully"} /> */}

@@ -170,7 +170,7 @@ const Header = () => {
                   <motion.div
                     {...slideTop}
                     onMouseLeave={() => setIsMenu(false)}
-                    className="px-6 py-4 w-48 bg-lightOverlay backdrop-blur-lg rounded-md shadow-md absolute top-12 right-0 flex flex-col gap-4"
+                    className="px-6 py-4 w-44 font-semibold bg-neutral-50 rounded-md shadow-md absolute top-12 right-0 flex flex-col gap-4"
                   >
                     {/* {user?.user_id === process.env.REACT_APP_ADMIN_ID && (
                       <Link
@@ -182,13 +182,13 @@ const Header = () => {
                     )} */}
 
                     <Link
-                      className=" hover:text-red-500 text-xl text-textColor"
+                      className=" hover:text-red-500 text-lg text-textColor"
                       to={"/profile"}
                     >
                       My Profile
                     </Link>
                     <Link
-                      className=" hover:text-red-500 text-xl text-textColor"
+                      className=" hover:text-red-500 text-lg text-textColor"
                       to={"/user-orders"}
                     >
                       Orders
@@ -198,10 +198,10 @@ const Header = () => {
                     <motion.div
                       {...buttonClick}
                       onClick={signOut}
-                      className="group flex items-center justify-center px-3 py-2 rounded-md shadow-md bg-gray-100 hover:bg-gray-200 gap-3"
+                      className="group flex  items-center justify-center px-3 py-2 rounded-md shadow-md bg-gray-100 hover:bg-gray-200 gap-3"
                     >
-                      <MdLogout className="text-xl text-textColor group-hover::text-headingColor" />
-                      <p className="text-textColor text-xl group-hover:text-headingColor">
+                      <MdLogout className="text-lg text-textColor group-hover::text-headingColor" />
+                      <p className="text-textColor text-lg group-hover:text-headingColor">
                         Log Out
                       </p>
                     </motion.div>
