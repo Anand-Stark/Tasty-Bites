@@ -70,13 +70,13 @@ const DbLeftSection = () => {
       {/* help center card here : - > */}
        
       <div className="w-full text-sm items-center justify-center flex h-225 mt-auto px-2 py-1 mb-1 shadow-lg">
-        <div className="w-full h-full rounded-md bg-gray-800 flex items-center justify-center flex-col gap-3 px-3 py-3">
+        <div className="w-full h-full rounded-md bg-gradient-to-r from-yellow-500 via-orange-500 to-orange-600  flex items-center justify-center flex-col gap-3 px-3 py-3">
         <hr/>
           <div className="w-12 h-12 borde bg-white rounded-full flex items-center justify-center">
             <p className="text-xl font-bold text-red-500">?</p>
           </div>
           <p className="text-lg text-primary font-semibold">Help Center</p>
-          <p className="text-base text-gray-300 text-center">
+          <p className="text-base text-primary text-center">
             Having trouble in city. Please contact us for more questions
           </p>
           <p className="px-4 py-2 w-40 text-center rounded-full bg-primary text-red-400 cursor-pointer">
