@@ -8,7 +8,7 @@ const DbTable = ({columns,data,title,action}) => {
     const theme = createTheme();
 
   return (
-    <div className='w-full border-l-4 border-red-400'>
+    <div className='w-full border-l-4 border-red-400 border-r-4 '>
         <ThemeProvider  theme={theme}>
         <MaterialTable
          columns={columns}
