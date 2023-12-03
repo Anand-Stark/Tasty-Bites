@@ -58,3 +58,22 @@ exports.createProduct = async (req, res) => {
   }
   
 };
+
+exports.getAllProducts = async (req,res) =>{ 
+  (async () => {
+    try {
+      let query = db.collection("products");
+      let response = [];
+      await query.get().then((querysnap) => {
+        let docs = querysnap.docs;
+        docs.map((doc) => {
+          response.push({ ...doc.data() });
+        });
+        return response;
+      });
+      return res.status(200).send({ success: true, data: response });
+    } catch (err) {
+      return res.send({ success: false, msg: `Error :${err}` });
+    }
+  })();
+}

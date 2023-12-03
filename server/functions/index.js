@@ -25,7 +25,7 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccountKey)
   });
 
-  const userRoutes = require("./routes/user")
+const userRoutes = require("./routes/user")
 const productRoutes = require("./routes/product")
 
 

@@ -24,7 +24,7 @@ import { validateToken } from "../api";
 
 // importing navigate 
 import {Navigate, useNavigate} from "react-router-dom"
-import { alertInfo, alertWarning } from "../context/actions/alertActions";
+import { alertInfo, alertWarning,alertNull } from "../context/actions/alertActions";
 
 
 
@@ -86,10 +86,17 @@ const Login = () => {
   const signUpFirebase = () =>{ 
       if(userEmail==="" || isPass==="" || isConfirmedPass===""){
          dispatch(alertInfo("Email or Password Field is Missing"))
+          setTimeout(() => {
+            dispatch(alertNull());
+          }, 2000);
       }
       else {
         if(isPass !== isConfirmedPass) {
            dispatch(alertWarning("Passwords do not match"))
+           setTimeout(() => {
+            dispatch(alertNull());
+          }, 2000);
+
         }
         else{
           const auth = getAuth(app);
@@ -126,6 +133,9 @@ const Login = () => {
   const signInFirebase = () =>{
        if(isPass==="" || userEmail===""){
         dispatch(alertInfo("Email or Password Field is Missing"))
+        setTimeout(() => {
+          dispatch(alertNull());
+        }, 2000);
        }
        else {
           const auth = getAuth(app);
@@ -143,6 +153,9 @@ const Login = () => {
                             navi("/",{ replace: true})                          
                         })
                 })
+              }
+              else{
+                dispatch(alertWarning("Credentials do not exist"))
               }
             })  
           })

@@ -27,4 +27,16 @@ export const addNewProduct = async (data) =>{
           }
 }
 
+export const getAllProducts = async (data) =>{
+      try{    
+              console.log("uwu")
+              const res = await axios.get(`${baseUrl}/api/products/all`, { ...data });
+              return res.data.data;
+      }
+      catch (err){
+        return null;
+      }
+}
+
+
 
