@@ -1,17 +1,25 @@
 import React from "react";
+import { spiral } from "ldrs";
 
+import { grid } from "ldrs";
+import { dotStream } from 'ldrs'
 
-import { tailChase } from 'ldrs'
+dotStream.register()
+
+// Default values shown
 
 const MainLoader = () => {
-  tailChase.register()
+  grid.register();
+
   return (
-    <l-tail-chase
-    size="80"
-    speed="1.75" 
-    color="orange" 
-  ></l-tail-chase>
- );
+    // Default values shown
+<l-dot-stream
+  size="80"
+  speed="2.5" 
+  color="orange" 
+></l-dot-stream>
+   
+  );
 };
 
 export default MainLoader;
