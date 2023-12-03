@@ -16,4 +16,15 @@ export const validateToken = async (token) =>{
       }
 }
 
+export const addNewProduct = async (data) =>{
+          try{    
+                  console.log("ok")
+                  const res = await axios.post(`${baseUrl}/api/products/create`, { ...data });
+                  return res.data.data;
+          }
+          catch (err){
+            return null;
+          }
+}
+
 

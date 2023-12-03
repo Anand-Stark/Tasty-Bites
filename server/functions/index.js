@@ -6,7 +6,6 @@ const serviceAccountKey = require("./serviceAccountKey.json");
 const express = require("express");
 
 const app = express();
-const userRoutes = require("./routes/user")
 
 app.use(express.json());
 
@@ -26,10 +25,13 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccountKey)
   });
 
+  const userRoutes = require("./routes/user")
+const productRoutes = require("./routes/product")
+
 
 // routes : backend apis -> 
 app.use('/api/user',userRoutes)
-
+app.use('/api/products/',productRoutes)
 
 exports.app = functions.https.onRequest(app)
 
