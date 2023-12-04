@@ -12,8 +12,6 @@ const DBUsers = () => {
   useEffect(() => {
     if (!allUsers) {
       getAllUsers().then((data) => {
-        // console.log("We are getting all the users")
-        // console.log(data)
         dispatch(setAllUserDetails(data));
       });
     }
