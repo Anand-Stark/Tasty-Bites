@@ -38,5 +38,26 @@ export const getAllProducts = async (data) =>{
       }
 }
 
+export const deleteProduct = async (productId) =>{
+      try {
+            const res = await axios.delete(
+              `${baseUrl}/api/products/delete/${productId}`
+            );
+            return res.data.data;
+          } catch (err) {
+            return null;
+          }
+}
+
+export const getAllUsers = async () => {
+  try {
+    const res = await axios.get(`${baseUrl}/api/user/all`);
+    console.log(res.data.data);
+    return res.data.data;
+  } catch (err) {
+    return null;
+  }
+};
+
 
 

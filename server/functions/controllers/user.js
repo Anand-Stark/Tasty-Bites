@@ -3,6 +3,7 @@ const express = require("express");
 const admin = require("firebase-admin");
 const db = admin.firestore();
 db.settings({ ignoreUndefinedProperties: true });
+let data = [];
 
 exports.getUser = (req, res) => {
   return res.send("ok ok ");
@@ -77,3 +78,53 @@ exports.getAllProducts = async (req,res) =>{
     }
   })();
 }
+
+// writing the logic for deleting a product : 
+exports.deleteProduct = async (req,res) =>{ 
+   const productId = req.params.productId;
+   try {
+    await db
+      .collection("products")
+      .doc(`/${productId}/`)
+      .delete()
+      .then((result) => {
+        return res.status(200).send({ success: true, data: result });
+      });
+  } catch (err) {
+    return res.send({ success: false, msg: `Error :${err}` });
+  }
+}
+
+// getting all the users : 
+
+const listALlUsers = async (nextpagetoken) => {
+  admin
+    .auth()
+    .listUsers(1000, nextpagetoken)
+    .then((listuserresult) => {
+      listuserresult.users.forEach((rec) => {
+        data.push(rec.toJSON());
+      });
+      if (listuserresult.pageToken) {
+        listALlUsers(listuserresult.pageToken);
+      }
+    })
+    .catch((er) => console.log(er));
+};
+listALlUsers();
+
+
+exports.getAllUsers = async (req, res) => {
+    listALlUsers();
+    try {
+      return res
+        .status(200)
+        .send({ success: true, data: data, dataCount: data.length });
+    } catch (er) {
+      return res.send({
+        success: false,
+        msg: `Error in listing users :,${er}`,
+      });
+    }
+}
+

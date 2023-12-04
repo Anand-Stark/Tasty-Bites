@@ -1,11 +1,17 @@
 import React from "react";
 import { DbTable } from "../Components";
 import { HiCurrencyRupee } from "react-icons/hi2";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { alertNull, alertSuccess } from "../context/actions/alertActions";
+import { deleteProduct } from "../api";
+import { getAllProducts } from "../api";
+import { setAllProducts } from "../context/actions/productActions";
+
 
 const DbItems = () => {
   // getting all the products through getProducts :
   const products = useSelector((state) => state.products);
+  const dispatch = useDispatch();
 
   return (
     <div className="flex items-center justify-center gap-4 mt-6 px-3 shadow-lg">
@@ -42,7 +48,35 @@ const DbItems = () => {
           },
         ]}
         data={products}
-        title="List of Products"
+        title="Product List"
+        actions={[
+          {
+            icon: "edit",
+            tooltip: "Edit Data",
+            onClick: (event, rowData) => {
+              alert("You want to edit : -> " + rowData.productId);
+            },
+          },
+          {
+            icon: "delete",
+            tooltip: "Delete Data",
+            onClick: (event, rowData) => {
+              if (
+                window.confirm("Are you sure, you want to perform this action")
+              ){
+                 deleteProduct(rowData.productId).then((res) =>{ 
+                    dispatch(alertSuccess("Product Deleted Successfully"))
+                    setInterval(() => {
+                    dispatch(alertNull());
+                  }, 3000);
+                 })
+                 getAllProducts().then((data) => {
+                    dispatch(setAllProducts(data));
+                  });
+              }
+            },
+          },
+        ]}
       />
     </div>
   );
