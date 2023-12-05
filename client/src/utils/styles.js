@@ -19,7 +19,7 @@ export const randomData = [
   {
     id: 1,
     imageURL:
-      "https://firebasestorage.googleapis.com/v0/b/food-app-nov-22.appspot.com/o/Pictures%2F1674704862591_dessert2.png?alt=media&token=7c001521-f0ac-40a8-b07a-42dc4aab444a",
+      "https://www.bigbasket.com/media/uploads/p/l/40163755_6-kwality-walls-frozen-dessert-dark-divine-chocolate-sensation.jpg?tr=w-640,q=80",
     product_name: "Iceream",
     product_category: "Chocolate & vanilla",
     product_price: "23.00",
@@ -27,7 +27,7 @@ export const randomData = [
   {
     id: 2,
     imageURL:
-      "https://firebasestorage.googleapis.com/v0/b/food-app-nov-22.appspot.com/o/Pictures%2F1674797445483_f1.png?alt=media&token=8b46c1ce-9600-4f9a-8ff7-3518b1bf6db3",
+      "https://www.bigbasket.com/media/uploads/p/l/10000263_12-fresho-strawberry.jpg?tr=w-640,q=80",
     product_name: "Strawberries",
     product_category: "Fresh Strawberries",
     product_price: "18.00",
@@ -35,7 +35,7 @@ export const randomData = [
   {
     id: 3,
     imageURL:
-      "https://firebasestorage.googleapis.com/v0/b/food-app-nov-22.appspot.com/o/Pictures%2F1674797463817_f2.png?alt=media&token=69ab9301-ef04-4690-bc68-e537cdc1985e",
+      "https://www.bigbasket.com/media/uploads/p/l/10000156_21-fresho-pineapple.jpg?tr=w-640,q=80",
     product_name: "Pine Apple",
     product_category: "Juicy Apples",
     product_price: "16.00",
