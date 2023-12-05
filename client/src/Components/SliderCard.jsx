@@ -2,26 +2,59 @@ import { motion } from "framer-motion";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { buttonClick } from "../animations";
-// import { addNewItemToCart, getAllCartItems } from "../api";
+import { addNewItemToCart, getAllCartItems } from "../api";
 import { HiCurrencyRupee, IoBasket } from "../assets/icons";
 import { alertNull, alertSuccess } from "../context/actions/alertActions";
-// import { setCartItems } from "../context/actions/cartAction";
+import { setCartItems } from "../context/actions/cartAction";
 
 const SliderCard = ({ data, index }) => {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
-//   const sendToCart = () => {
-//     dispatch(alertSuccess("Added to the cart"));
-//     addNewItemToCart(user?.user_id, data).then((res) => {
-//       getAllCartItems(user?.user_id).then((items) => {
-//         dispatch(setCartItems(items));
-//       });
-//       setInterval(() => {
-//         dispatch(alertNULL());
-//       }, 3000);
-//     });
-//   };
+ 
+
+  // const sendToCart = () => {
+  //   dispatch(alertSuccess("Added to the cart"));
+  //   console.log(user);
+  //   addNewItemToCart(user.user_id, data).then((res) => {
+  //     // console.log(res);
+  //     getAllCartItems(user.user_id).then((items) => {
+  //       // console.log(items);
+  //       dispatch(setCartItems(items));   
+  //     });
+  //     setInterval(() => {
+  //       dispatch(alertNull());
+  //     }, 3000);
+  //   });
+  // };
+
+  const sendToCart = () => {
+    dispatch(alertSuccess("Added to the cart"));
+    // console.log(data);
+  
+    addNewItemToCart(user?.user_id, data).then((res) => {
+      // Assuming addNewItemToCart and getAllCartItems are asynchronous functions that return promises
+  
+      // After successfully adding the item, update the cart items in the Redux store
+      getAllCartItems(user.user_id)
+        .then((items) => {
+          console.log(items);
+          // Assuming setCartItems is an action creator that dispatches the "SET_CART_ITEMS" action
+          dispatch(setCartItems(items));
+        })
+        .catch((error) => {
+          // Handle any errors that occur while fetching cart items
+          console.error("Error fetching cart items:", error);
+        })
+        .finally(() => {
+          // Clear the success alert after a delay (3000 milliseconds in this case)
+          setTimeout(() => {
+            dispatch(alertNull());
+          }, 3000);
+        });
+    });
+  };
+  
 
   return (
     <div className="bg-lightOverlay hover:drop-shadow-lg backdrop-blur-md rounded-xl flex items-center justify-between relative px-4 py-2 w-full md:w-340 md:min-w-350 gap-3">
@@ -37,7 +70,7 @@ const SliderCard = ({ data, index }) => {
 
         <motion.div
           {...buttonClick}
-        //   onClick={sendToCart}
+          onClick={sendToCart}
           className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center absolute -top-4 right-2 cursor-pointer"
         >
           <IoBasket className="text-2xl text-primary" />

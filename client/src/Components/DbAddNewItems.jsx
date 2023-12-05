@@ -127,7 +127,7 @@ const DbAddNewItems = () => {
 
         <div className="w-full flex items-center justify-around gap-3 flex-wrap">
           {statuses &&
-            statuses?.map((data) => (
+            statuses?.map((data, index) => (
               <p
                 key={data.id}
                 onClick={() => setCategory(data.category)}

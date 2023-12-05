@@ -25,7 +25,7 @@ const App = () => {
       if (cred) {
         cred.getIdToken().then((token) => {
           validateToken(token).then((data) => {
-            console.log(data);
+            // console.log(data);
             dispatch(setUserDetails(data));
           });
         });

@@ -54,7 +54,7 @@ const DBUsers = () => {
             ),
           },
         ]}
-        data={allUsers}
+        // data={allUsers}
         title="List of Users"
       />
     </div>
