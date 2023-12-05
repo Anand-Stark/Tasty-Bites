@@ -18,48 +18,42 @@ export const statuses = [
 export const randomData = [
   {
     id: 1,
-    imageURL:
-      "https://www.bigbasket.com/media/uploads/p/l/40163755_6-kwality-walls-frozen-dessert-dark-divine-chocolate-sensation.jpg?tr=w-640,q=80",
+    imageURL:"https://firebasestorage.googleapis.com/v0/b/food-cart-2.appspot.com/o/Images%2F1701774064326_i2.png?alt=media&token=551bfaf9-862e-4a3d-9355-5bef3f553e5f",
     product_name: "Iceream",
     product_category: "Chocolate & vanilla",
     product_price: "23.00",
   },
   {
     id: 2,
-    imageURL:
-      "https://www.bigbasket.com/media/uploads/p/l/10000263_12-fresho-strawberry.jpg?tr=w-640,q=80",
+    imageURL:"https://firebasestorage.googleapis.com/v0/b/food-cart-2.appspot.com/o/Images%2F1701772177597_f1.png?alt=media&token=c674c871-e53f-4145-8c35-193a3d68444b",
     product_name: "Strawberries",
     product_category: "Fresh Strawberries",
     product_price: "18.00",
   },
   {
     id: 3,
-    imageURL:
-      "https://www.bigbasket.com/media/uploads/p/l/10000156_21-fresho-pineapple.jpg?tr=w-640,q=80",
+    imageURL:"https://firebasestorage.googleapis.com/v0/b/food-cart-2.appspot.com/o/Images%2F1701773847705_f2.png?alt=media&token=6a5c16e8-2fb5-4324-8153-d95f8e77313a",
     product_name: "Pine Apple",
     product_category: "Juicy Apples",
     product_price: "16.00",
   },
   {
     id: 4,
-    imageURL:
-      "https://firebasestorage.googleapis.com/v0/b/food-app-nov-22.appspot.com/o/Pictures%2F1674797033037_c3.png?alt=media&token=7644719f-95ae-42f2-8227-3fb843faa567",
+    imageURL:"https://firebasestorage.googleapis.com/v0/b/food-cart-2.appspot.com/o/Images%2F1701774121493_c2.png?alt=media&token=54a66c02-ded5-4d3e-a46c-193b44d59247",
     product_name: "Chicken Kebab",
     product_category: "Mixed Kebab Plate",
     product_price: "22.0",
   },
   {
     id: 5,
-    imageURL:
-      "https://firebasestorage.googleapis.com/v0/b/food-app-nov-22.appspot.com/o/Pictures%2F1674797376326_d4.png?alt=media&token=7d37b12c-f3a8-4561-974e-de6574ddfea6",
+    imageURL:"https://firebasestorage.googleapis.com/v0/b/food-cart-2.appspot.com/o/Images%2F1701774491196_d4.png?alt=media&token=e2a14ff0-5008-4564-bbe7-a64ca1a03ae4",
     product_name: "Mojito",
     product_category: "Cocktail Drinks",
     product_price: "10.0",
   },
   {
     id: 6,
-    imageURL:
-      "https://firebasestorage.googleapis.com/v0/b/food-app-nov-22.appspot.com/o/Pictures%2F1674797198643_cu3.png?alt=media&token=e630d851-91aa-4135-a241-0ab961a7c4ee",
+    imageURL:"https://firebasestorage.googleapis.com/v0/b/food-cart-2.appspot.com/o/Images%2F1701774181532_c3.png?alt=media&token=23e2825d-404e-4c21-b89f-f6044ac28167",
     product_name: "Prawn Masala",
     product_category: "Spicy Masala",
     product_price: "20.0",

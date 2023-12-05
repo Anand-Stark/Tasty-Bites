@@ -10,3 +10,9 @@ export {default as DbOrders} from "./DbOrders"
 export {default as DbAddNewItems} from "./DbAddNewItems"
 export {default as DbUsers} from "./DbUsers"
 export {default as DbTable} from "./DbTable"
+// export { default as Spinner } from "./Spinner";
+export {default as HomeSLider} from "./HomeSlider"
+export {default as Slider} from "./Slider"
+export { default as Home } from "./Home";
+export { default as SliderCard } from "./SliderCard";
+export {default as FilterSection} from "./FilterSection"
