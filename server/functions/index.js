@@ -31,7 +31,7 @@ const productRoutes = require("./routes/product")
 
 // routes : backend apis -> 
 app.use('/api/user',userRoutes)
-app.use('/api/products/',productRoutes)
+app.use('/api/products',productRoutes)
 
 exports.app = functions.https.onRequest(app)
 

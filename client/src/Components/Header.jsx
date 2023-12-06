@@ -5,6 +5,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { buttonClick, fadeInOut, slideTop } from "../animations";
 import { app } from "../config/firebase";
 import { getAuth } from "firebase/auth";
+import { setCartOn } from "../context/actions/displayCartAction";
 
 // importing react icons :
 import {
@@ -85,6 +86,8 @@ const Header = () => {
 
   // selecting the user details :
   const user = useSelector((state) => state.user);
+  const cart = useSelector((state) => state.cart);
+
 
   const signOut = ()=>{
       firebaseAuth.signOut()
@@ -119,13 +122,13 @@ const Header = () => {
             >
               Home
             </NavLink>
-            <NavLink
+            {/* <NavLink
               whileTap={{ scale: 0.8 }}
               className="text-base font-semibold  text-textColor hover:text-headingColor duration-75 transition-all ease-in-out cursor-pointer"
               to={"/menu"}
             >
               Menu
-            </NavLink>
+            </NavLink> */}
             <NavLink
               whileTap={{ scale: 0.8 }}
               className="text-base font-semibold  text-textColor hover:text-headingColor duration-75 transition-all ease-in-out cursor-pointer"
@@ -136,19 +139,21 @@ const Header = () => {
             <NavLink
               whileTap={{ scale: 0.8 }}
               className="text-base font-semibold  text-textColor hover:text-headingColor duration-75 transition-all ease-in-out cursor-pointer"
-              to={"/service"}
+              to={"/contact"}
             >
-              Service
+              Contact Us
             </NavLink>
           </motion.ul>
           <motion.div
             whileTap={{ scale: 0.6 }}
             className="flex items-center justify-center px-2"
           >
-            <MdOutlineShoppingCartCheckout className="cursor-pointer text-2xl text-textColor hover:text-headingColor ml-6" />
-            <div className="relative -top-3 -left-2 w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center">
-              <p className="text-xs text-white font-semibold ">2</p>
+            <MdOutlineShoppingCartCheckout onClick={() => dispatch(setCartOn())}className="cursor-pointer text-2xl text-textColor hover:text-headingColor ml-6" />
+            {cart?.length && (
+              <div className="relative -top-3 -left-2 w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center">
+              <p className="text-xs text-white font-semibold ">{cart?.length}</p>
             </div>
+            )}
           </motion.div>
 
 
@@ -172,14 +177,14 @@ const Header = () => {
                     onMouseLeave={() => setIsMenu(false)}
                     className="px-6 py-4 w-44 font-semibold bg-neutral-50 rounded-md shadow-md absolute top-12 right-0 flex flex-col gap-4"
                   >
-                    {/* {user?.user_id === process.env.REACT_APP_ADMIN_ID && (
+                    {user?.user_id === "ZP2jBsegSPfOVGvFTveQlVQhuWT2" && (
                       <Link
                         className=" hover:text-red-500 text-xl text-textColor"
-                        to={"/dashboard/home"}
+                        to={"/dash-board/home"}
                       >
                         Dashboard
                       </Link>
-                    )} */}
+                    )}
 
                     <Link
                       className=" hover:text-red-500 text-lg text-textColor"

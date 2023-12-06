@@ -1,13 +1,14 @@
 import React from 'react'
 import { useDispatch, useSelector, } from "react-redux";
 import { getAllProducts } from "../api";
-import { FilterSection, Header, Home, HomeSLider } from "../Components";
+import { Cart,FilterSection, Header, Home, HomeSLider } from "../Components";
 import { setAllProducts } from "../context/actions/productActions";
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const Main = () => {
   const products = useSelector((state) => state.products);
-  // const isCart = useSelector((state) => state.isCart);
+  const isCart = useSelector((state) => state.isCart);
   const dispatch = useDispatch();
   
   useEffect(() => {
@@ -26,6 +27,11 @@ const Main = () => {
       <HomeSLider/>
       <FilterSection />
     </div>
+    <Link to={'/about'}>
+
+    </Link>
+
+    {isCart && <Cart />}
   </main>
   )
 }

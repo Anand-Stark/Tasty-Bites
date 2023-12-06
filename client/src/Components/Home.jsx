@@ -25,10 +25,9 @@ const Home = () => {
         </p>
 
         <p className="text-textColor text-lg">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod ipsam
-          doloribus et similique distinctio, rem deleniti ipsa, nesciunt vitae
-          labore voluptates sunt ducimus mollitia id libero! Nostrum expedita
-          libero recusandae?
+          We are ready to deliver the best food in your city in just 30 minutes
+          The best Quality food available at a single click . What are you waiting 
+          for .Order Now ! 
         </p>
         <motion.button
           {...buttonClick}

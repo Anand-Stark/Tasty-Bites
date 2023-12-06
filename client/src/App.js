@@ -11,12 +11,26 @@ import { motion } from "framer-motion";
 import { fadeInOut } from "./animations";
 import MainLoader from "./Components/MainLoader";
 import Alert from "./Components/alert";
+import { CheckOutSuccess, Header } from "./Components";
+import Menu from "./Components/Menu";
+import AboutUsPage from "./Components/AboutUs";
+import AboutUs from "./Components/AboutUs";
+import Contact from "./Components/Contact";
+import Cities from "./Components/Cities";
+import Footer2 from "./Components/Footer2";
+import About from "./conatiner/About";
+import Contacts from "./conatiner/Contacts";
+
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(false);
   const auth = getAuth(app);
   const dispatch = useDispatch();
   const alert = useSelector((state) => state.alert);
+
+  const products = useSelector((state) => state.products);
+
+  
 
   //  using use effect for redux config :
   useEffect(() => {
@@ -45,15 +59,25 @@ const App = () => {
           className="fixed z-100 inset-0 bg-lightOverlay backdrop-blur-lg flex items-center justify-center w-full"
         >
           <MainLoader />
-        </motion.div>
+        </motion.div> 
       )}
+      
       <Routes>
         <Route path="/*" element={<Main />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/dash-board/*" element={<DashBoard/>}/>
-      </Routes>
+        <Route path="/checkout-success" element={<CheckOutSuccess/>} />
+        {/* <Route path="/menu" element={<Menu items = {products}/>} /> */}
+        <Route path="/about" element={<About/>} />
+        <Route path="/contact" element={<Contacts/>} />
+        
 
-      {/* <Alert type={"success"} message={"Logged in successfully"} /> */}
+        
+      </Routes>
+       
+       {/* <Cities/> */}
+        <Footer2/>
+            {/* <Alert type={"success"} message={"Logged in successfully"} /> */}
       {alert?.type && <Alert type={alert?.type} message={alert?.message} />}
     </div>
   );
