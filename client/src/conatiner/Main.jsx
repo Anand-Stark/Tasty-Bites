@@ -5,6 +5,7 @@ import { Cart,FilterSection, Header, Home, HomeSLider } from "../Components";
 import { setAllProducts } from "../context/actions/productActions";
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Footer2 from '../Components/Footer2';
 
 const Main = () => {
   const products = useSelector((state) => state.products);
@@ -30,7 +31,7 @@ const Main = () => {
     <Link to={'/about'}>
 
     </Link>
-
+     <Footer2/>
     {isCart && <Cart />}
   </main>
   )

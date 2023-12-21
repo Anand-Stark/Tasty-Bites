@@ -76,7 +76,7 @@ const App = () => {
       </Routes>
        
        {/* <Cities/> */}
-        <Footer2/>
+        {/* <Footer2/> */}
             {/* <Alert type={"success"} message={"Logged in successfully"} /> */}
       {alert?.type && <Alert type={alert?.type} message={alert?.message} />}
     </div>
