@@ -88,6 +88,7 @@ const Header = () => {
   const user = useSelector((state) => state.user);
   const cart = useSelector((state) => state.cart);
 
+  const [displayCart, setdisplayCart] = useState(false);
 
   const signOut = ()=>{
       firebaseAuth.signOut()
@@ -148,7 +149,7 @@ const Header = () => {
             whileTap={{ scale: 0.6 }}
             className="flex items-center justify-center px-2"
           >
-            <MdOutlineShoppingCartCheckout onClick={() => dispatch(setCartOn())}className="cursor-pointer text-2xl text-textColor hover:text-headingColor ml-6" />
+            <MdOutlineShoppingCartCheckout onMouseEnter={() => dispatch(setCartOn())}className="cursor-pointer text-2xl text-textColor hover:text-headingColor ml-6" />
             {cart?.length && (
               <div className="relative -top-3 -left-2 w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center">
               <p className="text-xs text-white font-semibold ">{cart?.length}</p>

@@ -16,7 +16,7 @@ exports.jwtVerification = async (req, res) => {
 
   const getToken = req.headers.authorization.split(" ")[1];
 
-  console.log(getToken);
+  // console.log(getToken);
 
   try {
     const recievedToken = await admin.auth().verifyIdToken(getToken);
@@ -331,8 +331,8 @@ exports.webHook = (req, res) => {
   // Handle the event
   if (eventType === "checkout.session.completed") {
     stripe.customers.retrieve(data.customer).then((customer) => {
-      // console.log("Customer details", customer);
-      // console.log("Data", data);
+      console.log("Customer details", customer);
+      console.log("Data", data);
       createOrder(customer, data, res);
     });
   }
@@ -408,17 +408,17 @@ const deleteCart = async (userId, items) => {
     })();
   }
 
-// exports.updateCart = async (req, res) => {
-//   const order_id = req.params.order_id;
-//   const sts = req.query.sts;
+exports.updateCart = async (req, res) => {
+  const order_id = req.params.order_id;
+  const sts = req.query.sts;
 
-//   try {
-//     const updatedItem = await db
-//       .collection("orders")
-//       .doc(`/${order_id}/`)
-//       .update({ sts });
-//     return res.status(200).send({ success: true, data: updatedItem });
-//   } catch (er) {
-//     return res.send({ success: false, msg: `Error :,${er}` });
-//   }
-// }
+  try {
+    const updatedItem = await db
+      .collection("orders")
+      .doc(`/${order_id}/`)
+      .update({ sts });
+    return res.status(200).send({ success: true, data: updatedItem });
+  } catch (er) {
+    return res.send({ success: false, msg: `Error :,${er}` });
+  }
+}
