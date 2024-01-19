@@ -90,6 +90,10 @@ const Header = () => {
 
   const [displayCart, setdisplayCart] = useState(false);
 
+  const getCartData = () => {
+        
+  }
+
   const signOut = ()=>{
       firebaseAuth.signOut()
       .then(()=>{

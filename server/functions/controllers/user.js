@@ -342,7 +342,8 @@ exports.webHook = (req, res) => {
 }
 
 const createOrder = async (customer, intent, res) => {
-  console.log("Inside the orders");
+  console.log("Hello , your order is placed");
+  // console.log("Inside the orders");
   try {
     const orderId = Date.now();
     const data = {
@@ -408,12 +409,12 @@ const deleteCart = async (userId, items) => {
     })();
   }
 
-exports.updateCart = async (req, res) => {
+exports.updateOrder = async (req, res) => {
   const order_id = req.params.order_id;
   const sts = req.query.sts;
 
   try {
-    const updatedItem = await db
+    const updatedItem =   await db
       .collection("orders")
       .doc(`/${order_id}/`)
       .update({ sts });

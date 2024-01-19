@@ -23,6 +23,6 @@ routes.post("/addToCart/:userId",userControl.addToCart);
   routes.get("/orders", userControl.getOrders);
   
   // // update the order status
-  // routes.post("/updateOrder/:order_id", userControl.updateCart);
+  routes.post("/updateOrder/:order_id", userControl.updateOrder);
 
 module.exports = routes;

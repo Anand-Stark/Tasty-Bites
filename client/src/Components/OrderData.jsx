@@ -87,14 +87,14 @@ const OrderData = ({ index, data, admin }) => {
                 className="flex items-center justify-center gap-1"
               >
                 <img
-                  src={item.imageURL}
+                  src={item.prod_image}
                   className="w-10 h-10 object-contain"
                   alt=""
                 />
 
                 <div className="flex items-start flex-col">
                   <p className="text-base font-semibold text-headingColor">
-                    {item.product_name}
+                    {item.prod_name}
                   </p>
                   <div className="flex items-start gap-2">
                     <p className="text-sm text-textColor">
@@ -103,7 +103,7 @@ const OrderData = ({ index, data, admin }) => {
                     </p>
                     <p className="flex items-center gap-1 text-textColor">
                       <HiCurrencyRupee className="text-base text-red-500" />
-                      {parseFloat(item.product_price).toFixed(2)}
+                      {parseFloat(item.prod_price).toFixed(2)}
                     </p>
                   </div>
                 </div>

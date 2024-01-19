@@ -6,7 +6,7 @@ export const setOrders = (data) => {
   };
   
   export const getOrders = () => {
-    return {
+    return {  
       type: "GET_ORDERS",
     };
   };

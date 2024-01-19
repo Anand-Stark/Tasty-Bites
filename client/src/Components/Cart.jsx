@@ -245,7 +245,7 @@ const Cart = () => {
         <motion.i
           {...buttonClick}
           className="cursor-pointer"
-          onClick={() => dispatch(setCartOff())}
+          onMouseEnter={() => dispatch(setCartOff())}
         >
           <BiChevronsRight className="text-[50px] text-textColor" />
         </motion.i>
