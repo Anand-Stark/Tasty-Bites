@@ -166,7 +166,7 @@ const Header = () => {
             <>
               <div
                 className="relative cursor-pointer"
-                onMouseEnter={() => setIsMenu(true)}
+                onClick={() => setIsMenu(true)}
               >
                 <motion.img
                   whileTap={{ scale: 0.6 }}

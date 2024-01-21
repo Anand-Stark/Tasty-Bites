@@ -50,7 +50,7 @@ const Home = () => {
               <motion.div
                 key={i}
                 {...staggerFadeInOut(i)}
-                className=" w-32 h-36 md:h-auto  md:w-190 p-4 bg-lightOverlay backdrop-blur-md rounded-3xl flex flex-col items-center justify-center drop-shadow-lg gap-2"
+                className=" w-fit h-36 md:h-auto  md:w-190 p-4 bg-lightOverlay backdrop-blur-md rounded-3xl flex flex-col items-center justify-center drop-shadow-lg gap-2 "
               >
                 <img
                   src={data.imageURL}

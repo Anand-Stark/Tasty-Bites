@@ -6,6 +6,7 @@ import { addNewItemToCart, getAllCartItems } from "../api";
 import { HiCurrencyRupee, IoBasket } from "../assets/icons";
 import { alertNull, alertSuccess } from "../context/actions/alertActions";
 import { setCartItems } from "../context/actions/cartAction";
+import HoverRating from "./HoverRating";
 
 const SliderCard = ({ data, index }) => {
   const user = useSelector((state) => state.user);
@@ -57,21 +58,26 @@ const SliderCard = ({ data, index }) => {
   
 
   return (
-    <div className="bg-lightOverlay hover:drop-shadow-lg backdrop-blur-md rounded-xl flex items-center justify-between relative px-4 py-2 w-full md:w-340 md:min-w-350 gap-3">
+    <div className="bg-lightOverlay hover:drop-shadow-lg backdrop-blur-md rounded-xl flex-wrap items-center justify-between relative px-4 py-2  md:w-340 md:min-w-350 gap-3 ">
       <img src={data.prod_image} className="w-40 h-40 object-contain" alt="" />
-      <div className="relative pt-12">
+      <div className="relative">
+      <div className="flex flex-row justify-evenly">
+
         <p className="text-xl text-headingColor font-semibold">
-          {data.prod_name}
+         {data.prod_name}
         </p>
         <p className="text-lg font-semibold text-red-500 flex items-center justify-center gap-1">
           <HiCurrencyRupee className="text-red-500" />{" "}
           {parseFloat(data.prod_price).toFixed(2)}
         </p>
+      </div>
+
+        <HoverRating />
 
         <motion.div
           {...buttonClick}
           onClick={sendToCart}
-          className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center absolute -top-4 right-2 cursor-pointer"
+          className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center relative  -top-1 right-2 cursor-pointer"
         >
           <IoBasket className="text-2xl text-primary" />
         </motion.div>

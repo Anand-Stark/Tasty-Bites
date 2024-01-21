@@ -20,6 +20,7 @@ import Cities from "./Components/Cities";
 import Footer2 from "./Components/Footer2";
 import About from "./conatiner/About";
 import Contacts from "./conatiner/Contacts";
+import UsersOrder from "./Components/UsersOrder";
 
 
 const App = () => {
@@ -70,9 +71,7 @@ const App = () => {
         {/* <Route path="/menu" element={<Menu items = {products}/>} /> */}
         <Route path="/about" element={<About/>} />
         <Route path="/contact" element={<Contacts/>} />
-        
-
-        
+        <Route path="/user-orders" element={<UsersOrder/>} />        
       </Routes>
        
        {/* <Cities/> */}
