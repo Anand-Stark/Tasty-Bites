@@ -30,6 +30,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserNULL } from "../context/actions/userActions";
+import ComboBox from "./ComboBox";
 // import { actionType } from "../context/reducer";
 
 const Header = () => {
@@ -113,6 +114,8 @@ const Header = () => {
           <img className="w-8 object-cover" src={Logo} alt="Logo"></img>
           <p className="text-headingColor text-xl font-bold">TastyBites</p>
         </Link>
+
+        <ComboBox/>
 
         <div className="flex justify-center items-center ml-auto gap-4">
           <motion.ul
