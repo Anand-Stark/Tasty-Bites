@@ -115,7 +115,7 @@ const Header = () => {
           <p className="text-headingColor text-xl font-bold">TastyBites</p>
         </Link>
 
-        <ComboBox/>
+        <ComboBox />
 
         <div className="flex justify-center items-center ml-auto gap-4">
           <motion.ul
