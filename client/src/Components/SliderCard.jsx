@@ -30,7 +30,7 @@ const SliderCard = ({ data, index }) => {
   // };
 
   const sendToCart = () => {
-    dispatch(alertSuccess("Added to the cart"));
+    dispatch(alertSuccess("Item Added ❤️"));
     // console.log(data);
   
     addNewItemToCart(user?.user_id, data).then((res) => {
@@ -42,17 +42,18 @@ const SliderCard = ({ data, index }) => {
           console.log(items);
           // Assuming setCartItems is an action creator that dispatches the "SET_CART_ITEMS" action
           dispatch(setCartItems(items));
+          dispatch(alertNull())
         })
         .catch((error) => {
           // Handle any errors that occur while fetching cart items
           console.error("Error fetching cart items:", error);
         })
-        .finally(() => {
-          // Clear the success alert after a delay (3000 milliseconds in this case)
-          setTimeout(() => {
-            dispatch(alertNull());
-          }, 3000);
-        });
+        // .finally(() => {
+        //   // Clear the success alert after a delay (3000 milliseconds in this case)
+        //   setTimeout(() => {
+        //     dispatch(alertNull());
+        //   }, 1000);
+        // });
     });
   };
   
