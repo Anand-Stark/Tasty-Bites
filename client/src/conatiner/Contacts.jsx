@@ -4,7 +4,7 @@ import Contact from '../Components/Contact'
 
 const Contacts = () => {
   return (
-    <div className="w-screen min-h-screen flex items-center justify-start flex-col bg-primary">
+    <div className='w-full'>
       <Header />
       <Contact/>
     </div>

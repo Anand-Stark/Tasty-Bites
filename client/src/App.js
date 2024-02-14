@@ -41,6 +41,9 @@ const App = () => {
         cred.getIdToken().then((token) => {
           validateToken(token).then((data) => {
             // console.log(data);
+        
+
+
             dispatch(setUserDetails(data));
           });
         });
