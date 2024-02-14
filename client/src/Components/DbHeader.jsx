@@ -25,7 +25,7 @@ const DbHeader = () => {
    const signOut = () =>{ 
         firebaseAuth.signOut().then(() => {
             dispacther(setUserNULL())
-            navigator("/")
+            navigator("/login")
         }).catch((error) => {
             console.log(error)
         });

@@ -9,13 +9,26 @@ const DBUsers = () => {
   const allUsers = useSelector((state) => state.allUsers);
   const dispatch = useDispatch();
 
+ 
+
   useEffect(() => {
     if (!allUsers) {
       getAllUsers().then((data) => {
+        console.log(data);
         dispatch(setAllUserDetails(data));
       });
     }
   }, []);
+
+  // if(!allUsers){
+  //   getAllUsers().then((data) => {
+  //           console.log(data);
+  //           dispatch(setAllUserDetails(data));
+  //         });
+  // }
+  if(!allUsers){
+    return null
+  }
 
   return (
     <div className="flex items-center justify-self-center gap-4 pt-6 w-full">
@@ -54,7 +67,7 @@ const DBUsers = () => {
             ),
           },
         ]}
-        // data={allUsers}
+        data={allUsers}
         title="List of Users"
       />
     </div>

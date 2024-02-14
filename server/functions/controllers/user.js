@@ -6,9 +6,6 @@ db.settings({ ignoreUndefinedProperties: true });
 let data = [];
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 
-exports.getUser = (req, res) => {
-  return res.send("ok ok ");
-};
 exports.jwtVerification = async (req, res) => {
   if (!req.headers.authorization) {
     return res.status(500).send({ msg: "no token" });
@@ -112,8 +109,30 @@ const listALlUsers = async (nextpagetoken) => {
     })
     .catch((er) => console.log(er));
 };
-listALlUsers();
 
+// segregating the users as per their type : 
+// exports.createUserType = async(req,res) => {
+//     const userId = req.params.userId;
+//     const type = req.query.type;
+
+//     try{
+//       const data = {
+//         userId : userId,
+//         type:type
+//       }
+
+//       const response = await db.collection("users")
+//         .doc("type")
+//         .set(data)
+        
+//         return res.status(200).send({ success: true, data: response });
+
+//     }
+//     catch{
+//       return res.send({ success: false, msg: `Error :${err}` });
+//     }
+// }
+ 
 
 exports.getAllUsers = async (req, res) => {
     listALlUsers();
@@ -423,3 +442,37 @@ exports.updateOrder = async (req, res) => {
     return res.send({ success: false, msg: `Error :,${er}` });
   }
 }
+
+exports.deleteAllCart = async (req, res) => {
+  // const userId = req.query.userId;
+  // const items = req.query.items;
+  // items.map(async (data) => {
+  //   await db
+  //     .collection("cartItems")
+  //     .doc(`/${userId}/`)
+  //     .collection("items")
+  //     .doc(`/${data.productId}/`)
+  //     .delete()
+  //     .then(() => console.log("-------------------successs--------"));
+  // });
+
+  // return res.status(200).send({ success: true })'
+
+  
+  const userId = req.params.userId;
+  // console.log(userId);
+   try {
+    await db
+      .collection("cartItems")
+      .doc(`/${userId}`)
+      .collection("items")
+      .delete()
+      .then((result) => {
+        console.log("Carts emptied successfully");
+        return res.status(200).send({ success: true, data: result });
+      });
+  } catch (err) {
+    return res.send({ success: false, msg: `Error :${err}` });
+  }
+  
+};

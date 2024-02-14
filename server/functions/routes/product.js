@@ -25,4 +25,6 @@ routes.post("/addToCart/:userId",userControl.addToCart);
   // // update the order status
   routes.post("/updateOrder/:order_id", userControl.updateOrder);
 
+  routes.post("/delete-cart/:userId",userControl.deleteAllCart);
+
 module.exports = routes;

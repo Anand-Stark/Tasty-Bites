@@ -7,6 +7,7 @@ import cartReducer from "./cartReducer"
 import displayCartReducer from "./displayCartReducer"
 import ordersReducer from "./ordersReducer"
 import isSearch from "./isSearch"
+import userTypeReducer from "./userTypeReducer"
 
 const myReducers = combineReducers({
     user:userReducer,
@@ -16,7 +17,9 @@ const myReducers = combineReducers({
     cart: cartReducer,
     isCart: displayCartReducer,
     orders: ordersReducer,
-    searchItem : isSearch 
+    searchItem : isSearch ,
+    userType : userTypeReducer
+
 })
 
 export default myReducers

@@ -71,6 +71,27 @@ export const addNewItemToCart = async (user_id, data) => {
   }
 };
 
+// export const addUserType  = async(userId,type) => {
+//    try{
+//       const res = await axios.post(`${baseUrl}/api/user/users/${userId}`,null,{
+//         params:{type:type}
+//       })
+//       return res.data.data
+//    }
+//    catch{
+//       return null;
+//    }
+// }
+
+// export const getUserTypes = async(userId,type) => {
+//    try { 
+
+//    }
+//    catch{
+
+//    }
+// }
+
 export const getAllCartItems = async (user_id) => {
   try {
     const res = await axios.get(
@@ -96,6 +117,16 @@ export const increaseItemQuantity = async (user_id, productId, type) => {
     return null;
   }
 };
+
+export const deleteAllCart = async(user_id) => {
+   try{
+      const res = await axios.post(`${baseUrl}/api/products/delete-cart/${user_id}`)
+      return res.data.data
+   }
+   catch(error){
+      return null;
+   }
+}
 
 export const getAllOrder = async () => {
   try {

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { buttonClick, slideIn, staggerFadeInOut } from "../animations";
-import { baseUrl, getAllCartItems, increaseItemQuantity } from "../api";
+import { baseUrl, getAllCartItems, increaseItemQuantity,deleteAllCart } from "../api";
 import {
   BiChevronsRight,
   FcClearFilters,
@@ -48,9 +48,12 @@ const Cart = () => {
   };
 
   const handleRemoveAll = () => {
-    dispatch(clearCartItems());
-    // You can include additional logic here to clear the cart on the server if needed
-    // For example: axios.delete(`${baseUrl}/api/products/clear-cart/${user?.user_id}`);
+    
+    deleteAllCart(user?.user_id)
+    .then((result) => {
+      dispatch(clearCartItems());
+    })
+    .catch(err => console.log(err))
   };
 
   return (

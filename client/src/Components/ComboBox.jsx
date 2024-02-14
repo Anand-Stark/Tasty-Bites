@@ -25,10 +25,6 @@ const ComboBox = () => {
     return null; // Or you can render a loading indicator or a message
   }
 
-  // const items = products.map((product) => ({
-  //   name: product.prod_name,
-  //   image: product.prod_image,
-  // }));
 
   const filteredFoodItems = items.filter((item) =>
     item.prod_name.toLowerCase().includes(searchItem.toLowerCase())
@@ -72,7 +68,7 @@ const ComboBox = () => {
     <div>
       <div
         className="px-10 py-1 relative font-bold"
-        onMouseLeave={handleInputBlur}
+        onClick={handleInputBlur}
       >
         <input
           type="text"
