@@ -78,7 +78,7 @@ const Login = () => {
                    console.log("User Type Added to Firebase");
                 })
 
-                dispatch(setUserDetails(newData));
+                dispatch(setUserDetails(data));
                 navi("/main", { replace: true });
               });
             });
@@ -123,12 +123,12 @@ const Login = () => {
 
                     const newData = {...data,type:type}
 
-                    // addUserType(newData.user_id,newData.type)
-                    // .then((res) => {
-                    //    console.log("User Type Added");
-                    // })
+                    addUserType(newData.user_id,newData.type)
+                    .then((res) => {
+                       console.log("User Type Added");
+                    })
 
-                    dispatch(setUserDetails(newData));
+                    dispatch(setUserDetails(data));
                     setuserEmail("");
                     setisConfirmedPass("");
                     setisPass("");
@@ -162,14 +162,14 @@ const Login = () => {
               cred.getIdToken().then((token) => {
 
                 validateToken(token).then((data) => {
-                  const newData = {...data,type:type}
+                  // const newData = {...data,type:type}
 
                   // addUserType(newData.user_id,newData.type)
                   // .then((res) => {
                   //    console.log("User Type Added");
                   // })
-
-                  dispatch(setUserDetails(newData));
+                
+                  dispatch(setUserDetails(data));
                   setuserEmail("");
                   setisPass("");
                   navi("/", { replace: true });

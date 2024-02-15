@@ -3,10 +3,39 @@ import React from "react";
 import { buttonClick, staggerFadeInOut } from "../animations";
 import { Delivery, HeroBg } from "../assets";
 import { randomData } from "../utils/styles";
+import { useSelector,useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { getUserTypes } from "../api";
+import { setUserType } from "../context/actions/userTypeActions";
 
 const Home = () => {
-  return (
-    <motion.div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 ">
+
+  const userType = useSelector((state) => state.userType)
+  const user = useSelector((state) => state.user)
+  const dispatch = useDispatch()
+
+  // useEffect(() => {
+  //     if(!userType && user){
+  //       console.log("Setting the user type");
+
+  //       const userId = user.user_id;
+
+  //       getUserTypes(userId)
+  //       .then((res) => {
+  //          const type = res._fieldsProto.type.stringValue ; 
+
+  //          dispatch(setUserType(type))
+           
+  //       })
+
+  //     }
+  // }, [user])
+  
+
+  
+  return (  
+      
+      <motion.div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4 ">
       <div className="flex flex-col items-start justify-start gap-6">
         <div className="px-4 py-1 flex items-center justify-center gap-2 bg-orange-100 rounded-full">
           <p className="text-lg font-semibold text-orange-500">Free Delivery</p>
@@ -73,7 +102,7 @@ const Home = () => {
             ))}
         </div>
       </div>
-    </motion.div>
+    </motion.div>    
   );
 };
 

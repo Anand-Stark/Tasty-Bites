@@ -32,7 +32,7 @@ const App = () => {
   const products = useSelector((state) => state.products);
 
   
-
+  
   //  using use effect for redux config :
   useEffect(() => {
     setIsLoading(true);
@@ -40,10 +40,7 @@ const App = () => {
       if (cred) {
         cred.getIdToken().then((token) => {
           validateToken(token).then((data) => {
-            // console.log(data);
-            
-
-
+            // console.log(data); 
             dispatch(setUserDetails(data));
           });
         });

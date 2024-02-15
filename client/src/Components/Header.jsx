@@ -31,6 +31,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserNULL } from "../context/actions/userActions";
 import ComboBox from "./ComboBox";
+import { setUserType, setUserTypeNull } from "../context/actions/userTypeActions";
 // import { actionType } from "../context/reducer";
 
 const Header = () => {
@@ -89,16 +90,12 @@ const Header = () => {
   const user = useSelector((state) => state.user);
   const cart = useSelector((state) => state.cart);
 
-  const [displayCart, setdisplayCart] = useState(false);
-
-  const getCartData = () => {
-        
-  }
 
   const signOut = ()=>{
       firebaseAuth.signOut()
       .then(()=>{
          dispatch(setUserNULL())
+         dispatch(setUserTypeNull())
          navigate("/Login",{replace:true})
       })
       .catch(err=>{

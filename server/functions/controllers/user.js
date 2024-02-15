@@ -134,6 +134,21 @@ exports.createUserType = async(req,res) => {
       return res.send({ success: false, msg: `Error` });
     }
 }
+
+exports.getUserType = async (req,res) => {
+    const userId = req.params.userId;
+
+    try{
+          const response = await db.collection("users")
+                                    .doc(`/${userId}/`)
+                                    .get()
+
+          return res.status(200).send({success:true, data: response })
+    }                             
+    catch(err){
+          return res.status(500).send({success:false, msg:`Error :${err}`})
+    }
+}
  
 
 exports.getAllUsers = async (req, res) => {

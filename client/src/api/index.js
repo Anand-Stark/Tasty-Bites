@@ -83,14 +83,25 @@ export const addUserType  = async(userId,type) => {
    }
 }
 
-// export const getUserTypes = async(userId) => {
-//    try { 
+export const getUserTypes = async (userId) => {
+   try {   
+          // console.log(userId);
+          const res = await axios.get(`${baseUrl}/api/user/user-type/${userId}`);
 
-//    }
-//    catch{
+          if(res.status !== 200)
+          {
+            console.log('Something wrong from getUserType');
+            return ;
+          }
 
-//    }
-// }
+          return res.data.data;
+   }
+   catch(e){
+
+    console.log(e);
+
+   }
+}
 
 export const getAllCartItems = async (user_id) => {
   try {

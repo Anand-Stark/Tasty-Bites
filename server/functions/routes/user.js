@@ -11,7 +11,7 @@ routes.get('/all', userControl.getAllUsers);
 
 routes.post('/users/:userId',userControl.createUserType)
 
-// routes.get('users/:userId',user)
+routes.get('/user-type/:userId',userControl.getUserType)
 
 module.exports = routes;
 
