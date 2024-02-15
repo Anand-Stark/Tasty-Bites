@@ -9,7 +9,7 @@ routes.get('/jwtVerification',userControl.jwtVerification)
 
 routes.get('/all', userControl.getAllUsers);
 
-// routes.post('/users/:userId',userControl.createUserType)
+routes.post('/users/:userId',userControl.createUserType)
 
 // routes.get('users/:userId',user)
 

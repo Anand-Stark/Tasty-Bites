@@ -72,8 +72,13 @@ const Login = () => {
             cred.getIdToken().then((token) => {
               validateToken(token).then((data) => {
                 const newData = {...data,type:type}
+
+                addUserType(newData.user_id,newData.type)
+                .then((res) => {
+                   console.log("User Type Added to Firebase");
+                })
+
                 dispatch(setUserDetails(newData));
-                dispatch(setUserType(type));
                 navi("/main", { replace: true });
               });
             });
@@ -118,6 +123,11 @@ const Login = () => {
 
                     const newData = {...data,type:type}
 
+                    // addUserType(newData.user_id,newData.type)
+                    // .then((res) => {
+                    //    console.log("User Type Added");
+                    // })
+
                     dispatch(setUserDetails(newData));
                     setuserEmail("");
                     setisConfirmedPass("");
@@ -153,6 +163,12 @@ const Login = () => {
 
                 validateToken(token).then((data) => {
                   const newData = {...data,type:type}
+
+                  // addUserType(newData.user_id,newData.type)
+                  // .then((res) => {
+                  //    console.log("User Type Added");
+                  // })
+
                   dispatch(setUserDetails(newData));
                   setuserEmail("");
                   setisPass("");

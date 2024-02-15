@@ -111,27 +111,29 @@ const listALlUsers = async (nextpagetoken) => {
 };
 
 // segregating the users as per their type : 
-// exports.createUserType = async(req,res) => {
-//     const userId = req.params.userId;
-//     const type = req.query.type;
+exports.createUserType = async(req,res) => {
+    const userId = req.params.userId;
+    const type = req.query.type;
 
-//     try{
-//       const data = {
-//         userId : userId,
-//         type:type
-//       }
+    console.log(userId,type);
+     
+    try{
 
-//       const response = await db.collection("users")
-//         .doc("type")
-//         .set(data)
+      const data = {
+         type:type
+      }
+    
+      const response = await db.collection("users")
+        .doc(`/${userId}/`)
+        .set(data)
         
-//         return res.status(200).send({ success: true, data: response });
+        return res.status(200).send({ success: true, data: response });
 
-//     }
-//     catch{
-//       return res.send({ success: false, msg: `Error :${err}` });
-//     }
-// }
+    }
+    catch{
+      return res.send({ success: false, msg: `Error` });
+    }
+}
  
 
 exports.getAllUsers = async (req, res) => {

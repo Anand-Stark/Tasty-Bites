@@ -18,7 +18,7 @@ export const validateToken = async (token) =>{
 
 export const addNewProduct = async (data) =>{
           try{    
-                  console.log("ok")
+                  // console.log("ok")
                   const res = await axios.post(`${baseUrl}/api/products/create`, { ...data });
                   return res.data.data;
           }
@@ -71,19 +71,19 @@ export const addNewItemToCart = async (user_id, data) => {
   }
 };
 
-// export const addUserType  = async(userId,type) => {
-//    try{
-//       const res = await axios.post(`${baseUrl}/api/user/users/${userId}`,null,{
-//         params:{type:type}
-//       })
-//       return res.data.data
-//    }
-//    catch{
-//       return null;
-//    }
-// }
+export const addUserType  = async(userId,type) => {
+   try{
+      const res = await axios.post(`${baseUrl}/api/user/users/${userId}`,null,{
+        params:{type:type}
+      })
+      return res.data.data
+   }
+   catch{
+      return null;
+   }
+}
 
-// export const getUserTypes = async(userId,type) => {
+// export const getUserTypes = async(userId) => {
 //    try { 
 
 //    }
