@@ -13,6 +13,8 @@ routes.post('/users/:userId',userControl.createUserType)
 
 routes.get('/user-type/:userId',userControl.getUserType)
 
+routes.get('/user-info/:userId',userControl.getUserInfo)
+
 module.exports = routes;
 
 

@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { Logo } from "../assets";
 import { isActiveStyles, isNotActiveStyles } from "../utils/styles";
 
+
 const DbLeftSection = () => {
   return (
     <div className=" h-full font-bold flex flex-col bg-lightOverlay backdrop-blur-md shadow-lg min-w-210 w-300 ">
@@ -65,6 +66,16 @@ const DbLeftSection = () => {
           }
         >
           Users
+        </NavLink>
+        <NavLink
+          to={"/dash-board/delivery-agents"}
+          className={({ isActive }) =>
+            isActive
+              ? `${isActiveStyles} px-4 py-2 border-l-4  border-red-500`
+              : isNotActiveStyles
+          }
+        >
+          Delivery Agents
         </NavLink>
       </ul>
       {/* help center card here : - > */}

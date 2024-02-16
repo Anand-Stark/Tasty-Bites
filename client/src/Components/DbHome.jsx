@@ -42,8 +42,8 @@ const DBHome = () => {
                   "Fruits",
                   "Rice",
                   "Curry",
-                  "Italian",
                   "Chinese",
+                  // "Italian",
                 ],
                 datasets: [
                   {
@@ -56,7 +56,7 @@ const DBHome = () => {
                       rice?.length,
                       curry?.length,
                       chinese?.length,
-                      italian?.length,
+                      italian?.length,  
                     ],
                   },
                 ],

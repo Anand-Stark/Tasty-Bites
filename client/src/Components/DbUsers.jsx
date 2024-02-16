@@ -10,18 +10,12 @@ const DBUsers = () => {
   const allUsers = useSelector((state) => state.allUsers);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user)
+
+
  
-  // useEffect(() => {
-  //   if (!allUsers && user) {
-  //     getAllUsers().then((data) => {
-  //       console.log(data);
-  //       dispatch(setAllUserDetails(data));
-  //     });
-  //   }
-  // }, []);
 
   return (
-    <div className="flex items-center justify-self-center gap-4 pt-6 w-full">
+    <div className="flex items-center ml-32 justify-center gap-4 pt-6 w-[70%] ">
       <DbTable
         columns={[
           {
@@ -37,7 +31,12 @@ const DBUsers = () => {
           },
           {
             title: "Name",
-            field: "displayName",
+  field: "displayName",
+  render: (rowData) => {
+    const displayName = rowData.displayName;
+    const fallbackName = displayName ? displayName : rowData.email.substring(0, rowData.email.indexOf('@'));
+    return <p>{displayName || fallbackName}</p>;
+  }
           },
           {
             title: "Email",

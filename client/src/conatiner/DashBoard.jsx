@@ -15,7 +15,7 @@ const DashBoard = () => {
   useEffect(() => {
     if (!allUsers) {
       getAllUsers().then((data) => {
-        console.log(data);
+        // console.log(data);
         dispatch(setAllUserDetails(data));
       });
     }

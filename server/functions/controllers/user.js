@@ -165,6 +165,34 @@ exports.getAllUsers = async (req, res) => {
     }
 }
 
+exports.getUserInfo = async(req,res) => {
+  const uid =  req.params.userId;
+
+   try{
+
+    const userRecord = await admin.auth().getUser(uid);
+    
+    // Extract relevant user data
+    const userData = {
+      uid: userRecord.uid,
+      email: userRecord.email,
+      emailVerified : userRecord.emailVerified,
+      photo : userRecord.photoURL ,
+      name : userRecord.displayName
+      // Add other fields you need
+    };
+     
+    return res
+      .status(200).send({success:true,data:userData})
+   }catch (er) {
+    return res.send({
+      success: false,
+      msg: `Error in listing users :,${er}`,
+    });
+  }
+
+}
+
 exports.addToCart =  async (req, res) => {
   const userId = req.params.userId;
   const productId = req.body.productId;

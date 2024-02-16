@@ -59,6 +59,18 @@ export const getAllUsers = async () => {
   }
 };
 
+export const getUserInfo = async(userId) => {
+    try{
+      const res = await axios.get(`${baseUrl}/api/user//user-info/${userId}`)
+
+      return res.data.data;
+    }
+    catch(err){
+      console.log(err);
+      return null
+    }
+}
+
 export const addNewItemToCart = async (user_id, data) => {
   try {
     const res = await axios.post(
