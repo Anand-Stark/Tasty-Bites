@@ -76,10 +76,10 @@ const Login = () => {
                 addUserType(newData.user_id,newData.type)
                 .then((res) => {
                    console.log("User Type Added to Firebase");
+                   dispatch(setUserDetails(data));
+                   navi("/main", { replace: true });
                 })
-
-                dispatch(setUserDetails(data));
-                navi("/main", { replace: true });
+                
               });
             });
           }
@@ -126,13 +126,14 @@ const Login = () => {
                     addUserType(newData.user_id,newData.type)
                     .then((res) => {
                        console.log("User Type Added");
+                       dispatch(setUserDetails(data));
+                       setuserEmail("");
+                       setisConfirmedPass("");
+                       setisPass("");
+                       navi("/Login", { replace: true });
                     })
 
-                    dispatch(setUserDetails(data));
-                    setuserEmail("");
-                    setisConfirmedPass("");
-                    setisPass("");
-                    navi("/Login", { replace: true });
+                   
                   });
                 });
               }
