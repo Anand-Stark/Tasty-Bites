@@ -98,7 +98,7 @@ exports.deleteProduct = async (req,res) =>{
 const listALlUsers = async (nextpagetoken) => {
   admin
     .auth()
-    .listUsers(1000, nextpagetoken)
+    .listUsers(10, nextpagetoken)
     .then((listuserresult) => {
       listuserresult.users.forEach((rec) => {
         data.push(rec.toJSON());

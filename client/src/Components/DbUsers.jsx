@@ -6,29 +6,19 @@ import { setAllUserDetails } from "../context/actions/allUsersAction";
 import DbTable from "./DbTable";
 
 const DBUsers = () => {
+
   const allUsers = useSelector((state) => state.allUsers);
   const dispatch = useDispatch();
-
+  const user = useSelector((state) => state.user)
  
-
-  useEffect(() => {
-    if (!allUsers) {
-      getAllUsers().then((data) => {
-        console.log(data);
-        dispatch(setAllUserDetails(data));
-      });
-    }
-  }, []);
-
-  // if(!allUsers){
-  //   getAllUsers().then((data) => {
-  //           console.log(data);
-  //           dispatch(setAllUserDetails(data));
-  //         });
-  // }
-  if(!allUsers){
-    return null
-  }
+  // useEffect(() => {
+  //   if (!allUsers && user) {
+  //     getAllUsers().then((data) => {
+  //       console.log(data);
+  //       dispatch(setAllUserDetails(data));
+  //     });
+  //   }
+  // }, []);
 
   return (
     <div className="flex items-center justify-self-center gap-4 pt-6 w-full">
@@ -67,7 +57,7 @@ const DBUsers = () => {
             ),
           },
         ]}
-        data={allUsers}
+        data={allUsers} 
         title="List of Users"
       />
     </div>

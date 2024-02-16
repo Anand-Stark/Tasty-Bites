@@ -79,7 +79,7 @@ const Login = () => {
                    dispatch(setUserDetails(data));
                    navi("/main", { replace: true });
                 })
-                
+
               });
             });
           }
@@ -125,8 +125,8 @@ const Login = () => {
 
                     addUserType(newData.user_id,newData.type)
                     .then((res) => {
-                       console.log("User Type Added");
-                       dispatch(setUserDetails(data));
+                      //  console.log("User Type Added");
+                      //  dispatch(setUserDetails(data));
                        setuserEmail("");
                        setisConfirmedPass("");
                        setisPass("");
@@ -162,14 +162,7 @@ const Login = () => {
             if (cred) {
               cred.getIdToken().then((token) => {
 
-                validateToken(token).then((data) => {
-                  // const newData = {...data,type:type}
-
-                  // addUserType(newData.user_id,newData.type)
-                  // .then((res) => {
-                  //    console.log("User Type Added");
-                  // })
-                
+                validateToken(token).then((data) => {                
                   dispatch(setUserDetails(data));
                   setuserEmail("");
                   setisPass("");

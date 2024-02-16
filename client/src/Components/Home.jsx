@@ -13,25 +13,6 @@ const Home = () => {
   const userType = useSelector((state) => state.userType)
   const user = useSelector((state) => state.user)
   const dispatch = useDispatch()
-
-  // useEffect(() => {
-  //     if(!userType && user){
-  //       console.log("Setting the user type");
-
-  //       const userId = user.user_id;
-
-  //       getUserTypes(userId)
-  //       .then((res) => {
-  //          const type = res._fieldsProto.type.stringValue ; 
-
-  //          dispatch(setUserType(type))
-           
-  //       })
-
-  //     }
-  // }, [user])
-  
-
   
   return (  
       
