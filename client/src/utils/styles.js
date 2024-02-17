@@ -59,3 +59,7 @@ export const randomData = [
     product_price: "20.0",
   },
 ];
+
+// const randomDeliveryData = [
+//    {}
+// ]

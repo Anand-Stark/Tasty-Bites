@@ -31,15 +31,14 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserNULL } from "../context/actions/userActions";
 import ComboBox from "./ComboBox";
-import { setUserType, setUserTypeNull } from "../context/actions/userTypeActions";
+import {
+  setUserType,
+  setUserTypeNull,
+} from "../context/actions/userTypeActions";
 // import { actionType } from "../context/reducer";
 
 const Header = () => {
-    const firebaseAuth = getAuth(app);
-  //   const provider = new GoogleAuthProvider();
-
-  //   // using useContext to store all the user information  :
-  //   const [{ user }, dispatch] = useStateValue();
+  const firebaseAuth = getAuth(app);
 
   //   // using use state
   const [isMenu, setIsMenu] = useState(false);
@@ -50,58 +49,23 @@ const Header = () => {
   // for dispatching the action
   const dispatch = useDispatch();
 
-  //   // we have to store the sign-in information in the local database  :
-
-  //   // creating a login
-  //   const Login = () => {
-  //     if (!user) {
-  //       signInWithPopup(firebaseAuth, provider)
-  //         .then((result) => {
-  //           const {
-  //             user: { refreshToken, providerData },
-  //           } = result;
-  //           dispatch({
-  //             type: actionType.SET_USER,
-  //             user: providerData[0],
-  //           });
-  //           localStorage.setItem("user", JSON.stringify(providerData[0]));
-  //         })
-  //         .catch((error) => {
-  //           // Handle any errors here
-  //         });
-  //     } else {
-  //       setisMenu(!isMenu);
-  //     }
-  //   };
-
-  //   // creating a logout function for logging out a user :
-  //   const LogOut = () => {
-  //     setisMenu(false);
-  //     localStorage.clear();
-
-  //     //  now, we have to dispatch the user :
-  //     dispatch({
-  //       type: actionType.SET_USER,
-  //       user: null,
-  //     });
-  //   };
-
   // selecting the user details :
   const user = useSelector((state) => state.user);
   const cart = useSelector((state) => state.cart);
+  const userType = useSelector((state) => state.userType);
 
-
-  const signOut = ()=>{
-      firebaseAuth.signOut()
-      .then(()=>{
-         dispatch(setUserNULL())
-         dispatch(setUserTypeNull())
-         navigate("/Login",{replace:true})
+  const signOut = () => {
+    firebaseAuth
+      .signOut()
+      .then(() => {
+        dispatch(setUserNULL());
+        dispatch(setUserTypeNull());
+        navigate("/Login", { replace: true });
       })
-      .catch(err=>{
-          console.log(err);
-      })
-  }
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <header className="fixed z-50 w-screen bg-gradient-to-r from-yellow-500 via-orange-500 to-orange-600 p-3 px-5 md:p-2 md:px-4 ">
@@ -112,7 +76,7 @@ const Header = () => {
           <p className="text-headingColor text-xl font-bold">TastyBites</p>
         </Link>
 
-        <ComboBox />
+        {userType === "user" && <ComboBox />}
 
         <div className="flex justify-center items-center ml-auto gap-4">
           <motion.ul
@@ -149,18 +113,25 @@ const Header = () => {
               Contact Us
             </NavLink>
           </motion.ul>
-          <motion.div
-            whileTap={{ scale: 0.6 }}
-            className="flex items-center justify-center px-2"
-          >
-            <MdOutlineShoppingCartCheckout onMouseEnter={() => dispatch(setCartOn())}className="cursor-pointer text-2xl text-textColor hover:text-headingColor ml-6" />
-            {cart?.length && (
-              <div className="relative -top-3 -left-2 w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center">
-              <p className="text-xs text-white font-semibold ">{cart?.length}</p>
-            </div>
-            )}
-          </motion.div>
 
+          {userType === "user" && (
+            <motion.div
+              whileTap={{ scale: 0.6 }}
+              className="flex items-center justify-center px-2"
+            >
+              <MdOutlineShoppingCartCheckout
+                onMouseEnter={() => dispatch(setCartOn())}
+                className="cursor-pointer text-2xl text-textColor hover:text-headingColor ml-6"
+              />
+              {cart?.length && (
+                <div className="relative -top-3 -left-2 w-4 h-4 rounded-full bg-emerald-500 flex items-center justify-center">
+                  <p className="text-xs text-white font-semibold ">
+                    {cart?.length}
+                  </p>
+                </div>
+              )}
+            </motion.div>
+          )}
 
           {user ? (
             <>
@@ -221,22 +192,22 @@ const Header = () => {
             </>
           ) : (
             <>
-            <motion.img
-                  whileTap={{ scale: 0.6 }}
-                  src={Avatar}
-                  className="w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-xl cursor-pointer rounded-full"
-                  alt="userprofile"
-                  referrerPolicy="no-referrer"
-                />
+              <motion.img
+                whileTap={{ scale: 0.6 }}
+                src={Avatar}
+                className="w-10 min-w-[40px] h-10 min-h-[40px] drop-shadow-xl cursor-pointer rounded-full"
+                alt="userprofile"
+                referrerPolicy="no-referrer"
+              />
 
-            <NavLink to={"/login"}>
-              <motion.button
-                {...buttonClick}
-                className="px-4 py-1 rounded-sm shadow-md backdrop-blur-md bg-lightOverlay border border-red-300 cursor-pointer"
-              >
-                Login
-              </motion.button>
-            </NavLink>
+              <NavLink to={"/login"}>
+                <motion.button
+                  {...buttonClick}
+                  className="px-4 py-1 rounded-sm shadow-md backdrop-blur-md bg-lightOverlay border border-red-300 cursor-pointer"
+                >
+                  Login
+                </motion.button>
+              </NavLink>
             </>
           )}
 
