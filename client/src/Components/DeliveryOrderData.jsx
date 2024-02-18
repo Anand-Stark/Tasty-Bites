@@ -6,7 +6,7 @@ import { getAllOrder, updateOrderSts } from "../api";
 import { setOrders } from "../context/actions/ordersActions";
 import { useDispatch } from "react-redux";
 
-const OrderData = ({ index, data, admin }) => {
+const DeliveryOrderData = ({ index, data, admin }) => {
   const dispatch = useDispatch();
 
   const handleClick = (orderId, sts) => {
@@ -20,22 +20,21 @@ const OrderData = ({ index, data, admin }) => {
   return (
     <motion.div
       {...staggerFadeInOut(index)}
-      className="w-full flex flex-col items-start justify-start px-3 py-2 border relative border-gray-300 bg-lightOverlay drop-shadow-md rounded-md gap-2"
+      className="w-full flex flex-col items-start justify-start px-3 py-2 border relative border-gray-300 bg-lightOverlay drop-shadow-md rounded-md gap-4"
     >
       <div className="w-full flex items-center justify-between">
         <h1 className="text-xl text-headingColor font-semibold">Orders</h1>
 
         <div className=" flex items-center gap-4">
-          <p className="flex items-center  text-textColor">
-            Total :{" "} <HiCurrencyRupee className="text-lg text-red-500" />{" "}    
+          <p className="flex items-center gap-1 text-textColor">
+            Total : <HiCurrencyRupee className="text-lg text-red-500" />{" "}
             <span className="text-headingColor font-bold">{data?.total}</span>
           </p>
- 
+
           <p className="px-2 py-[2px] text-sm text-headingColor font-semibold capitalize  rounded-md bg-emerald-400 drop-shadow-md">
-           Amount status : {data?.status}
+            {data?.status}
           </p>
 
-          
           <p
             className={`text-base font-semibold capitalize border border-gray-300 px-2 py-[2px] rounded-md ${
               (data.sts === "On Way" && "text-orange-500 bg-orange-100") ||
@@ -43,38 +42,38 @@ const OrderData = ({ index, data, admin }) => {
               (data.sts === "Delivered" && "text-emerald-500 bg-emerald-100")
             }`}
           >
-           Delivery Status : {data?.sts}
+            {data?.sts}
           </p>
 
-          {/* {admin && (
-            <div className="flex items-center justify-center gap-2">
+          {admin && (
+            <div className="flex items-center justify-start gap-5">
               <p className="text-lg font-semibold text-headingColor">Mark As</p>
 
               <motion.p
                 {...buttonClick}
-                onClick={() => handleClick(data.orderId, "preparing")}
+                onClick={() => handleClick(data.orderId, "Parcel Recieved")}
                 className={`text-orange-500 text-base font-semibold capitalize border border-gray-300 px-2 py-[2px] rounded-md cursor-pointer`}
               >
-                Preparing
+                Parcel Recived
               </motion.p>
 
               <motion.p
                 {...buttonClick}
-                onClick={() => handleClick(data.orderId, "cancelled")}
+                onClick={() => handleClick(data.orderId, "On Way")}
                 className={`text-red-500 text-base font-semibold capitalize border border-gray-300 px-2 py-[2px] rounded-md cursor-pointer`}
               >
-                Cancelled
+                On Way
               </motion.p>
 
               <motion.p
                 {...buttonClick}
-                onClick={() => handleClick(data.orderId, "delivered")}
+                onClick={() => handleClick(data.orderId, "Delivered")}
                 className={`text-emerald-500 text-base font-semibold capitalize border border-gray-300 px-2 py-[2px] rounded-md cursor-pointer`}
               >
                 Delivered
               </motion.p>
             </div>
-          )} */}
+          )}
         </div>
       </div>
 
@@ -136,4 +135,4 @@ const OrderData = ({ index, data, admin }) => {
   );
 };
 
-export default OrderData;
+export default DeliveryOrderData;
