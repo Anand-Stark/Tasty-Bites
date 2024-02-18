@@ -3,14 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts } from "../api";
 import { setAllProducts } from "../context/actions/productActions";
 import { CChart } from "@coreui/react-chartjs";
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+
 
 const DBHome = () => {
   const products = useSelector((state) => state.products);
