@@ -23,6 +23,7 @@ import Contacts from "./conatiner/Contacts";
 import UsersOrder from "./Components/UsersOrder";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Reservation from "./conatiner/Reservation";
 
 
 const App = () => {
@@ -72,7 +73,8 @@ const App = () => {
         <Route path="/checkout-success" element={<CheckOutSuccess/>} />
         <Route path="/about" element={<About/>} />
         <Route path="/contact" element={<Contacts/>} />
-        <Route path="/user-orders" element={<UsersOrder/>} />        
+        <Route path="/user-orders" element={<UsersOrder/>} /> 
+        <Route path="/reservation" element={<Reservation/>}/>     
       </Routes>
        
       {alert?.type && <Alert type={alert?.type} message={alert?.message} />}
