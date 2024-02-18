@@ -93,13 +93,14 @@ const Header = () => {
             >
               Home
             </NavLink>
-            <NavLink
+            {userType === "user" &&  <NavLink
               whileTap={{ scale: 0.8 }}
               className="text-base font-semibold  text-textColor hover:text-headingColor duration-75 transition-all ease-in-out cursor-pointer"
               to={"/reservation"}
             >
               Reservation 
-            </NavLink>
+            </NavLink>}
+           
             <NavLink
               whileTap={{ scale: 0.8 }}
               className="text-base font-semibold  text-textColor hover:text-headingColor duration-75 transition-all ease-in-out cursor-pointer"
