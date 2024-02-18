@@ -13,6 +13,9 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setUserNULL } from "../context/actions/userActions";
 
+// toastify : 
+import { toast } from "react-toastify";
+
 const DbHeader = () => {
    const user = useSelector((state) => state.user);
 
@@ -23,7 +26,8 @@ const DbHeader = () => {
    const firebaseAuth = getAuth(app);
 
    const signOut = () =>{ 
-        firebaseAuth.signOut().then(() => {
+        firebaseAuth.signOut().then(() => {        
+          toast.error('Logged Out Successfully',{position:"top-right"})
             dispacther(setUserNULL())
             navigator("/Login")
         }).catch((error) => {

@@ -7,14 +7,15 @@ import { HiCurrencyRupee, IoBasket } from "../assets/icons";
 import { alertNull, alertSuccess } from "../context/actions/alertActions";
 import { setCartItems } from "../context/actions/cartAction";
 import HoverRating from "./HoverRating";
+import { toast } from "react-toastify";
 
 const AddToCart = ({ data, index }) => {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const sendToCart = () => {
-    dispatch(alertSuccess("Item Added ❤️"));
-    // console.log(data);
+    
+    toast.success('Item Added To Cart',{position:"top-right"})
   
     addNewItemToCart(user?.user_id, data).then((res) => {
       getAllCartItems(user.user_id)
@@ -22,7 +23,6 @@ const AddToCart = ({ data, index }) => {
           console.log(items);
           // Assuming setCartItems is an action creator that dispatches the "SET_CART_ITEMS" action
           dispatch(setCartItems(items));
-          dispatch(alertNull())
         })
         .catch((error) => {
           // Handle any errors that occur while fetching cart items

@@ -20,6 +20,7 @@ import {
 } from "react-icons/md";
 // import { useStateValue } from "../context/StateProvider";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 // importing firebase for authentication :
 // import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
@@ -58,6 +59,7 @@ const Header = () => {
     firebaseAuth
       .signOut()
       .then(() => {
+        toast.success('Signed Out Successfully',{position:"top-right"})
         dispatch(setUserNULL());
         dispatch(setUserTypeNull());
         navigate("/Login", { replace: true });

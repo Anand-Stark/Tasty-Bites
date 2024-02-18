@@ -13,6 +13,7 @@ import { alertNull, alertSuccess } from "../context/actions/alertActions";
 import { clearCartItems, setCartItems } from "../context/actions/cartAction";
 import { setCartOff } from "../context/actions/displayCartAction";
 import { emptycart } from "../assets";
+import { toast } from "react-toastify";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -130,23 +131,23 @@ export const CartItemCard = ({ index, data }) => {
   const dispatch = useDispatch();
 
   const decrementCart = (productId) => {
-    dispatch(alertSuccess("Decreased the cartitem"));
+    // dispatch(alertSuccess("Decreased the cartitem"));
+    toast.success('Decreased the cartitem',{position:"top-center"})
 
     increaseItemQuantity(user?.user_id, productId, "decrement").then((data) => {
       getAllCartItems(user?.user_id).then((items) => {
         dispatch(setCartItems(items));
-        dispatch(alertNull());
       });
     });
   };
 
   const incrementCart = (productId) => {
-    dispatch(alertSuccess("Increased the cartitem"));
+    toast.success('Increased the cartitem',{position:"top-center"})
+
     increaseItemQuantity(user?.user_id, productId, "increment").then((data) => {
       console.log(data);
       getAllCartItems(user?.user_id).then((items) => {
         dispatch(setCartItems(items));
-        dispatch(alertNull());
       });
     });
   };

@@ -47,21 +47,6 @@ const ComboBox = () => {
     setShowDropdown(false);
   };
 
-  // adding to the cart function :
-  // const sendToCart = (data) => {
-  //   dispatch(alertSuccess("Item Added ❤️"));
-
-  //   addNewItemToCart(user?.user_id, data)
-  //     .then((res) => {
-  //       getAllCartItems(user.user_id).then((items) => {
-  //         dispatch(setCartItems(items));
-  //         dispatch(alertNull());
-  //       });
-  //     })
-  //     .catch((err) => {
-  //       console.log("error No Items Found");
-  //     });
-  // };
 
   return (
     <div>

@@ -21,6 +21,8 @@ import Footer2 from "./Components/Footer2";
 import About from "./conatiner/About";
 import Contacts from "./conatiner/Contacts";
 import UsersOrder from "./Components/UsersOrder";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const App = () => {
@@ -68,17 +70,16 @@ const App = () => {
         <Route path="/Login" element={<Login />} />
         <Route path="/dash-board/*" element={<DashBoard/>}/>
         <Route path="/checkout-success" element={<CheckOutSuccess/>} />
-        {/* <Route path="/menu" element={<Menu items = {products}/>} /> */}
         <Route path="/about" element={<About/>} />
         <Route path="/contact" element={<Contacts/>} />
         <Route path="/user-orders" element={<UsersOrder/>} />        
       </Routes>
        
-       {/* <Cities/> */}
-        {/* <Footer2/> */}
-            {/* <Alert type={"success"} message={"Logged in successfully"} /> */}
       {alert?.type && <Alert type={alert?.type} message={alert?.message} />}
+      <ToastContainer/>
     </div>
+
+
   );
 };
 

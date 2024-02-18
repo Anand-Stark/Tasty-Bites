@@ -7,31 +7,17 @@ import { HiCurrencyRupee, IoBasket } from "../assets/icons";
 import { alertNull, alertSuccess } from "../context/actions/alertActions";
 import { setCartItems } from "../context/actions/cartAction";
 import HoverRating from "./HoverRating";
+import { toast } from "react-toastify";
 
 const SliderCard = ({ data, index }) => {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
- 
-
-  // const sendToCart = () => {
-  //   dispatch(alertSuccess("Added to the cart"));
-  //   console.log(user);
-  //   addNewItemToCart(user.user_id, data).then((res) => {
-  //     // console.log(res);
-  //     getAllCartItems(user.user_id).then((items) => {
-  //       // console.log(items);
-  //       dispatch(setCartItems(items));   
-  //     });
-  //     setInterval(() => {
-  //       dispatch(alertNull());
-  //     }, 3000);
-  //   });
-  // };
-
   const sendToCart = () => {
-    dispatch(alertSuccess("Item Added ❤️"));
+    
     // console.log(data);
+
+    toast.success('Item Added To Cart',{position:"top-right",theme:"colored"})
   
     addNewItemToCart(user?.user_id, data).then((res) => {
       // Assuming addNewItemToCart and getAllCartItems are asynchronous functions that return promises

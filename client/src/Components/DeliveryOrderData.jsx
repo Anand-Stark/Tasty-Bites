@@ -5,12 +5,16 @@ import { buttonClick, staggerFadeInOut } from "../animations";
 import { getAllOrder, updateOrderSts } from "../api";
 import { setOrders } from "../context/actions/ordersActions";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const DeliveryOrderData = ({ index, data, admin }) => {
   const dispatch = useDispatch();
 
   const handleClick = (orderId, sts) => {
     updateOrderSts(orderId, sts).then((response) => {
+      
+      // using toast : 
+      toast.success(`${orderId} is ${sts}`)
       getAllOrder().then((data) => {
         dispatch(setOrders(data));
       });

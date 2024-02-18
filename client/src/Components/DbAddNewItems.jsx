@@ -26,6 +26,9 @@ import { addNewProduct } from "../api";
 import { getAllProducts } from "../api";
 import { setAllProducts } from "../context/actions/productActions";
 
+// taostify :
+import { toast } from "react-toastify";
+
 const DbAddNewItems = () => {
   const [itemName, setitemName] = useState("");
   const [category, setCategory] = useState(null);
@@ -51,20 +54,14 @@ const DbAddNewItems = () => {
         setProgress((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
       },
       (error) => {
-        dispatch(alertDanger(`Error : ${error}`));
-        setTimeout(() => {
-          dispatch(alertNull());
-        }, 3000);
+        toast.danger('Invalid',{position:"top-right"})
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
           setImageDownloadURL(downloadURL);
           setIsLoading(false);
           setProgress(null);
-          dispatch(alertSuccess("Image Uploaded to the cloud"));
-          setTimeout(() => {
-            dispatch(alertNull());
-          }, 2000);
+          toast.success('Signed up successfully',{position:"top-right"})
         });
       }
     );
@@ -79,10 +76,7 @@ const DbAddNewItems = () => {
     deleteObject(deleteRef).then(() => {
       setImageDownloadURL(null);
       setIsLoading(false);
-      dispatch(alertDanger("Image Deleted from the cloud"));
-      setTimeout(() => {
-        dispatch(alertNull());
-      }, 2000);
+      toast.error('Image Deleted Successfully',{position:"top-right"})
     });
   };
 
@@ -94,15 +88,13 @@ const DbAddNewItems = () => {
       prod_image: imageDownloadURL, 
     };
     addNewProduct(data).then((res) => {
-       console.log(res);
-       dispatch(alertSuccess("Product Added Successfully"))
-       setTimeout(() => {
-        dispatch(alertNull());
-        setPrice("")
-        setImageDownloadURL(null)
-        setitemName("")
-        setCategory(null)
-       }, 2000);
+       
+      toast.success('Product Added Successfully',{position:"top-center"})
+      setPrice("")
+      setImageDownloadURL(null)
+      setitemName("")
+      setCategory(null) 
+      
     })
     .catch(err => { 
       console.log(err)

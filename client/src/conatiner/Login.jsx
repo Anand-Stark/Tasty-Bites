@@ -35,6 +35,9 @@ import {
   alertNull,
 } from "../context/actions/alertActions";
 import { setUserType } from "../context/actions/userTypeActions";
+import { toast } from "react-toastify";
+
+// importing toast from 
 
 const Login = () => {
   // using usestate to get the values :
@@ -75,6 +78,7 @@ const Login = () => {
 
                 addUserType(newData.user_id,newData.type)
                 .then((res) => {
+                   toast.success('Signed In Successfully',{position:"top-right"})
                    console.log("User Type Added to Firebase");
                    dispatch(setUserDetails(data));
                    navi("/main", { replace: true });
@@ -99,16 +103,12 @@ const Login = () => {
 
   const signUpFirebase = () => {
     if (userEmail === "" || isPass === "" || isConfirmedPass === "") {
-      dispatch(alertInfo("Email or Password Field is Missing"));
-      setTimeout(() => {
-        dispatch(alertNull());
-      }, 2000);
+      toast.warning('Email or Password Field is Missing',{position:"top-right"})
     } else {
       if (isPass !== isConfirmedPass) {
-        dispatch(alertWarning("Passwords do not match"));
-        setTimeout(() => {
-          dispatch(alertNull());
-        }, 2000);
+
+        toast.warning('Password is Missing',{position:"top-right"})
+
       } else {
         const auth = getAuth(app);
 
@@ -125,8 +125,9 @@ const Login = () => {
 
                     addUserType(newData.user_id,newData.type)
                     .then((res) => {
-                      //  console.log("User Type Added");
-                      //  dispatch(setUserDetails(data));
+                       
+                      toast.success('Signed up successfully',{position:"top-right"})
+
                        setuserEmail("");
                        setisConfirmedPass("");
                        setisPass("");
@@ -150,31 +151,33 @@ const Login = () => {
   // sign in using email and password :
   const signInFirebase = () => {
     if (isPass === "" || userEmail === "") {
-      dispatch(alertInfo("Email or Password Field is Missing"));
-      setTimeout(() => {
-        dispatch(alertNull());
-      }, 2000);
+      toast.warning('Email or Password Field is Missing',{position:"top-right"})
     } else {
       const auth = getAuth(app);
       signInWithEmailAndPassword(auth, userEmail, isPass)
         .then((res) => {
+          if(!res){
+            toast.warning('Credentials do not exist',{position:"top-right"})
+          }
           auth.onAuthStateChanged((cred) => {
             if (cred) {
               cred.getIdToken().then((token) => {
 
-                validateToken(token).then((data) => {                
+                validateToken(token).then((data) => {    
+                  
+                  toast.success('Sign In Successful',{position:"top-right"})
+                  
                   dispatch(setUserDetails(data));
                   setuserEmail("");
                   setisPass("");
                   navi("/", { replace: true });
                 });
               });
-            } else {
-              dispatch(alertWarning("Credentials do not exist"));
-            }
+            } 
           });
         })
         .catch((error) => {
+          toast.warning('Credentials do not exist',{position:"top-right"})
           const errorCode = error.code;
           const errorMessage = error.message;
         });
@@ -300,14 +303,6 @@ const Login = () => {
             </motion.button>
           )}
         </div>
-
-        {/* <div className="flex items-center justify-between gap-14 py-2">
-          <div className="w-24 h-[1px] bg-white"></div>
-          <p className="text-white">Or</p>
-          <div className="w-24 h-[1px] bg-white"></div>
-        </div> */}
-
-        {/* sign in with Google */}
 
             <div className="flex items-center justify-between gap-14 py-2">
               <div className="w-24 h-[1px] bg-white"></div>
