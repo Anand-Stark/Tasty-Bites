@@ -27,7 +27,7 @@ const DbHeader = () => {
 
    const signOut = () =>{ 
         firebaseAuth.signOut().then(() => {        
-          toast.error('Logged Out Successfully',{position:"top-right"})
+          toast.success('Logged Out Successfully',{position:"top-right"})
             dispacther(setUserNULL())
             navigator("/Login")
         }).catch((error) => {

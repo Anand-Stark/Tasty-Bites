@@ -23,3 +23,4 @@ export { default as CheckOutSuccess } from "./CheckOutSuccess";
 export {default as DeliveryOrder} from "./DeliveryOrder"
 export {default as DeliveryMapSlider} from "./DeliveryMapSlider"
 export {default as MapView} from "./MapView"
+export {default as Reserve} from "./Reserve"
