@@ -193,6 +193,41 @@ exports.getUserInfo = async(req,res) => {
 
 }
 
+exports.postUserReservation = async (req,res) => { 
+    const userId = req.params.userId;
+
+    // console.log(userId);
+    
+    try{
+
+      const data = {
+         name: req.body.name,
+         tableSize:req.body.tableSize,
+         date:req.body.date,
+         startTimeHours:req.body.startTimeHours,
+         startTimeMinute:req.body.startTimeMinutes,
+         startTimePeriod:req.body.startTimePeriod,
+         endTimeHours:req.body.endTimeHours,
+         endTimeMinutes:req.body.endTimeMinutes,
+         endTimePeriod:req.body.endTimePeriod,
+         description:req.body.description
+      }
+
+      console.log(data);
+
+      const response = await db.collection("reservation")
+                               .doc(`${userId}`)
+                               .set(data)
+      
+      return res.status(200).send({success:true, data:response})                        
+
+    }
+    catch(err) { 
+        console.log(err);
+        res.status(400).send({success:false,msg:`Error is ${err}`})
+    }
+}
+
 exports.addToCart =  async (req, res) => {
   const userId = req.params.userId;
   const productId = req.body.productId;

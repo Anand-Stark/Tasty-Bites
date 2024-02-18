@@ -15,6 +15,8 @@ routes.get('/user-type/:userId',userControl.getUserType)
 
 routes.get('/user-info/:userId',userControl.getUserInfo)
 
+routes.post('/user-reservation/:userId',userControl.postUserReservation)
+
 module.exports = routes;
 
 

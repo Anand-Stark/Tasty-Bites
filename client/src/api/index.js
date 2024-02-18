@@ -49,6 +49,17 @@ export const deleteProduct = async (productId) =>{
           }
 }
 
+export const addUserReservation = async (userId,data) => {
+     try{ 
+          const res = await axios.post(`${baseUrl}/api/user/user-reservation/${userId}`,{...data})
+
+          return res.data.data
+     }
+     catch(e){ 
+         return null
+     }
+}
+
 export const getAllUsers = async () => {
   try {
     const res = await axios.get(`${baseUrl}/api/user/all`);

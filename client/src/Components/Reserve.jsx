@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import Back3 from "../assets/img/back-3.jpg";
+import { addUserReservation } from "../api";
+import { useSelector } from "react-redux";
 
 const Reserve = () => {
+  const user  = useSelector((state) => state.user)
+
+  
+
   const [formData, setFormData] = useState({
     name: "",
     tableSize: "",
@@ -35,6 +41,10 @@ const Reserve = () => {
     console.log(formData); // Log the form data
 
     toast.success("Reservation Request Successful", { position: "top-right" });
+
+    if(user && user.uid){
+      addUserReservation(user.uid,formData)
+    }
 
     setFormData({
       name: "",
