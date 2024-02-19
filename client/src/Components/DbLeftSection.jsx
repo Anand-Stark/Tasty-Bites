@@ -77,10 +77,20 @@ const DbLeftSection = () => {
         >
           Delivery Agents
         </NavLink>
+        <NavLink
+          to={"/dash-board/reservation-list"}
+          className={({ isActive }) =>
+            isActive
+              ? `${isActiveStyles} px-4 py-2 border-l-4  border-red-500`
+              : isNotActiveStyles
+          }
+        >
+          Reservation List
+        </NavLink>
       </ul>
       {/* help center card here : - > */}
        
-      <div className="w-full text-sm items-center justify-center flex h-225 mt-auto px-2 py-1 mb-1 shadow-lg">
+      <div className="w-full text-sm items-center justify-center flex h-225 mt-auto px-2 py-3 mb-1 shadow-lg">
         <div className="w-full h-full rounded-md bg-gradient-to-r from-yellow-500 via-orange-500 to-orange-600  flex items-center justify-center flex-col gap-3 px-3 py-3">
         <hr/>
           <div className="w-12 h-12 borde bg-white rounded-full flex items-center justify-center">

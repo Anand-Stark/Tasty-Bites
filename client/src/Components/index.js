@@ -10,6 +10,7 @@ export {default as DbOrders} from "./DbOrders"
 export {default as DbAddNewItems} from "./DbAddNewItems"
 export {default as DbUsers} from "./DbUsers"
 export {default as DbTable} from "./DbTable"
+export {default as DbReservationList} from "./DbReservationList"
 
 // export { default as Spinner } from "./Spinner";
 export {default as HomeSLider} from "./HomeSlider"

@@ -1,16 +1,14 @@
 import React from "react";
 import { DbLeftSection, DbRightSection } from "../Components";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getAllUsers } from "../api";
 import { setAllUserDetails } from "../context/actions/allUsersAction";
 
 const DashBoard = () => {
-  
   const allUsers = useSelector((state) => state.allUsers);
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user)
- 
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     if (!allUsers) {
@@ -21,11 +19,16 @@ const DashBoard = () => {
     }
   }, []);
 
-  return <div className="w-screen h-screen flex items-center bg-white">
-     
-     <DbLeftSection/>
-     <DbRightSection/>
-  </div>;
+  return (
+    <div className="w-screen h-screen flex items-center bg-white">
+      {allUsers && (
+        <>
+          <DbLeftSection />
+          <DbRightSection />
+        </>
+      )}
+    </div>
+  );
 };
 
 export default DashBoard;

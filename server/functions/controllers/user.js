@@ -228,6 +228,31 @@ exports.postUserReservation = async (req,res) => {
     }
 }
 
+exports.getUserReservation = async (req,res) =>{ 
+
+    try{
+      
+      let query = db.collection("reservation");
+
+      let response = [];
+
+      await query.get().then((querysnap) => {
+            let docs = querysnap.docs;
+
+            docs.map((doc) => {
+                response.push({...doc.data()})
+            })
+
+            return response;
+      })
+
+      return res.status(200).send({success:true, data:response})
+    }
+    catch(err) {
+        res.status(400).send({success:false,msg:`Error is ${err}`})
+    }
+}
+
 exports.addToCart =  async (req, res) => {
   const userId = req.params.userId;
   const productId = req.body.productId;
