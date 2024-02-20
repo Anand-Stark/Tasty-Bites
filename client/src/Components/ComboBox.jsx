@@ -50,6 +50,8 @@ const ComboBox = () => {
 
   return (
     <div>
+    {showDropdown && searchItem && <div className="fixed w-full h-full top-16 left-0 bg-black opacity-70 z-10" />}
+    
       <div className="px-10 py-1 relative font-bold" onClick={handleInputBlur}>
         <input
           type="text"
@@ -60,7 +62,7 @@ const ComboBox = () => {
           onChange={handleInputChange}
         />
         {showDropdown && (
-          <ul className="absolute top-full left-4 w-[90%] bg-white border border-gray-300 rounded-lg shadow-lg">
+          <ul className="absolute top-full left-4 w-[90%] bg-white border border-gray-300 rounded-lg z-20 shadow-lg">
           {filteredFoodItems.map((item, index) => (
             <li
               key={index}
