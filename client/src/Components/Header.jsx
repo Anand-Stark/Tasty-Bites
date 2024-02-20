@@ -78,7 +78,7 @@ const Header = () => {
           <p className="text-headingColor text-xl font-bold">TastyBites</p>
         </Link>
 
-        {userType === "user" && <ComboBox />}
+        {(userType === "user" || !userType) && <ComboBox />}
 
         <div className="flex justify-center items-center ml-auto gap-4">
           <motion.ul
@@ -93,7 +93,7 @@ const Header = () => {
             >
               Home
             </NavLink>
-            {userType === "user" &&  <NavLink
+            {(userType === "user" || !userType) &&  <NavLink
               whileTap={{ scale: 0.8 }}
               className="text-base font-semibold  text-textColor hover:text-headingColor duration-75 transition-all ease-in-out cursor-pointer"
               to={"/reservation"}

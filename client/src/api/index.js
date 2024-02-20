@@ -72,6 +72,20 @@ export const getAllReservations = async () => {
      }
 }
 
+export const updateReservationStatus = async (reservationID,sts) => {
+     try{
+       const res = await axios.post(`${baseUrl}/api/user/update-reservation-status/${reservationID}`,
+       null,
+       {params:{sts:sts}}
+       )
+
+       return res.data.data
+     }
+     catch(err){ 
+        return null
+     }
+}
+
 export const getAllUsers = async () => {
   try {
     const res = await axios.get(`${baseUrl}/api/user/all`);
