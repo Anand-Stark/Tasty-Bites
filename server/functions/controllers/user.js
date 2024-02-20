@@ -5,6 +5,7 @@ const db = admin.firestore();
 db.settings({ ignoreUndefinedProperties: true });
 let data = [];
 const stripe = require("stripe")(process.env.STRIPE_KEY);
+const {v4: uuid4} = require('uuid')
 
 exports.jwtVerification = async (req, res) => {
   if (!req.headers.authorization) {
@@ -199,8 +200,11 @@ exports.postUserReservation = async (req,res) => {
     // console.log(userId);
     
     try{
+      const reservationId = uuid4()
 
       const data = {
+         userId:userId,
+         reservationId:reservationId,
          name: req.body.name,
          tableSize:req.body.tableSize,
          date:req.body.date,
@@ -210,13 +214,14 @@ exports.postUserReservation = async (req,res) => {
          endTimeHours:req.body.endTimeHours,
          endTimeMinutes:req.body.endTimeMinutes,
          endTimePeriod:req.body.endTimePeriod,
-         description:req.body.description
+         description:req.body.description,
+         sts:"Pending"
       }
 
       console.log(data);
 
       const response = await db.collection("reservation")
-                               .doc(`${userId}`)
+                               .doc(`${reservationId}`)
                                .set(data)
       
       return res.status(200).send({success:true, data:response})                        
@@ -250,6 +255,22 @@ exports.getUserReservation = async (req,res) =>{
     }
     catch(err) {
         res.status(400).send({success:false,msg:`Error is ${err}`})
+    }
+}
+
+exports.updateReservation = async(req,res) => {
+    const sts = req.query.sts;
+    const reservationId = req.params.reservationId
+    
+    try{
+      const updRes = await db.collection("reservation")
+                          .doc(`/${reservationId}/`)
+                          .update( {sts} )
+
+      return res.status(200).send({success:true,data:updRes})
+    }
+    catch(err){ 
+       return res.status(400).send({success:false,Error:`Error is ${err}`})
     }
 }
 
