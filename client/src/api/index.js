@@ -60,6 +60,18 @@ export const addUserReservation = async (userId,data) => {
      }
 }
 
+export const getAllReservations = async () => {
+     try{
+        const res = await axios.get(`${baseUrl}/api/user/user-reservation`)
+        
+        return res.data.data
+
+     }
+     catch(err){ 
+        console.log(err);
+     }
+}
+
 export const getAllUsers = async () => {
   try {
     const res = await axios.get(`${baseUrl}/api/user/all`);
@@ -136,6 +148,8 @@ export const getAllCartItems = async (user_id) => {
     return null;
   }
 };
+
+
 
 // cart increment
 export const increaseItemQuantity = async (user_id, productId, type) => {
