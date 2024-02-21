@@ -15,6 +15,7 @@ import { setCartOff } from "../context/actions/displayCartAction";
 import { emptycart } from "../assets";
 import { toast } from "react-toastify";
 
+
 const Cart = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
@@ -33,11 +34,19 @@ const Cart = () => {
   }, [cart]);
 
   const handleCheckOut = () => {
+    
     const data = {
       user: user,
       cart: cart,
       total: total,
     };
+
+    console.log(data);
+
+    toast.info('Items Processed For Checkout',{position:"top-right"})
+
+
+
     axios
       .post(`${baseUrl}/api/products/create-checkout-session`, { data })
       .then((res) => {

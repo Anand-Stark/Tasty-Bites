@@ -396,11 +396,13 @@ exports.getCartItems = async (req, res) => {
 exports.stripePayment = async (req, res) => {
   const customer = await stripe.customers.create({
     metadata: {
-      user_id: req.body.data.user.user_id,
+      user_id: req.body.data.user.uid,
       cart: JSON.stringify(req.body.data.cart),
       total: req.body.data.total,
-    },
+    },  
   });
+
+  // console.log(customer);
 
   const line_items = req.body.data.cart.map((item) => {
     return {
@@ -418,6 +420,8 @@ exports.stripePayment = async (req, res) => {
       quantity: item.quantity,
     };
   });
+
+  // console.log(line_items);
 
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
@@ -487,8 +491,14 @@ exports.webHook = (req, res) => {
 }
 
 const createOrder = async (customer, intent, res) => {
-  console.log("Hello , your order is placed");
+  // console.log("Hello , your order is placed");
   // console.log("Inside the orders");
+
+  console.log(customer);
+  console.log(intent);
+  // console.log();
+
+
   try {
     const orderId = Date.now();
     const data = {
