@@ -9,6 +9,7 @@ import ordersReducer from "./ordersReducer"
 import isSearch from "./isSearch"
 import userTypeReducer from "./userTypeReducer"
 import reservationReducer from "./reservationReducer"
+import profileReducer from "./profileReducer"
 
 const myReducers = combineReducers({
     user:userReducer,
@@ -20,7 +21,8 @@ const myReducers = combineReducers({
     orders: ordersReducer,
     searchItem : isSearch ,
     userType : userTypeReducer,
-    reservationList : reservationReducer
+    reservationList : reservationReducer,
+    profile : profileReducer
 })
 
 export default myReducers

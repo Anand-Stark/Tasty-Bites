@@ -21,6 +21,10 @@ routes.get('/user-reservation',userControl.getUserReservation)
 
 routes.post('/update-reservation-status/:reservationId',userControl.updateReservation)
 
+routes.post('/user-profile/:userId',userControl.postUserInformation)
+
+routes.get('/user-profile/:userId',userControl.getUserProfileInformation)
+
 module.exports = routes;
 
 

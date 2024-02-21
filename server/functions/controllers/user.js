@@ -274,6 +274,49 @@ exports.updateReservation = async(req,res) => {
     }
 }
 
+exports.postUserInformation = async (req,res) =>{ 
+    try{
+      const userId = req.params.userId;
+
+      const data = {
+           userName:req.body.userName,
+           userEmail:req.body.userEmail,
+           phoneNumber:req.body.phoneNumber,
+           address:req.body.address
+      }
+
+      console.log(data);
+
+      const response = await db.collection("profile")
+                                .doc(`${userId}`)
+                                .set(data)
+
+      return res.status(200).send({success:true,data:response})
+
+    }
+    catch{
+      return res.status(400).send({success:false})
+    }
+}
+
+exports.getUserProfileInformation = async (req,res) => { 
+    try{
+      const userId = req.params.userId
+
+      // console.log(userId);
+      
+      const response = await db.collection("profile")
+                                .doc(`/${userId}/`)
+                                 .get()
+
+      return res.status(200).send({success:true,data:response})
+      
+    }
+    catch(err){
+      res.status(400).send({success:false,Error:`${err}`})
+    }
+}
+
 exports.addToCart =  async (req, res) => {
   const userId = req.params.userId;
   const productId = req.body.productId;

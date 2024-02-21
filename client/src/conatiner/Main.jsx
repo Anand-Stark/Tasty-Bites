@@ -69,7 +69,18 @@ const Main = () => {
             <Home />
             <HomeSLider />
             <FilterSection />
+         
           </div>
+
+          <div className=" w-full px-24 flex items-center justify-between ">
+            <div className="flex flex-col items-start justify-start gap-1">
+              <p className="text-2xl text-headingColor font-bold">
+                Reservations
+              </p>
+              <div className="w-48 h-1 rounded-md bg-orange-500"></div>
+            </div>
+          </div>
+
 
           <div className="w-full flex justify-around items-center mb-8">
             <div className="w-1/2 flex flex-col flex-wrap justify-center items-center gap-8">
@@ -93,7 +104,7 @@ const Main = () => {
             </div>
             <img
               src={Image}
-              alt="Reservation image"
+              alt="Reservation"
               className="aspect-square w-1/4"
             />
           </div>

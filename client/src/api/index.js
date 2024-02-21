@@ -86,6 +86,32 @@ export const updateReservationStatus = async (reservationID,sts) => {
      }
 }
 
+export const postProfileInfo = async (userId,data) => {
+     try{
+
+      const res = await axios.post(`${baseUrl}/api/user/user-profile/${userId}`,
+       {...data}
+       )
+
+       return res.data.data
+
+     }
+     catch(err){
+        return null
+     }
+}
+
+export const getProfileInfo = async(userId) => {
+    try{
+      const res = await axios.get(`${baseUrl}/api/user/user-profile/${userId}`)
+
+      return res.data.data
+    }
+    catch(err){
+      console.log(err);
+    }
+}
+
 export const getAllUsers = async () => {
   try {
     const res = await axios.get(`${baseUrl}/api/user/all`);

@@ -1,173 +1,61 @@
-// import React, { useState } from "react";
-// import { useSelector } from "react-redux";
 
-// const ProfileHome = () => {
-//   const [userName, setUserName] = useState("");
-//   const [userEmail, setUserEmail] = useState("");
-//   const [phoneNumber, setPhoneNumber] = useState("");
-//   const [address, setAddress] = useState("");
-//   const [numOrders, setNumOrders] = useState(10);
-//   const [profilePhoto, setProfilePhoto] = useState("default-profile-photo.jpg");
-//   const [submitted, setSubmitted] = useState(false);
-
-//   const handleChangeProfilePhoto = () => {
-//     setProfilePhoto("new-profile-photo.jpg");
-//   };
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     // Logic to handle form submission
-//     setSubmitted(true);
-//   };
-
-//   const user = useSelector((state) => state.user);
-
-//   return (
-//     <>
-//       {user && (
-//         <div className="h-[90%] rounded-lg bg-gradient-to-bl from-orange-400 to-orange-600 flex py-14 items-center mt-10 justify-center">
-//           <div className="w-[80%] bg-white p-8 rounded-lg shadow-lg">
-//             <div className={`grid grid-cols-${setSubmitted ? 2 : 1} gap-4`}>
-//               <div>
-//                 <h1 className="text-2xl font-semibold mb-4">
-//                   Complete Your Profile
-//                 </h1>
-//                 <form onSubmit={handleSubmit}>
-//                   <div className="mb-4">
-//                     <label htmlFor="username" className="block text-gray-700">
-//                       Username:
-//                     </label>
-//                     <input
-//                       required
-//                       type="text"
-//                       id="username"
-//                       value={user.name}
-//                       onChange={(e) => setUserName(e.target.value)}
-//                       className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-//                     />
-//                   </div>
-//                   <div className="mb-4">
-//                     <label htmlFor="email" className="block text-gray-700">
-//                       Email:
-//                     </label>
-//                     <input
-//                       required
-//                       type="email"
-//                       id="email"
-//                       value={user.email}
-//                       onChange={(e) => setUserEmail(e.target.value)}
-//                       className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-//                     />
-//                   </div>
-//                   <div className="mb-4">
-//                     <label htmlFor="phone" className="block text-gray-700">
-//                       Phone Number:
-//                     </label>
-//                     <input
-//                       required
-//                       type="tel"
-//                       id="phone"
-//                       value={phoneNumber}
-//                       onChange={(e) => setPhoneNumber(e.target.value)}
-//                       className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-//                     />
-//                   </div>
-//                   <div className="mb-4">
-//                     <label htmlFor="address" className="block text-gray-700">
-//                       Address:
-//                     </label>
-//                     <input
-//                       required
-//                       type="text"
-//                       id="address"
-//                       value={address}
-//                       onChange={(e) => setAddress(e.target.value)}
-//                       className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-//                     />
-//                   </div>
-//                   {/* <div className="mb-4">
-//               <label htmlFor="country" className="block text-gray-700">Country:</label>
-//               <input type="text" id="country" value={country} onChange={(e) => setCountry(e.target.value)} className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500" />
-//             </div> */}
-//                   <button
-//                     type="submit"
-//                     className=" bg-gradient-to-bl from-orange-400 to-orange-600 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-//                   >
-//                     Update Profile
-//                   </button>
-//                 </form>
-//               </div>
-
-//               <div>
-//                 <div>
-//                   <h1 className="text-2xl font-semibold mb-4">Your Details</h1>
-//                   <p>
-//                     <span className="font-semibold">Username:</span> {user.name}
-//                   </p>
-//                   <p>
-//                     <span className="font-semibold">Email:</span> {user.email}
-//                   </p>
-//                   {submitted && (
-//                     <>
-//                       <p>
-//                         <span className="font-semibold">Phone Number:</span>{" "}
-//                         {phoneNumber}
-//                       </p>
-//                       <p>
-//                         <span className="font-semibold">Address:</span>{" "}
-//                         {address}
-//                       </p>
-//                     </>
-//                   )}
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       )}
-//     </>
-//   );
-// };
-
-// export default ProfileHome;
-
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getProfileInfo, postProfileInfo } from "../api";
+import { setUserProfile } from "../context/actions/profileActions";
+import { setReservation } from "../context/actions/reservationActions";
+import { toast } from "react-toastify";
 
 const ProfileHome = () => {
-  const [userName, setUserName] = useState("");
-  const [userEmail, setUserEmail] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [address, setAddress] = useState("");
+  const user = useSelector((state) => state.user);
+  const profile = useSelector((state) => state.profile)
+
+  const [userName, setUserName] = useState(user.name);
+  const [userEmail, setUserEmail] = useState(user.email);
+  const [phoneNumber, setPhoneNumber] = useState(profile?.phoneNumber.stringValue);
+  const [address, setAddress] = useState(profile?.address.stringValue);
   const [numOrders, setNumOrders] = useState(10);
-  const [profilePhoto, setProfilePhoto] = useState("default-profile-photo.jpg");
+  // const [profilePhoto, setProfilePhoto] = useState("default-profile-photo.jpg");
   const [submitted, setSubmitted] = useState(false);
-
-  const handleChangeProfilePhoto = (e) => {
-    // Logic to handle profile photo upload
-    const file = e.target.files[0];
-    // Assuming a function to upload the photo and get its URL
-    uploadProfilePhoto(file);
-  };
-
-  const uploadProfilePhoto = (file) => {
-    // Simulate photo upload and get the URL
-    const photoURL = URL.createObjectURL(file);
-    setProfilePhoto(photoURL);
-  };
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    const data = {
+       userName:userName,
+       userEmail:userEmail,
+       phoneNumber:phoneNumber,
+       address:address
+    }
+
+    if(user){
+      postProfileInfo(user.uid,data)
+    }
+
+    toast.success('Profile Updated Successfully',{position:"top-right",theme:"colored"})
+
     // Logic to handle form submission
     setSubmitted(true);
   };
 
-  const user = useSelector((state) => state.user);
+
+  useEffect(() =>{     
+       
+          getProfileInfo(user.uid)
+          .then((res) => {          
+             console.log(res._fieldsProto.address.stringValue);
+             dispatch(setUserProfile(res._fieldsProto))
+             setAddress(res._fieldsProto.address.stringValue)
+             setPhoneNumber(res._fieldsProto.phoneNumber.stringValue)
+          })
+             
+  }, [])
 
   return (
     <>
       {user && (
-        <div className="h-full rounded-lg bg-gradient-to-bl from-orange-400 to-orange-600 flex py-14 items-center mt-10 justify-center">
+        <div className="h-[95%] rounded-lg bg-gradient-to-bl from-orange-400 to-orange-600 flex py-14 items-center mt-2 justify-center">
           <div className="w-[80%] bg-white p-8 rounded-lg shadow-lg">
             <div className={`grid grid-cols-2 gap-4`}>
               <div>
@@ -183,7 +71,7 @@ const ProfileHome = () => {
                       required
                       type="text"
                       id="username"
-                      value={user.name}
+                      value={userName}
                       onChange={(e) => setUserName(e.target.value)}
                       className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
                     />
@@ -196,7 +84,7 @@ const ProfileHome = () => {
                       required
                       type="email"
                       id="email"
-                      value={user.email}
+                      value={userEmail}
                       onChange={(e) => setUserEmail(e.target.value)}
                       className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
                     />
@@ -228,7 +116,7 @@ const ProfileHome = () => {
                     />
                   </div>
                   {/* Profile photo upload section */}
-                  <div className="mb-4">
+                  {/* <div className="mb-4">
                     <label htmlFor="profilePhoto" className="block text-gray-700">
                       Profile Photo:
                     </label>
@@ -239,7 +127,7 @@ const ProfileHome = () => {
                       onChange={handleChangeProfilePhoto}
                       className="w-full border rounded-md focus:outline-none focus:border-blue-500"
                     />
-                  </div>
+                  </div> */}
                   <button
                     type="submit"
                     className=" bg-gradient-to-bl from-orange-400 to-orange-600 text-white px-4 py-2 rounded-md hover:bg-blue-600"
@@ -290,3 +178,4 @@ const ProfileHome = () => {
 };
 
 export default ProfileHome;
+
