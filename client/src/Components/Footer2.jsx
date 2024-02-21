@@ -1,99 +1,129 @@
-import React from 'react';
-import { FaLocationDot, FaCircleDollarToSlot, FaBowlFood, FaApple, FaGooglePlay } from 'react-icons/fa6';
-import { FaCheckCircle, FaShoppingCart, FaStar, FaUserCircle } from 'react-icons/fa';
+import React from "react";
+import {
+  FaGooglePlay,
+  FaInstagram,
+  FaTwitter,
+  FaYoutube,
+} from "react-icons/fa6";
+
 
 const Footer2 = () => {
   return (
-    <footer className=" text-gray-600 body-font py-4 w-full bg-gradient-to-r from-yellow-500 via-orange-500 to-orange-600">
-      <div className="container px-10  mx-auto flex flex-wrap flex-col md:flex-row ">
-        <div className="flex-shrink-0 w-full md:w-64 text-center md:text-left mb-6 md:mb-0">
-          <h2 className="title-font font-medium text-gray-900 tracking-widest text-2xl mb-3">
-            Connect With Us!
+    <footer className="flex flex-col justify-center items-center text-gray-700 body-font py-4 w-full bg-gradient-to-r from-yellow-500 via-orange-500 to-orange-600">
+      
+      <div className="w-full flex justify-around items-center">
+        {/* 1st div */}
+
+        <div className="flex flex-col">
+          <h2 className="title-font font-medium text-gray-900 tracking-widest text-2xl bold mb-3">
+            Connect With Us !
           </h2>
-          <div className="flex justify-center md:justify-start space-x-4">
-            <a href="#" className="text-gray-500 hover:text-gray-700">
-              <FaLocationDot className="w-5 h-5" />
+          <div className="flex justify-between items-center md:justify-start space-x-4 w-full gap-10">
+            <a href="https://play.google.com/store/games?hl=en_IN&gl=US" target="_blank" className="text-gray-500 hover:text-gray-700">
+              <FaGooglePlay className="w-5 h-5" />
             </a>
-            <a href="#" className="text-gray-500 hover:text-gray-700">
-              <FaCircleDollarToSlot className="w-5 h-5" />
+            <a href="https://www.instagram.com/zeeshan_251" target="_blank" className="text-gray-500 hover:text-gray-700">
+              <FaInstagram className="w-5 h-5" />
             </a>
-            <a href="#" className="text-gray-500 hover:text-gray-700">
-              <FaBowlFood className="w-5 h-5" />
+            <a href="https://twitter.com/?lang=en" target="_blank" className="text-gray-500 hover:text-gray-700">
+              <FaTwitter className="w-5 h-5" />
             </a>
-            <a href="#" className="text-gray-500 hover:text-gray-700">
-              <FaApple className="w-5 h-5" />
+            <a href="https://www.youtube.com/" target="_blank" className="text-gray-500 hover:text-gray-700">
+              <FaYoutube className="w-5 h-5" />
             </a>
           </div>
         </div>
 
-        <div className="flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center ">
-          <div className="lg:w-1/4 md:w-1/2 w-full px-4 text-center mb-8 md:mb-0">
-            <h2 className="title-font font-medium text-gray-900 tracking-widest text-1xl mb-3">Service</h2>
-            <nav className="list-none mb-10">
-              <li>
-                <a className="text-gray-600 hover:text-gray-900">Online Order</a>
-              </li>
-              <li>
-                <a className="text-gray-600 hover:text-gray-900">Pre-Reservation</a>
-              </li>
-              <li>
-                <a className="text-gray-600 hover:text-gray-900">24/7 Services</a>
-              </li>
-            </nav>
-          </div>
+        {/* 2nd div */}
 
-          <div className="lg:w-1/4 md:w-1/2 w-full px-4 text-center mb-8 md:mb-0">
-            <h2 className="title-font font-medium text-gray-900 tracking-widest text-1xl mb-3">Quick Links</h2>
-            <nav className="list-none mb-10">
-              <li>
-                <a className="text-gray-600 hover:text-gray-900">Restaurants</a>
-              </li>
-              <li>
-                <a className="text-gray-600 hover:text-gray-900">Feed back</a>
-              </li>
-              <li>
-                <a className="text-gray-600 hover:text-gray-900">Blogs</a>
-              </li>
-              <li>
-                <a className="text-gray-600 hover:text-gray-900">Order Foods</a>
-              </li>
-            </nav>
-          </div>
-
-          <div className="lg:w-1/4 md:w-1/2 w-full px-4 text-center mb-8 md:mb-0">
-            <h2 className="title-font font-medium text-gray-900 tracking-widest text-1xl mb-3">About</h2>
-            <nav className="list-none mb-10">
-              <li>
-                <a className="text-gray-600 hover:text-gray-900">Our Story</a>
-              </li>
-              <li>
-                <a className="text-gray-600 hover:text-gray-900">Benefits</a>
-              </li>
-              <li>
-                <a className="text-gray-600 hover:text-gray-900">Careers</a>
-              </li>
-            </nav>
-          </div>
-
-          <div className="lg:w-1/4 md:w-1/2 w-full px-4 text-center">
-            <h2 className="title-font font-medium text-gray-900 tracking-widest text-1xl mb-3">Help</h2>
-            <nav className="list-none mb-10">
-              <li>
-                <a className="text-gray-600 hover:text-gray-900">Contact</a>
-              </li>
-              <li>
-                <a className="text-gray-600 hover:text-gray-900">Support</a>
-              </li>
-              <li>
-                <a className="text-gray-600 hover:text-gray-900">FAQ</a>
-              </li>
-            </nav>
+        <div className="flex flex-col ">
+          <h2 className="title-font text-xl text-gray-900 tracking-widest mb-3">
+            Service
+          </h2>
+          <div className="flex flex-col list-none mb-10 gap-2">
+            <li>
+              <a href="#" className="text-gray-700 hover:text-gray-950 cursor-pointer">Online Order</a>
+            </li>
+            <li>
+              <a className="text-gray-700 hover:text-gray-950 cursor-pointer">
+                Pre-Reservation
+              </a>
+            </li>
+            <li>
+              <a className="text-gray-700 hover:text-gray-950 cursor-pointer">24/7 Services</a>
+            </li>
           </div>
         </div>
+
+        {/* 3rd div */}
+
+        <div className="flex flex-col">
+          <h2 className="title-font font-medium text-gray-900 tracking-widest text-1xl mb-3">
+            Quick Links
+          </h2>
+          <div className="flex flex-col list-none mb-10 gap-2">
+            <li>
+              <a className="text-gray-700 hover:text-gray-950 cursor-pointer">Restaurants</a>
+            </li>
+            <li>
+              <a className="text-gray-700 hover:text-gray-950 cursor-pointer">Feed back</a>
+            </li>
+            <li>
+              <a className="text-gray-700 hover:text-gray-950 cursor-pointer">Blogs</a>
+            </li>
+          </div>
+        </div>
+
+        {/* 4th div */}
+
+        <div className="flex flex-col">
+          <h2 className="title-font font-medium text-gray-900 tracking-widest text-1xl mb-3">
+            About
+          </h2>
+          <div className="flex flex-col list-none mb-10 gap-2">
+            <li>
+              <a className="text-gray-700 hover:text-gray-950 cursor-pointer">Our Story</a>
+            </li>
+            <li>
+              <a className="text-gray-700 hover:text-gray-950 cursor-pointer">Benefits</a>
+            </li>
+            <li>
+              <a className="text-gray-700 hover:text-gray-950 cursor-pointer">Careers</a>
+            </li>
+          </div>
+        </div>
+
+        {/* 5th div */}
+
+
+        <div className="flex flex-col">
+          <h2 className="title-font font-medium text-gray-900 tracking-widest text-1xl mb-3">
+            Help
+          </h2>
+          <div className="flex flex-col list-none mb-10 gap-2">
+            <li>
+              <a className="text-gray-700 hover:text-gray-950 cursor-pointer">Contact</a>
+            </li>
+            <li>
+              <a className="text-gray-700 hover:text-gray-950 cursor-pointer">Support</a>
+            </li>
+            <li>
+              <a className="text-gray-700 hover:text-gray-950 cursor-pointer">FAQ</a>
+            </li>
+          </div>
+        </div>
+
+
+
+
+
+
       </div>
 
-      <div className="mt-8 text-center">
-        <p className="text-sm">&copy; {new Date().getFullYear()} TastyBites. All rights reserved.</p>
+      <div>
+        <p className="text-sm text-center">
+          &copy; {new Date().getFullYear()} TastyBites. All rights reserved.
+        </p>
       </div>
     </footer>
   );
