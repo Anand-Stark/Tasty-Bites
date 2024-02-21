@@ -20,7 +20,7 @@ const Cart = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.user);
-  const [total, setTotal] = useState(0);
+  const [total, setTotal] = useState(0);  
   
 
   useEffect(() => {
@@ -44,8 +44,6 @@ const Cart = () => {
     console.log(data);
 
     toast.info('Items Processed For Checkout',{position:"top-right"})
-
-
 
     axios
       .post(`${baseUrl}/api/products/create-checkout-session`, { data })

@@ -1,6 +1,7 @@
 import React from 'react'
 import {DbHeader, ProfileHome,ProfileOrders, ProfileReservations} from "../Components"
 import { Route,Routes } from 'react-router-dom'
+import UsersOrder from './UsersOrder'
 
 
 const ProfRightSection = () => {
@@ -10,7 +11,7 @@ const ProfRightSection = () => {
       <div className='flex flex-col flex-1 overflow-y-scroll scrollbar-none '>
       <Routes>
          <Route path='/' element={<ProfileHome/>} />
-         <Route path='/orders' element={<ProfileOrders/>} />
+         <Route path='/orders' element={<UsersOrder/>} />
          <Route path='/reservation-list' element={<ProfileReservations/>} />
       </Routes>
       </div>
