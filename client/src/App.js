@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import { DashBoard, Login, Main } from "./conatiner";
+import { DashBoard, Login, Main, ProfileDashBoard } from "./conatiner";
 import { useState, useEffect } from "react";
 import { app } from "./config/firebase";
 import { getAuth } from "firebase/auth";
@@ -74,7 +74,8 @@ const App = () => {
         <Route path="/about" element={<About/>} />
         <Route path="/contact" element={<Contacts/>} />
         <Route path="/user-orders" element={<UsersOrder/>} /> 
-        <Route path="/reservation" element={<Reservation/>}/>     
+        <Route path="/reservation" element={<Reservation/>}/>   
+        <Route path="/user-profile/*" element={<ProfileDashBoard/>}/>  
       </Routes>
        
       {alert?.type && <Alert type={alert?.type} message={alert?.message} />}

@@ -61,7 +61,6 @@ const Main = () => {
             <HomeSLider />
             <FilterSection />
           </div>
-          <Link to={"/about"}></Link>
           <Footer2 />
           {isCart && <Cart />}
         </main>

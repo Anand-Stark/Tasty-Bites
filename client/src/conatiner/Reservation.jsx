@@ -12,9 +12,6 @@ const Reservation = () => {
     <Header />
     <div className="w-full flex flex-col items-start justify-center 2xl:px-96 gap-12">
       <Reserve/>
-      {/* <Home />
-      <HomeSLider />
-      <FilterSection /> */}
     </div>
     
     <Footer2 />

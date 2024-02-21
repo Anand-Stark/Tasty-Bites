@@ -86,33 +86,6 @@ const ReservationListData = ({index,data,admin}) => {
     {/* <!-- Description section --> */}
     <div class="mt-4">The customer expresses following desire regarding his time, date and hour of visit and expects this from us : {data.description}</div>
 </div>
-
-      
-          {/* {data?.items &&
-            data.items.map((item, j) => (
-
-              <div className='flex flex-row gap-4'>
-              <motion.div
-                {...staggerFadeInOut(j)}
-                key={j}
-                className="flex items-center justify-center gap-1"
-              >
-                <div className=''></div>
-
-                <div className="flex items-start flex-col">
-                  <p className="text-base font-semibold text-headingColor">
-                    {item.startTimeHours}:{item.startTimeMinutes}{" "}{item.startTimePeriod}
-                  </p>
-                  <p className="text-base font-semibold text-headingColor">
-                    {item.endTimeHours}:{item.endTimeMinutes}{" "}{item.endTimePeriod}
-                  </p>
-                  
-                </div>
-              </motion.div>
-              <p className=''>{item.description}</p>
-              </div>
-              
-            ))} */}
     
     </motion.div>
   ) 

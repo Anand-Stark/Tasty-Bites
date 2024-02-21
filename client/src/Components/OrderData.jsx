@@ -45,36 +45,6 @@ const OrderData = ({ index, data, admin }) => {
           >
            Delivery Status : {data?.sts}
           </p>
-
-          {/* {admin && (
-            <div className="flex items-center justify-center gap-2">
-              <p className="text-lg font-semibold text-headingColor">Mark As</p>
-
-              <motion.p
-                {...buttonClick}
-                onClick={() => handleClick(data.orderId, "preparing")}
-                className={`text-orange-500 text-base font-semibold capitalize border border-gray-300 px-2 py-[2px] rounded-md cursor-pointer`}
-              >
-                Preparing
-              </motion.p>
-
-              <motion.p
-                {...buttonClick}
-                onClick={() => handleClick(data.orderId, "cancelled")}
-                className={`text-red-500 text-base font-semibold capitalize border border-gray-300 px-2 py-[2px] rounded-md cursor-pointer`}
-              >
-                Cancelled
-              </motion.p>
-
-              <motion.p
-                {...buttonClick}
-                onClick={() => handleClick(data.orderId, "delivered")}
-                className={`text-emerald-500 text-base font-semibold capitalize border border-gray-300 px-2 py-[2px] rounded-md cursor-pointer`}
-              >
-                Delivered
-              </motion.p>
-            </div>
-          )} */}
         </div>
       </div>
 

@@ -161,16 +161,17 @@ const Header = () => {
                         className=" hover:text-red-500 text-xl text-textColor"
                         to={"/dash-board/home"}
                       >
-                        Dashboard
+                       Admin Panel
                       </Link>
                     )}
 
-                    {/* <Link
+                    <Link
                       className=" hover:text-red-500 text-lg text-textColor"
-                      to={"/profile"}
+                      to={"/user-profile"}
                     >
                       My Profile
-                    </Link> */}
+                    </Link>
+
                     <Link
                       className=" hover:text-red-500 text-lg text-textColor"
                       to={"/user-orders"}

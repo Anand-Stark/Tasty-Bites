@@ -15,7 +15,7 @@ const HomeSLider = () => {
               <p className="text-2xl text-headingColor font-bold">
                 Our Fresh & Healthy Fruits
               </p>
-              <div className="w-40 h-1 rounded-md bg-orange-500"></div>
+              <div className="w-80 h-1 rounded-md bg-orange-500"></div>
             </div>
           </div>
 
