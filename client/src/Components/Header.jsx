@@ -163,7 +163,7 @@ const Header = () => {
                         className=" hover:text-red-500 text-xl text-textColor"
                         to={"/dash-board/home"}
                       >
-                       Admin Panel
+                       Admin
                       </Link>
                     )}
 

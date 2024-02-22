@@ -2,7 +2,12 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { Logo } from "../assets";
 import { isActiveStyles, isNotActiveStyles } from "../utils/styles";
-
+import { FaHome,FaUserCircle } from "react-icons/fa";
+import { FaTruckArrowRight } from "react-icons/fa6";
+import { PiBowlFoodFill } from "react-icons/pi";
+import { MdAddHome } from "react-icons/md";
+import { TbTruckDelivery } from "react-icons/tb";
+import { MdTableBar } from "react-icons/md";
 
 const DbLeftSection = () => {
   return (
@@ -25,7 +30,7 @@ const DbLeftSection = () => {
               : isNotActiveStyles
           }
         >
-          Home
+         <FaHome className="mt-1"/> Home
         </NavLink>
         <NavLink
           to={"/dash-board/orders"}
@@ -35,7 +40,7 @@ const DbLeftSection = () => {
               : isNotActiveStyles
           }
         >
-          Orders
+         <FaTruckArrowRight className="mt-1"/> Orders
         </NavLink>
         <NavLink
           to={"/dash-board/items"}
@@ -45,7 +50,7 @@ const DbLeftSection = () => {
               : isNotActiveStyles
           }
         >
-          Items
+         <PiBowlFoodFill className="mt-1"/> Items
         </NavLink>
         <NavLink
           to={"/dash-board/newItem"}
@@ -55,7 +60,7 @@ const DbLeftSection = () => {
               : isNotActiveStyles
           }
         >
-          Add New Item
+         <MdAddHome className="mt-1"/> Add New Item
         </NavLink>
         <NavLink
           to={"/dash-board/users"}
@@ -65,7 +70,7 @@ const DbLeftSection = () => {
               : isNotActiveStyles
           }
         >
-          Users
+         <FaUserCircle className="mt-1"/> Users
         </NavLink>
         <NavLink
           to={"/dash-board/delivery-agents"}
@@ -75,7 +80,7 @@ const DbLeftSection = () => {
               : isNotActiveStyles
           }
         >
-          Delivery Agents
+         <TbTruckDelivery className="mt-1"/> Delivery Agents
         </NavLink>
         <NavLink
           to={"/dash-board/reservation-list"}
@@ -85,7 +90,7 @@ const DbLeftSection = () => {
               : isNotActiveStyles
           }
         >
-          Reservation List
+         <MdTableBar className="mt-1"/> Reservation List
         </NavLink>
       </ul>
       {/* help center card here : - > */}

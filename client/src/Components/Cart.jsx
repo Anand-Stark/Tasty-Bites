@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { buttonClick, slideIn, staggerFadeInOut } from "../animations";
-import { baseUrl, getAllCartItems, increaseItemQuantity,deleteAllCart } from "../api";
+import { baseUrl, getAllCartItems, increaseItemQuantity,deleteAllCart, removeCartItem } from "../api";
 import {
   BiChevronsRight,
   FcClearFilters,
@@ -14,6 +14,7 @@ import { clearCartItems, setCartItems } from "../context/actions/cartAction";
 import { setCartOff } from "../context/actions/displayCartAction";
 import { emptycart } from "../assets";
 import { toast } from "react-toastify";
+import { MdDeleteForever } from "react-icons/md";
 
 
 const Cart = () => {
@@ -159,6 +160,25 @@ export const CartItemCard = ({ index, data }) => {
     });
   };
 
+  const removeCart = (productId) => { 
+     toast.error('Item Removed From Cart',{position:"top-center",theme:"colored"})
+
+     getAllCartItems(user?.user_id)
+     .then((data) => { 
+         data = data?.filter(res => res.productId !== productId)
+        //  console.log(data);
+        if(data){
+
+          console.log(productId);
+          
+          removeCartItem(user?.uid,productId)
+          dispatch(setCartItems(data))
+          // delete cart item then from database
+        }
+     })
+
+  }
+
   useEffect(() => {
     setItemTotal(data.prod_price * data.quantity);
   }, [itemTotal, cart]);
@@ -178,12 +198,12 @@ export const CartItemCard = ({ index, data }) => {
       <div className="flex items-center justify-start gap-1 w-full">
         <p className="text-lg text-primary font-semibold">
           {data?.prod_name}
-          <span className="text-sm block capitalize text-gray-400">
+          <span className="text-sm block capitalize text-primary">
             {data?.prod_category}
           </span>
         </p>
-        <p className="text-sm flex items-center justify-center gap-1 font-semibold text-red-400 ml-auto">
-          <HiCurrencyRupee className="text-red-400" /> {itemTotal}
+        <p className="text-sm flex items-center justify-center gap-1 font-semibold text-white ml-auto">
+          <HiCurrencyRupee className="text-white" /> {itemTotal}
         </p>
       </div>
 
@@ -202,6 +222,13 @@ export const CartItemCard = ({ index, data }) => {
           onClick={() => incrementCart(data?.productId)}
         >
           <p className="text-xl font-semibold text-primary">+</p>
+        </motion.div>
+        <motion.div
+          {...buttonClick}
+          className="w-8 h-8 flex items-center justify-center rounded-md drop-shadow-md bg-zinc-900 cursor-pointer"
+          onClick={() => removeCart(data?.productId)}
+        >
+          <p className="text-xl font-semibold text-primary"><MdDeleteForever/></p>
         </motion.div>
       </div>
     </motion.div>

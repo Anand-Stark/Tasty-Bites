@@ -216,6 +216,24 @@ export const deleteAllCart = async(user_id) => {
    }
 }
 
+export const removeCartItem = async(userId,itemId) => { 
+    try{
+
+      console.log("Inside axios :"+itemId );
+
+      const res = await axios.post(`${baseUrl}/api/products/removeCartItem/${userId}`,
+      null,
+      {params: {id:itemId} }
+      )
+
+      return res.data.data
+
+    }
+    catch{
+        return null
+    }
+}
+
 export const getAllOrder = async () => {
   try {
     const res = await axios.get(`${baseUrl}/api/products/orders`);

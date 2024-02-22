@@ -436,6 +436,27 @@ exports.getCartItems = async (req, res) => {
   })();
 }
 
+exports.deleteCartItem = async (req,res) => {
+    try{
+      const userId = req.params.userId;
+      const itemId = req.query.id;
+
+      console.log(itemId,userId);
+
+      const response = await db.collection("cartItems")
+                               .doc(`/${userId}/`)
+                               .collection("items")
+                               .doc(`/${itemId}/`)
+                               .delete()
+
+      return res.status(200).send({success:true,data:response})
+                    
+    }
+    catch(Err){ 
+       res.status(400).send({success:true,Error:`${Err}`})
+    }
+}
+
 exports.stripePayment = async (req, res) => {
   const customer = await stripe.customers.create({
     metadata: {

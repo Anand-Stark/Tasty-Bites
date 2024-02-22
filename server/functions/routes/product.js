@@ -15,6 +15,8 @@ routes.post("/addToCart/:userId",userControl.addToCart);
   // get all the cartitems for that user
   routes.get("/getCartItems/:user_id", userControl.getCartItems);
 
+  routes.post("/removeCartItem/:userId",userControl.deleteCartItem)
+
   routes.post("/create-checkout-session", userControl.stripePayment);
 
   routes.post("/webhook",express.raw({ type: "application/json" }),userControl.webHook);
