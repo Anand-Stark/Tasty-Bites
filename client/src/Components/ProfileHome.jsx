@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfileInfo, postProfileInfo } from "../api";
@@ -8,12 +7,15 @@ import { toast } from "react-toastify";
 
 const ProfileHome = () => {
   const user = useSelector((state) => state.user);
-  const profile = useSelector((state) => state.profile)
-
+  const profile = useSelector((state) => state.profile);
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState(null);
   const [userName, setUserName] = useState(user.name);
   const [userEmail, setUserEmail] = useState(user.email);
-  const [phoneNumber, setPhoneNumber] = useState(profile?.phoneNumber.stringValue);
-  const [address, setAddress] = useState(profile?.address.stringValue);
+  const [phoneNumber, setPhoneNumber] = useState(
+    profile?.phoneNumber?.stringValue
+  );
+  const [address, setAddress] = useState(profile?.address?.stringValue);
   const [numOrders, setNumOrders] = useState(10);
   // const [profilePhoto, setProfilePhoto] = useState("default-profile-photo.jpg");
   const [submitted, setSubmitted] = useState(false);
@@ -21,40 +23,46 @@ const ProfileHome = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     const data = {
-       userName:userName,
-       userEmail:userEmail,
-       phoneNumber:phoneNumber,
-       address:address
+      userName: userName,
+      userEmail: userEmail,
+      phoneNumber: phoneNumber,
+      address: address,
+    };
+
+    if (user) {
+      postProfileInfo(user.uid, data);
     }
 
-    if(user){
-      postProfileInfo(user.uid,data)
-    }
+    toast.success("Profile Updated Successfully", {
+      position: "top-right",
+      theme: "colored",
+    });
 
-    toast.success('Profile Updated Successfully',{position:"top-right",theme:"colored"})
-
-    // Logic to handle form submission
     setSubmitted(true);
   };
 
+  useEffect(() => {
+    setLoading(true);
+    getProfileInfo(user.uid).then((res) => {
+      setResult(res);
+    });
+    setLoading(false);
+  }, []);
 
-  useEffect(() =>{     
-       
-          getProfileInfo(user.uid)
-          .then((res) => {          
-             console.log(res._fieldsProto.address.stringValue);
-             dispatch(setUserProfile(res._fieldsProto))
-             setAddress(res._fieldsProto.address.stringValue)
-             setPhoneNumber(res._fieldsProto.phoneNumber.stringValue)
-          })
-             
-  }, [])
+  useEffect(() => {
+    if (result) {
+      dispatch(setUserProfile(result?._fieldsProto));
+      setAddress(result?._fieldsProto?.address?.stringValue);
+      setPhoneNumber(result?._fieldsProto?.phoneNumber?.stringValue);
+    }
+  }, [result]);
 
   return (
     <>
-      {user && (
+      {loading && <p>loading</p>}
+      {!loading && (
         <div className="h-[95%] rounded-lg bg-gradient-to-bl from-orange-400 to-orange-600 flex py-14 items-center mt-2 justify-center">
           <div className="w-[80%] bg-white p-8 rounded-lg shadow-lg">
             <div className={`grid grid-cols-2 gap-4`}>
@@ -141,10 +149,10 @@ const ProfileHome = () => {
                 <div>
                   <h1 className="text-2xl font-semibold mb-4">Your Details</h1>
                   <p>
-                    <span className="font-semibold">Username:</span> {user.name}
+                    <span className="font-semibold">Username:</span> {userName}
                   </p>
                   <p>
-                    <span className="font-semibold">Email:</span> {user.email}
+                    <span className="font-semibold">Email:</span> {userEmail}
                   </p>
                   {submitted && (
                     <>
@@ -178,4 +186,3 @@ const ProfileHome = () => {
 };
 
 export default ProfileHome;
-
