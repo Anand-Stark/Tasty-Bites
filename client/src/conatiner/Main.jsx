@@ -61,6 +61,7 @@ const Main = () => {
             <DeliveryMapSlider />
             <MapView />
           </div>
+          <Footer2/>
         </main>
       ) : (
         <main className="w-screen min-h-screen flex items-center justify-start flex-col bg-primary">

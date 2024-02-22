@@ -3,6 +3,7 @@ import { Header } from '../Components'
 import Contact from '../Components/Contact'
 import {Cart} from '../Components'
 import { useSelector } from 'react-redux'
+import Footer2 from '../Components/Footer2'
 
 const Contacts = () => {
 
@@ -13,6 +14,7 @@ const Contacts = () => {
       <Header />
       <Contact/>
       {isCart && <Cart />}
+      <Footer2/>
     </div>
   )
 }
