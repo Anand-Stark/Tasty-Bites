@@ -59,7 +59,7 @@ const Header = () => {
     firebaseAuth
       .signOut()
       .then(() => {
-        toast.success('Signed Out Successfully',{position:"top-right"})
+        toast.success('Logged Out Successfully',{position:"top-right"})
         dispatch(setUserNULL());
         dispatch(setUserTypeNull());
         navigate("/Login", { replace: true });
@@ -150,12 +150,14 @@ const Header = () => {
                   referrerPolicy="no-referrer"
                 />
 
-                {isMenu && (
+                {isMenu  && (
                   <motion.div
                     {...slideTop}
                     onMouseLeave={() => setIsMenu(false)}
                     className="px-6 py-4 w-44 font-semibold bg-neutral-50 rounded-md shadow-md absolute top-12 right-0 flex flex-col gap-4"
                   >
+                   {userType==="user" && (
+                    <>
                     {user?.user_id === "ZP2jBsegSPfOVGvFTveQlVQhuWT2" && (
                       <Link
                         className=" hover:text-red-500 text-xl text-textColor"
@@ -179,6 +181,9 @@ const Header = () => {
                       Orders
                     </Link>
                     <hr />
+                    </>
+                   )}
+                    
 
                     <motion.div
                       {...buttonClick}
