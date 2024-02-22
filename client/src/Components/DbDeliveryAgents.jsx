@@ -34,7 +34,7 @@ const DbDeliveryAgents = () => {
       .catch((error) => {
         console.error("Error fetching delivery user information:", error);
       });
-  }, [allusers]);
+  }, []);
 
   // Access filteredDeliveryIds here
   console.log(filteredDeliveryIds);
