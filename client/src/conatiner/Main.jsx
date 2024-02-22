@@ -97,7 +97,7 @@ const Main = () => {
               </p>
               <Link
                 to="/reservation"
-                className="block w-full max-w-xs mx-auto bg-gradient-to-bl from-orange-400 to-orange-600 px-4 py-2 rounded-xl text-black text-base font-semibold text-center hover:from-orange-600 hover:to-orange-400 hover:bg-gradient-to-tl"
+                className="block w-full max-w-xs mx-auto bg-gradient-to-bl from-orange-400 to-orange-600 px-4 py-2 rounded-xl text-black text-base font-semibold text-center hover:from-orange-400 hover:to-orange-600 hover:bg-gradient-to-tl hover:scale-105 transition ease-in-out"
               >
                 Reserve Here
               </Link>
