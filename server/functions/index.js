@@ -9,6 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const rfs = require('rotating-file-stream');
 const app = express();
+const multer = require('multer');
 
 app.use(express.json());
 
@@ -56,6 +57,27 @@ const productRoutes = require("./routes/product")
 app.use('/api/user',userRoutes)
 app.use('/api/products',productRoutes)
 
+// multer usage : 
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/') // Define where to store uploaded files
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname) // Keep original file name
+  }
+});
+
+const upload = multer({ storage: storage });
+
+// routes : backend apis ->
+app.use('/api/user', userRoutes);
+app.use('/api/products', productRoutes);
+
+// Example route that uses multer for file upload
+app.post('/upload', upload.single('file'), (req, res) => {
+  // Access uploaded file via req.file
+  res.send('File uploaded successfully');
+});
 
 
 // Error Handling Middleware
