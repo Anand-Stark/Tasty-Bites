@@ -10,12 +10,12 @@ function MapView() {
     // Function to generate random coordinates within the region of Delhi
     function getRandomDelhiCoordinates() {
         // Latitude range for Delhi (approximately 28.5 to 28.9 degrees)
-        const minLat = 29;
+        const minLat = 29.1;
         const maxLat = 29.2;
 
         // Longitude range for Delhi (approximately 76.8 to 77.3 degrees)
         const minLng = 77.5;
-        const maxLng = 78;
+        const maxLng = 77.7;
 
         const lat = Math.random() * (maxLat - minLat) + minLat;
         const lng = Math.random() * (maxLng - minLng) + minLng;

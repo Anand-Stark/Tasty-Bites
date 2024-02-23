@@ -13,11 +13,10 @@ const DbReservationList = () => {
     if(!reservations){
        getAllReservations()
        .then((res) => { 
-        //  console.log(res);
         dispatch(setReservation(res))
        })
     }
-  },[])
+  },[reservations])
 
   return (
     <div className=" flex items-center justify-center flex-col pt-6 w-full gap-4">

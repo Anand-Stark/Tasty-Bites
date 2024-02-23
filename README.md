@@ -38,3 +38,16 @@
 # Add product as an admin
 
 ![add-product](image-7.png)
+
+steps to initialize and run the project : 
+1. in the command terminal, go to client -> cd client.
+2. in the command terminal, go to server -> cd server->cd functions-> then npm i to install all the necessary things 
+3. in the client -> npm i, to start the front-end . 
+4. All the firebase keys required for running are provided in the .env file . 
+
+Team Members :
+Anand Kumar Singh (S20210010017)
+Mohammad Zeeshan (S20210010151)
+Yashwanth babu 
+Nikhita (s20210010106)
+Vivek (S20210010243)

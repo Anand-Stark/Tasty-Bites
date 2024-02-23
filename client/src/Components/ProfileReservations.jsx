@@ -21,7 +21,7 @@ const ProfileReservations = () => {
             dispatch(setReservation(res))
            })
         }
-      },[user])
+      },[reservation])
 
      return (
         <div className=" flex items-center justify-center flex-col pt-6 w-full gap-4">
