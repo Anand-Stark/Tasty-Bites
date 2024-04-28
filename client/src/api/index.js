@@ -257,6 +257,26 @@ export const updateOrderSts = async (order_id, sts) => {
   }
 };
 
+export const sendOtp = async(email) => {
+  try{
+    const res = await axios.post(`${baseUrl}/api/user/send-otp/${email}`)
+    return res.data.success
+  }
+  catch(err){
+    return null
+  }
+}
+
+export const verifyOtp = async(otp) => {
+  try{
+    const res = await axios.post(`${baseUrl}/api/user/verify-otp/${otp}`)
+    return res.data.success
+  }
+  catch(err){
+    return null
+  }
+} 
+
 
 
 

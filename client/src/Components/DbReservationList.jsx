@@ -15,7 +15,7 @@ const DbReservationList = () => {
        .then((res) => { 
         dispatch(setReservation(res))
        })
-    }
+    } 
   },[reservations])
 
   return (

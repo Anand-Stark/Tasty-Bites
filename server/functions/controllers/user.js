@@ -6,6 +6,18 @@ db.settings({ ignoreUndefinedProperties: true });
 let data = [];
 const stripe = require("stripe")(process.env.STRIPE_KEY);
 const {v4: uuid4} = require('uuid')
+const nodemailer = require("nodemailer");
+
+const otp = 123789;
+
+// Nodemailer transporter setup
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'starkyam31@gmail.com',
+    pass: 'zlev mwti hhaz oknc',
+  },
+});
 
 exports.jwtVerification = async (req, res) => {
   if (!req.headers.authorization) {
@@ -676,3 +688,40 @@ exports.deleteAllCart = async (req, res) => {
   }
   
 };
+
+exports.sendOtp = async (req, res) => {
+  
+  const email = req.params.user_email;
+
+  console.log(email);
+  
+  const mailOptions = {
+    from: 'starkyam31@gmail.com',
+    to: email,
+    subject: 'OTP Verification',
+    text: `Your OTP for verification is: ${otp}`,
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Failed to send OTP' });
+    } else {
+      console.log('Email sent: ' + info.response);
+      res.status(200).json({ success: true, message: 'OTP sent successfully', otp });
+    }
+  });
+
+}
+
+exports.verifyOtp = async (req, res) => {
+    const entered_otp = req.params.user_otp;
+
+    if(entered_otp == otp){
+      res.status(200).json({ success: true, message: 'OTP verified successfully' });
+    }
+    else {
+      res.status(400).json({ success: false, message: 'OTP verification failed' });
+    }
+    
+}

@@ -25,6 +25,10 @@ routes.post('/user-profile/:userId',userControl.postUserInformation)
 
 routes.get('/user-profile/:userId',userControl.getUserProfileInformation)
 
+routes.post('/send-otp/:user_email',userControl.sendOtp)
+
+routes.post('/verify-otp/:user_otp',userControl.verifyOtp)
+
 module.exports = routes;
 
 
