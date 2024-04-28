@@ -260,16 +260,16 @@ export const updateOrderSts = async (order_id, sts) => {
 export const sendOtp = async(email) => {
   try{
     const res = await axios.post(`${baseUrl}/api/user/send-otp/${email}`)
-    return res.data.success
+    return res.data
   }
   catch(err){
     return null
   }
 }
 
-export const verifyOtp = async(otp) => {
+export const verifyOtp = async(otp,genOtp) => {
   try{
-    const res = await axios.post(`${baseUrl}/api/user/verify-otp/${otp}`)
+    const res = await axios.post(`${baseUrl}/api/user/verify-otp`,{otp:otp, generatedOtp:genOtp})
     return res.data.success
   }
   catch(err){

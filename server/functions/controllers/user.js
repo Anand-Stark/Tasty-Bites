@@ -8,7 +8,7 @@ const stripe = require("stripe")(process.env.STRIPE_KEY);
 const {v4: uuid4} = require('uuid')
 const nodemailer = require("nodemailer");
 
-const otp = 123789;
+// const otp = 123789;
 
 // Nodemailer transporter setup
 const transporter = nodemailer.createTransport({
@@ -689,11 +689,16 @@ exports.deleteAllCart = async (req, res) => {
   
 };
 
+function generateOTP() {
+  return Math.floor(100000 + Math.random() * 900000);
+}
+
 exports.sendOtp = async (req, res) => {
   
   const email = req.params.user_email;
+  const otp = generateOTP();
 
-  console.log(email);
+  console.log(email,otp);
   
   const mailOptions = {
     from: 'starkyam31@gmail.com',
@@ -708,16 +713,17 @@ exports.sendOtp = async (req, res) => {
       res.status(500).json({ success: false, message: 'Failed to send OTP' });
     } else {
       console.log('Email sent: ' + info.response);
-      res.status(200).json({ success: true, message: 'OTP sent successfully', otp });
+      res.status(200).json({ success: true, message: 'OTP sent successfully', genOtp: otp });
     }
   });
 
 }
 
 exports.verifyOtp = async (req, res) => {
-    const entered_otp = req.params.user_otp;
+  const enteredOtp = req.body.otp; 
+  const generatedOtp = req.body.generatedOtp; 
 
-    if(entered_otp == otp){
+    if(generatedOtp == enteredOtp){
       res.status(200).json({ success: true, message: 'OTP verified successfully' });
     }
     else {

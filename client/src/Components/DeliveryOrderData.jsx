@@ -14,27 +14,24 @@ const DeliveryOrderData = ({ index, data, admin }) => {
 
   const [showModal, setShowModal] = useState(false);
   const [otp, setOtp] = useState("");
-  const [otpSending, setOtpSending] = useState(false);
+  const [randomOtp, setRandomOtp] = useState("")
+ 
 
   const handleClick = async (orderId, sts, customerEmailId) => {
     if (sts === "Delivered") {
-      // console.log("Sending OTP");
       try {
-        setOtpSending(true);
-        const response = await sendOtp(customerEmailId);
-        
-        // console.log(response);
 
-        if (response) {
+        const response = await sendOtp(customerEmailId);  
+        setRandomOtp(response.genOtp);
+
+        if (response.success) {
           setShowModal(true);
         } else {
           toast.error("Failed to send OTP");
-          setOtpSending(false);
         }
       } catch (error) {
         console.error(error);
         toast.error("An error occurred while sending OTP");
-        setOtpSending(false);
       }
     } else {
       updateOrderSts(orderId, sts)
@@ -53,11 +50,10 @@ const DeliveryOrderData = ({ index, data, admin }) => {
 
   const handleVerifyOTP = async (orderId,sts) => {
     try {
-      const response = await verifyOtp(otp);
+      const response = await verifyOtp(otp,randomOtp);
       if (response) {
         setShowModal(false);
         toast.success("OTP Verified");
-        // Proceed with updating order status
         updateOrderSts(orderId, sts)
         .then((response) => {
           toast.success(`${orderId} is ${sts}`);
@@ -112,12 +108,11 @@ const DeliveryOrderData = ({ index, data, admin }) => {
           </div>
         </div>
       </div>
-    ):(<motion.div
+    ):(data.sts !== "Delivered" && (
+        <motion.div
       {...staggerFadeInOut(index)}
       className="w-full flex flex-col items-start justify-start px-3 py-2 border relative border-gray-300 bg-lightOverlay drop-shadow-md rounded-md gap-4"
     >
-    
-
       <div className="w-full flex items-center justify-between">
         <h1 className="text-xl text-headingColor font-semibold">Orders</h1>
 
@@ -239,7 +234,9 @@ const DeliveryOrderData = ({ index, data, admin }) => {
       
      
 
-    </motion.div>)}
+    </motion.div>)
+      )}
+      
     </>
   );
 };

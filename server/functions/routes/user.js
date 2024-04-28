@@ -27,7 +27,7 @@ routes.get('/user-profile/:userId',userControl.getUserProfileInformation)
 
 routes.post('/send-otp/:user_email',userControl.sendOtp)
 
-routes.post('/verify-otp/:user_otp',userControl.verifyOtp)
+routes.post('/verify-otp',userControl.verifyOtp)
 
 module.exports = routes;
 
