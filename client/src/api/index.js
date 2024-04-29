@@ -243,6 +243,17 @@ export const getAllOrder = async () => {
   }
 };
 
+export const getPremiums = async () => {
+    try{
+       const res = await axios.get(`${baseUrl}/api/products/premiumUsers`)
+       
+       return res.data.data
+    }
+    catch(err){
+       return null
+    }
+}
+
 // update the order status
 export const updateOrderSts = async (order_id, sts) => {
   try {

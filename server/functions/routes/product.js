@@ -25,10 +25,14 @@ routes.post("/addToCart/:userId",userControl.addToCart);
   
   // orders
   routes.get("/orders", userControl.getOrders);
+
+  routes.get("/premiumUsers",userControl.getPremiumUsers)
   
   // // update the order status
   routes.post("/updateOrder/:order_id", userControl.updateOrder);
 
   routes.post("/delete-cart/:userId",userControl.deleteAllCart);
+
+
 
 module.exports = routes;

@@ -5,17 +5,18 @@ const db = admin.firestore();
 db.settings({ ignoreUndefinedProperties: true });
 let data = [];
 const stripe = require("stripe")(process.env.STRIPE_KEY);
-const {v4: uuid4} = require('uuid')
+const { v4: uuid4 } = require("uuid");
 const nodemailer = require("nodemailer");
+const { log } = require("firebase-functions/logger");
 
 // const otp = 123789;
 
 // Nodemailer transporter setup
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  service: "gmail",
   auth: {
-    user: 'starkyam31@gmail.com',
-    pass: 'zlev mwti hhaz oknc',
+    user: "starkyam31@gmail.com",
+    pass: "zlev mwti hhaz oknc",
   },
 });
 
@@ -48,30 +49,27 @@ exports.jwtVerification = async (req, res) => {
 // for post route :
 exports.createProduct = async (req, res) => {
   try {
-
     const id = Date.now();
 
     const data = {
-      productId : id,
+      productId: id,
       prod_name: req.body.prod_name,
       prod_price: req.body.prod_price,
       prod_category: req.body.prod_category,
       prod_image: req.body.prod_image,
     };
-    
-    console.log(data)
+
+    console.log(data);
 
     const response = await db.collection("products").doc(`/${id}/`).set(data);
     console.log(response);
     return res.status(200).send({ success: true, data: response });
-
   } catch {
     return res.send({ success: false, msg: `Error :${err}` });
   }
-  
 };
 
-exports.getAllProducts = async (req,res) =>{ 
+exports.getAllProducts = async (req, res) => {
   (async () => {
     try {
       let query = db.collection("products");
@@ -88,12 +86,12 @@ exports.getAllProducts = async (req,res) =>{
       return res.send({ success: false, msg: `Error :${err}` });
     }
   })();
-}
+};
 
-// writing the logic for deleting a product : 
-exports.deleteProduct = async (req,res) =>{ 
-   const productId = req.params.productId;
-   try {
+// writing the logic for deleting a product :
+exports.deleteProduct = async (req, res) => {
+  const productId = req.params.productId;
+  try {
     await db
       .collection("products")
       .doc(`/${productId}/`)
@@ -104,9 +102,9 @@ exports.deleteProduct = async (req,res) =>{
   } catch (err) {
     return res.send({ success: false, msg: `Error :${err}` });
   }
-}
+};
 
-// getting all the users : 
+// getting all the users :
 
 const listALlUsers = async (nextpagetoken) => {
   admin
@@ -123,213 +121,189 @@ const listALlUsers = async (nextpagetoken) => {
     .catch((er) => console.log(er));
 };
 
-// segregating the users as per their type : 
-exports.createUserType = async(req,res) => {
-    const userId = req.params.userId;
-    const type = req.query.type;
+// segregating the users as per their type :
+exports.createUserType = async (req, res) => {
+  const userId = req.params.userId;
+  const type = req.query.type;
 
-    console.log(userId,type);
-     
-    try{
+  console.log(userId, type);
 
-      const data = {
-         type:type
-      }
-    
-      const response = await db.collection("users")
-        .doc(`/${userId}/`)
-        .set(data)
-        
-        return res.status(200).send({ success: true, data: response });
+  try {
+    const data = {
+      type: type,
+    };
 
-    }
-    catch{
-      return res.send({ success: false, msg: `Error` });
-    }
-}
+    const response = await db.collection("users").doc(`/${userId}/`).set(data);
 
-exports.getUserType = async (req,res) => {
-    const userId = req.params.userId;
+    return res.status(200).send({ success: true, data: response });
+  } catch {
+    return res.send({ success: false, msg: `Error` });
+  }
+};
 
-    try{
-          const response = await db.collection("users")
-                                    .doc(`/${userId}/`)
-                                    .get()
+exports.getUserType = async (req, res) => {
+  const userId = req.params.userId;
 
-          return res.status(200).send({success:true, data: response })
-    }                             
-    catch(err){
-          return res.status(500).send({success:false, msg:`Error :${err}`})
-    }
-}
- 
+  try {
+    const response = await db.collection("users").doc(`/${userId}/`).get();
+
+    return res.status(200).send({ success: true, data: response });
+  } catch (err) {
+    return res.status(500).send({ success: false, msg: `Error :${err}` });
+  }
+};
 
 exports.getAllUsers = async (req, res) => {
-    listALlUsers();
-    try {
-      return res
-        .status(200)
-        .send({ success: true, data: data, dataCount: data.length });
-    } catch (er) {
-      return res.send({
-        success: false,
-        msg: `Error in listing users :,${er}`,
-      });
-    }
-}
-
-exports.getUserInfo = async(req,res) => {
-  const uid =  req.params.userId;
-
-   try{
-
-    const userRecord = await admin.auth().getUser(uid);
-    
-    // Extract relevant user data
-    const userData = {
-      uid: userRecord.uid,
-      email: userRecord.email,
-      emailVerified : userRecord.emailVerified,
-      photo : userRecord.photoURL ,
-      name : userRecord.displayName
-      // Add other fields you need
-    };
-     
+  listALlUsers();
+  try {
     return res
-      .status(200).send({success:true,data:userData})
-   }catch (er) {
+      .status(200)
+      .send({ success: true, data: data, dataCount: data.length });
+  } catch (er) {
     return res.send({
       success: false,
       msg: `Error in listing users :,${er}`,
     });
   }
+};
 
-}
+exports.getUserInfo = async (req, res) => {
+  const uid = req.params.userId;
 
-exports.postUserReservation = async (req,res) => { 
+  try {
+    const userRecord = await admin.auth().getUser(uid);
+
+    // Extract relevant user data
+    const userData = {
+      uid: userRecord.uid,
+      email: userRecord.email,
+      emailVerified: userRecord.emailVerified,
+      photo: userRecord.photoURL,
+      name: userRecord.displayName,
+      // Add other fields you need
+    };
+
+    return res.status(200).send({ success: true, data: userData });
+  } catch (er) {
+    return res.send({
+      success: false,
+      msg: `Error in listing users :,${er}`,
+    });
+  }
+};
+
+exports.postUserReservation = async (req, res) => {
+  const userId = req.params.userId;
+
+  // console.log(userId);
+
+  try {
+    const reservationId = uuid4();
+
+    const data = {
+      userId: userId,
+      reservationId: reservationId,
+      name: req.body.name,
+      tableSize: req.body.tableSize,
+      date: req.body.date,
+      startTimeHours: req.body.startTimeHours,
+      startTimeMinute: req.body.startTimeMinutes,
+      startTimePeriod: req.body.startTimePeriod,
+      endTimeHours: req.body.endTimeHours,
+      endTimeMinutes: req.body.endTimeMinutes,
+      endTimePeriod: req.body.endTimePeriod,
+      description: req.body.description,
+      sts: "Pending",
+    };
+
+    console.log(data);
+
+    const response = await db
+      .collection("reservation")
+      .doc(`${reservationId}`)
+      .set(data);
+
+    return res.status(200).send({ success: true, data: response });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send({ success: false, msg: `Error is ${err}` });
+  }
+};
+
+exports.getUserReservation = async (req, res) => {
+  try {
+    let query = db.collection("reservation");
+
+    let response = [];
+
+    await query.get().then((querysnap) => {
+      let docs = querysnap.docs;
+
+      docs.map((doc) => {
+        response.push({ ...doc.data() });
+      });
+
+      return response;
+    });
+
+    return res.status(200).send({ success: true, data: response });
+  } catch (err) {
+    res.status(400).send({ success: false, msg: `Error is ${err}` });
+  }
+};
+
+exports.updateReservation = async (req, res) => {
+  const sts = req.query.sts;
+  const reservationId = req.params.reservationId;
+
+  try {
+    const updRes = await db
+      .collection("reservation")
+      .doc(`/${reservationId}/`)
+      .update({ sts });
+
+    return res.status(200).send({ success: true, data: updRes });
+  } catch (err) {
+    return res.status(400).send({ success: false, Error: `Error is ${err}` });
+  }
+};
+
+exports.postUserInformation = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    const data = {
+      userName: req.body.userName,
+      userEmail: req.body.userEmail,
+      phoneNumber: req.body.phoneNumber,
+      address: req.body.address,
+    };
+
+    console.log(data);
+
+    const response = await db.collection("profile").doc(`${userId}`).set(data);
+
+    return res.status(200).send({ success: true, data: response });
+  } catch {
+    return res.status(400).send({ success: false });
+  }
+};
+
+exports.getUserProfileInformation = async (req, res) => {
+  try {
     const userId = req.params.userId;
 
     // console.log(userId);
-    
-    try{
-      const reservationId = uuid4()
 
-      const data = {
-         userId:userId,
-         reservationId:reservationId,
-         name: req.body.name,
-         tableSize:req.body.tableSize,
-         date:req.body.date,
-         startTimeHours:req.body.startTimeHours,
-         startTimeMinute:req.body.startTimeMinutes,
-         startTimePeriod:req.body.startTimePeriod,
-         endTimeHours:req.body.endTimeHours,
-         endTimeMinutes:req.body.endTimeMinutes,
-         endTimePeriod:req.body.endTimePeriod,
-         description:req.body.description,
-         sts:"Pending"
-      }
+    const response = await db.collection("profile").doc(`/${userId}/`).get();
 
-      console.log(data);
+    return res.status(200).send({ success: true, data: response });
+  } catch (err) {
+    res.status(400).send({ success: false, Error: `${err}` });
+  }
+};
 
-      const response = await db.collection("reservation")
-                               .doc(`${reservationId}`)
-                               .set(data)
-      
-      return res.status(200).send({success:true, data:response})                        
-
-    }
-    catch(err) { 
-        console.log(err);
-        res.status(400).send({success:false,msg:`Error is ${err}`})
-    }
-}
-
-exports.getUserReservation = async (req,res) =>{ 
-
-    try{
-      
-      let query = db.collection("reservation");
-
-      let response = [];
-
-      await query.get().then((querysnap) => {
-            let docs = querysnap.docs;
-
-            docs.map((doc) => {
-                response.push({...doc.data()})
-            })
-
-            return response;
-      })
-
-      return res.status(200).send({success:true, data:response})
-    }
-    catch(err) {
-        res.status(400).send({success:false,msg:`Error is ${err}`})
-    }
-}
-
-exports.updateReservation = async(req,res) => {
-    const sts = req.query.sts;
-    const reservationId = req.params.reservationId
-    
-    try{
-      const updRes = await db.collection("reservation")
-                          .doc(`/${reservationId}/`)
-                          .update( {sts} )
-
-      return res.status(200).send({success:true,data:updRes})
-    }
-    catch(err){ 
-       return res.status(400).send({success:false,Error:`Error is ${err}`})
-    }
-}
-
-exports.postUserInformation = async (req,res) =>{ 
-    try{
-      const userId = req.params.userId;
-
-      const data = {
-           userName:req.body.userName,
-           userEmail:req.body.userEmail,
-           phoneNumber:req.body.phoneNumber,
-           address:req.body.address
-      }
-
-      console.log(data);
-
-      const response = await db.collection("profile")
-                                .doc(`${userId}`)
-                                .set(data)
-
-      return res.status(200).send({success:true,data:response})
-
-    }
-    catch{
-      return res.status(400).send({success:false})
-    }
-}
-
-exports.getUserProfileInformation = async (req,res) => { 
-    try{
-      const userId = req.params.userId
-
-      // console.log(userId);
-      
-      const response = await db.collection("profile")
-                                .doc(`/${userId}/`)
-                                 .get()
-
-      return res.status(200).send({success:true,data:response})
-      
-    }
-    catch(err){
-      res.status(400).send({success:false,Error:`${err}`})
-    }
-}
-
-exports.addToCart =  async (req, res) => {
+exports.addToCart = async (req, res) => {
   const userId = req.params.userId;
   const productId = req.body.productId;
 
@@ -370,7 +344,7 @@ exports.addToCart =  async (req, res) => {
   } catch (err) {
     return res.send({ success: false, msg: `Error :${err}` });
   }
-}
+};
 
 exports.updateCart = async (req, res) => {
   const userId = req.params.user_id;
@@ -421,7 +395,7 @@ exports.updateCart = async (req, res) => {
   } catch (err) {
     return res.send({ success: false, msg: `Error :${err}` });
   }
-}
+};
 
 exports.getCartItems = async (req, res) => {
   const userId = req.params.user_id;
@@ -446,61 +420,71 @@ exports.getCartItems = async (req, res) => {
       return res.send({ success: false, msg: `Error :,${er}` });
     }
   })();
-}
+};
 
-exports.deleteCartItem = async (req,res) => {
-    try{
-      const userId = req.params.userId;
-      const itemId = req.query.id;
+exports.deleteCartItem = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const itemId = req.query.id;
 
-      console.log(itemId,userId);
+    console.log(itemId, userId);
 
-      const response = await db.collection("cartItems")
-                               .doc(`/${userId}/`)
-                               .collection("items")
-                               .doc(`/${itemId}/`)
-                               .delete()
+    const response = await db
+      .collection("cartItems")
+      .doc(`/${userId}/`)
+      .collection("items")
+      .doc(`/${itemId}/`)
+      .delete();
 
-      return res.status(200).send({success:true,data:response})
-                    
-    }
-    catch(Err){ 
-       res.status(400).send({success:true,Error:`${Err}`})
-    }
-}
+    return res.status(200).send({ success: true, data: response });
+  } catch (Err) {
+    res.status(400).send({ success: true, Error: `${Err}` });
+  }
+};
 
-exports.stripePayementPremium = async ( req,res) => { 
+exports.stripePayementPremium = async (req, res) => {
+  const customer = await stripe.customers.create({
+    metadata: {
+      user_id: req.body.data.user.uid,
+      paymentType: req.body.data.paymentType,
+    },
+  });
+
   const session = await stripe.checkout.sessions.create({
     line_items: [
       {
         price_data: {
-          currency: 'usd',
+          currency: "inr",
           product_data: {
-            name: 'Premium',
+            name: "Premium",
           },
-          unit_amount: 120,
+          unit_amount: 12000,
         },
         quantity: 1,
       },
     ],
-    mode: 'payment',
+    mode: "payment",
+    customer: customer.id,
+    phone_number_collection: {
+      enabled: true,
+    },
     success_url: `${process.env.CLIENT_URL}/checkout-success`,
-    cancel_url: `${process.env.CLIENT_URL}/`
+    cancel_url: `${process.env.CLIENT_URL}/`,
   });
 
   res.send({ url: session.url });
-}
+};
 
 exports.stripePayment = async (req, res) => {
+  console.log(req.body.data);
   const customer = await stripe.customers.create({
     metadata: {
       user_id: req.body.data.user.uid,
       cart: JSON.stringify(req.body.data.cart),
       total: req.body.data.total,
-    },  
+      paymentType: req.body.data.paymentType,
+    },
   });
-
-  // console.log(customer);
 
   const line_items = req.body.data.cart.map((item) => {
     return {
@@ -513,7 +497,7 @@ exports.stripePayment = async (req, res) => {
             id: item.productId,
           },
         },
-        unit_amount: item.prod_price * 100,
+        unit_amount: req.body.data.total*100/item.quantity,
       },
       quantity: item.quantity,
     };
@@ -549,7 +533,7 @@ exports.stripePayment = async (req, res) => {
   });
 
   res.send({ url: session.url });
-}
+};
 
 let endpointSecret;
 // endpointSecret = process.env.WEBHOOK_SECRET;
@@ -578,25 +562,42 @@ exports.webHook = (req, res) => {
   // Handle the event
   if (eventType === "checkout.session.completed") {
     stripe.customers.retrieve(data.customer).then((customer) => {
-      console.log("Customer details", customer);
-      console.log("Data", data);
-      createOrder(customer, data, res);
+      console.log(customer.metadata.paymentType);
+
+      if (customer.metadata.paymentType === "orders") {
+        createOrder(customer, data, res);
+      }
+      if (customer.metadata.paymentType === "premium") {
+        createPremiumCostmers(customer, res);
+      }
     });
   }
 
   // Return a 200 res to acknowledge receipt of the event
   res.send().end();
-}
+};
+
+const createPremiumCostmers = async (customer, res) => {
+  try {
+    const premiumId = Date.now();
+    const userId = customer.metadata.user_id;
+
+    const data = {
+      premiumId: premiumId,
+      userId : userId,
+    };
+
+    await db.collection("premium").doc(`/${userId}/`).set(data);
+
+    console.log("*******Premium User Added Succesfully*********");
+
+    res.status(200).send({ success: true });
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 const createOrder = async (customer, intent, res) => {
-  // console.log("Hello , your order is placed");
-  // console.log("Inside the orders");
-
-  console.log(customer);
-  console.log(intent);
-  // console.log();
-
-
   try {
     const orderId = Date.now();
     const data = {
@@ -643,31 +644,56 @@ const deleteCart = async (userId, items) => {
   });
 };
 
-  exports.getOrders = async (req, res) => {
-    (async () => {
-      try {
-        let query = db.collection("orders");
-        let response = [];
-        await query.get().then((querysnap) => {
-          let docs = querysnap.docs;
-          docs.map((doc) => {
-            response.push({ ...doc.data() });
-          });
-          return response;
+exports.getOrders = async (req, res) => {
+  (async () => {
+    try {
+      let query = db.collection("orders");
+      let response = [];
+      await query.get().then((querysnap) => {
+        let docs = querysnap.docs;
+        docs.map((doc) => {
+          response.push({ ...doc.data() });
         });
-        return res.status(200).send({ success: true, data: response });
-      } catch (err) {
-        return res.send({ success: false, msg: `Error :${err}` });
-      }
-    })();
-  }
+        return response;
+      });
+      return res.status(200).send({ success: true, data: response });
+    } catch (err) {
+      return res.send({ success: false, msg: `Error :${err}` });
+    }
+  })();
+};
+
+exports.getPremiumUsers = async (req, res) => {
+  
+  try{
+      
+    let query = db.collection("premium");
+
+    let response = [];
+
+    await query.get().then((querysnap) => {
+          let docs = querysnap.docs;
+
+          docs.map((doc) => {
+              response.push({...doc.data()})
+          })
+
+          return response;
+    })
+
+    return res.status(200).send({success:true, data:response})
+}
+catch (err) {
+  res.status(400).send({ success: false, msg: `Error is ${err}` });
+}
+}
 
 exports.updateOrder = async (req, res) => {
   const order_id = req.params.order_id;
   const sts = req.query.sts;
 
   try {
-    const updatedItem =   await db
+    const updatedItem = await db
       .collection("orders")
       .doc(`/${order_id}/`)
       .update({ sts });
@@ -675,27 +701,12 @@ exports.updateOrder = async (req, res) => {
   } catch (er) {
     return res.send({ success: false, msg: `Error :,${er}` });
   }
-}
+};
 
 exports.deleteAllCart = async (req, res) => {
-  // const userId = req.query.userId;
-  // const items = req.query.items;
-  // items.map(async (data) => {
-  //   await db
-  //     .collection("cartItems")
-  //     .doc(`/${userId}/`)
-  //     .collection("items")
-  //     .doc(`/${data.productId}/`)
-  //     .delete()
-  //     .then(() => console.log("-------------------successs--------"));
-  // });
-
-  // return res.status(200).send({ success: true })'
-
-  
   const userId = req.params.userId;
   // console.log(userId);
-   try {
+  try {
     await db
       .collection("cartItems")
       .doc(`/${userId}`)
@@ -708,7 +719,6 @@ exports.deleteAllCart = async (req, res) => {
   } catch (err) {
     return res.send({ success: false, msg: `Error :${err}` });
   }
-  
 };
 
 function generateOTP() {
@@ -716,40 +726,42 @@ function generateOTP() {
 }
 
 exports.sendOtp = async (req, res) => {
-  
   const email = req.params.user_email;
   const otp = generateOTP();
 
-  console.log(email,otp);
-  
+  console.log(email, otp);
+
   const mailOptions = {
-    from: 'starkyam31@gmail.com',
+    from: "starkyam31@gmail.com",
     to: email,
-    subject: 'OTP Verification',
+    subject: "OTP Verification",
     text: `Your OTP for verification is: ${otp}`,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.error(error);
-      res.status(500).json({ success: false, message: 'Failed to send OTP' });
+      res.status(500).json({ success: false, message: "Failed to send OTP" });
     } else {
-      console.log('Email sent: ' + info.response);
-      res.status(200).json({ success: true, message: 'OTP sent successfully', genOtp: otp });
+      console.log("Email sent: " + info.response);
+      res
+        .status(200)
+        .json({ success: true, message: "OTP sent successfully", genOtp: otp });
     }
   });
-
-}
+};
 
 exports.verifyOtp = async (req, res) => {
-  const enteredOtp = req.body.otp; 
-  const generatedOtp = req.body.generatedOtp; 
+  const enteredOtp = req.body.otp;
+  const generatedOtp = req.body.generatedOtp;
 
-    if(generatedOtp == enteredOtp){
-      res.status(200).json({ success: true, message: 'OTP verified successfully' });
-    }
-    else {
-      res.status(400).json({ success: false, message: 'OTP verification failed' });
-    }
-    
-}
+  if (generatedOtp == enteredOtp) {
+    res
+      .status(200)
+      .json({ success: true, message: "OTP verified successfully" });
+  } else {
+    res
+      .status(400)
+      .json({ success: false, message: "OTP verification failed" });
+  }
+};

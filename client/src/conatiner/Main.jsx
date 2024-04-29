@@ -12,6 +12,7 @@ import {
   MapView,
 } from "../Components";
 import { setAllProducts } from "../context/actions/productActions";
+import { setPremium } from "../context/actions/premiumUserActions";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import Footer2 from "../Components/Footer2";
@@ -23,18 +24,26 @@ import axios from "axios";
 import {toast }from "react-toastify"
 import { baseUrl } from "../api";
 
+
 const Main = () => {
+
   const products = useSelector((state) => state.products);
   const isCart = useSelector((state) => state.isCart);
   const userType = useSelector((state) => state.userType);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  
 
 
   const checkoutPremium = () => { 
     toast.info('Premium Membership Checkout',{position:"top-right"})
 
-    axios.post(`${baseUrl}/api/products/create-checkout-seesion-premium`)
+    const data = {
+        user : user,
+        paymentType: "premium"
+    }
+
+    axios.post(`${baseUrl}/api/products/create-checkout-seesion-premium`, {data})
     .then((res) => {
       if (res.data.url) {
         window.location.href = res.data.url;

@@ -3,7 +3,14 @@ import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { buttonClick, slideIn, staggerFadeInOut } from "../animations";
-import { baseUrl, getAllCartItems, increaseItemQuantity,deleteAllCart, removeCartItem } from "../api";
+import {
+  baseUrl,
+  getAllCartItems,
+  increaseItemQuantity,
+  deleteAllCart,
+  removeCartItem,
+  getPremiums,
+} from "../api";
 import {
   BiChevronsRight,
   FcClearFilters,
@@ -16,53 +23,88 @@ import { emptycart } from "../assets";
 import { toast } from "react-toastify";
 import { MdDeleteForever } from "react-icons/md";
 
-
 const Cart = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.user);
-  const [total, setTotal] = useState(0);  
-  
+  const [total, setTotal] = useState(0);
+  const [originalBill, setOriginalBill] = useState(0);
 
   useEffect(() => {
-    let tot = 0;
-    if (cart) {
-      cart.forEach((data) => {
-        tot = tot + data.prod_price * data.quantity;
-        setTotal(tot);
-      });
-    }
+    getPremiums().then((premiumUserIds) => {
+      // Check if the current user's ID exists in premium user IDs
+      const isPremiumUser = premiumUserIds.some(
+        (item) => item.userId === user.user_id
+      );
+
+      // console.log(finalTotal);
+      let tot = 0;
+      if (cart) {
+        cart.forEach((data) => {
+          tot = tot + data.prod_price * data.quantity;
+        });
+      }
+
+      let finalTotal = tot;
+
+      if (isPremiumUser) {
+        const discountPercentage = 20;
+        const discountAmount = (tot * discountPercentage) / 100;
+        finalTotal = tot - discountAmount;
+      }
+
+      setTotal(finalTotal);
+      setOriginalBill(tot);
+    });
   }, [cart]);
 
   const handleCheckOut = () => {
-    
-    const data = {
-      user: user,
-      cart: cart,
-      total: total,
-    };
+    // Retrieve the premium user IDs
+    getPremiums().then((premiumUserIds) => {
+      // Check if the current user's ID exists in premium user IDs
+      const isPremiumUser = premiumUserIds.some(
+        (item) => item.userId === user.user_id
+      );
 
-    console.log(data);
+      let finalTotal = 0;
 
-    toast.info('Items Processed For Checkout',{position:"top-right"})
+      if (isPremiumUser) {
+        // If user is premium, reduce the total by a random percentage between 20% to 30%
+        const discountPercentage = 20;
+        const discountAmount = (total * discountPercentage) / 100;
+        finalTotal = total - discountAmount;
+      }
 
-    axios
-      .post(`${baseUrl}/api/products/create-checkout-session`, { data })
-      .then((res) => {
-        if (res.data.url) {
-          window.location.href = res.data.url;
-        }
-      })
-      .catch((err) => console.log(err));
+      // console.log(finalTotal);
+
+      const data = {
+        user: user,
+        cart: cart,
+        total: finalTotal, // Use the updated total
+        paymentType: "orders",
+      };
+
+      console.log(data);
+
+      toast.info("Items Processed For Checkout", { position: "top-right" });
+
+      axios
+        .post(`${baseUrl}/api/products/create-checkout-session`, { data })
+        .then((res) => {
+          if (res.data.url) {
+            window.location.href = res.data.url;
+          }
+        })
+        .catch((err) => console.log(err));
+    });
   };
 
   const handleRemoveAll = () => {
-    
     deleteAllCart(user?.user_id)
-    .then((result) => {
-      dispatch(clearCartItems());
-    })
-    .catch(err => console.log(err))
+      .then((result) => {
+        dispatch(clearCartItems());
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -100,10 +142,23 @@ const Cart = () => {
             <div className="bg-transparent rounded-t-[60px] w-full  flex flex-col items-center justify-center px-4 py-4 gap-10">
               <div className="w-full flex items-center justify-evenly">
                 <p className="text-3xl text-zinc-500 font-semibold">Total</p>
-                <p className="text-3xl text-orange-500 font-semibold flex items-center justify-center gap-1">
-                  <HiCurrencyRupee className="text-black" />
-                  {total}
-                </p>
+                {total !== originalBill ? (
+                  <>
+                    <p className="text-3xl text-orange-500 font-semibold flex items-center justify-center gap-1 line-through">
+                      <HiCurrencyRupee className="text-black" />
+                      {originalBill}
+                    </p>
+                    <p className="text-3xl text-orange-500 font-semibold flex items-center justify-center gap-1">
+                      <HiCurrencyRupee className="text-black" />
+                      {total}
+                    </p>
+                  </>
+                ) : (
+                  <p className="text-3xl text-orange-500 font-semibold flex items-center justify-center gap-1">
+                    <HiCurrencyRupee className="text-black" />
+                    {originalBill}
+                  </p>
+                )}
               </div>
 
               <motion.button
@@ -118,13 +173,16 @@ const Cart = () => {
         ) : (
           <>
             <motion.img
-                  whileTap={{ scale: 0.6 }}
-                  src={emptycart}
-                  className="w-[80%] ml-12 relative mt-10"
-                  alt="Empty-Cart"
-                  referrerPolicy="no-referrer"
-                />
-                <h1 className="relative text-black font-bold ml-[80px] mt-5 text-xl"> Add Items to your Cart</h1>
+              whileTap={{ scale: 0.6 }}
+              src={emptycart}
+              className="w-[80%] ml-12 relative mt-10"
+              alt="Empty-Cart"
+              referrerPolicy="no-referrer"
+            />
+            <h1 className="relative text-black font-bold ml-[80px] mt-5 text-xl">
+              {" "}
+              Add Items to your Cart
+            </h1>
           </>
         )}
       </div>
@@ -132,15 +190,14 @@ const Cart = () => {
   );
 };
 
-export const CartItemCard = ({ index, data }) => {
+const CartItemCard = ({ index, data }) => {
   const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.user);
   const [itemTotal, setItemTotal] = useState(0);
   const dispatch = useDispatch();
 
   const decrementCart = (productId) => {
-    // dispatch(alertSuccess("Decreased the cartitem"));
-    toast.success('Decreased the cartitem',{position:"top-center"})
+    toast.success("Decreased the cartitem", { position: "top-center" });
 
     increaseItemQuantity(user?.user_id, productId, "decrement").then((data) => {
       getAllCartItems(user?.user_id).then((items) => {
@@ -150,7 +207,7 @@ export const CartItemCard = ({ index, data }) => {
   };
 
   const incrementCart = (productId) => {
-    toast.success('Increased the cartitem',{position:"top-center"})
+    toast.success("Increased the cartitem", { position: "top-center" });
 
     increaseItemQuantity(user?.user_id, productId, "increment").then((data) => {
       console.log(data);
@@ -160,24 +217,20 @@ export const CartItemCard = ({ index, data }) => {
     });
   };
 
-  const removeCart = (productId) => { 
-     toast.error('Item Removed From Cart',{position:"top-center",theme:"colored"})
+  const removeCart = (productId) => {
+    toast.error("Item Removed From Cart", {
+      position: "top-center",
+      theme: "colored",
+    });
 
-     getAllCartItems(user?.user_id)
-     .then((data) => { 
-         data = data?.filter(res => res.productId !== productId)
-        //  console.log(data);
-        if(data){
-
-          console.log(productId);
-          
-          removeCartItem(user?.uid,productId)
-          dispatch(setCartItems(data))
-          // delete cart item then from database
-        }
-     })
-
-  }
+    getAllCartItems(user?.user_id).then((data) => {
+      data = data?.filter((res) => res.productId !== productId);
+      if (data) {
+        removeCartItem(user?.uid, productId);
+        dispatch(setCartItems(data));
+      }
+    });
+  };
 
   useEffect(() => {
     setItemTotal(data.prod_price * data.quantity);
@@ -228,7 +281,9 @@ export const CartItemCard = ({ index, data }) => {
           className="w-8 h-8 flex items-center justify-center rounded-md drop-shadow-md bg-zinc-900 cursor-pointer"
           onClick={() => removeCart(data?.productId)}
         >
-          <p className="text-xl font-semibold text-primary"><MdDeleteForever/></p>
+          <p className="text-xl font-semibold text-primary">
+            <MdDeleteForever />
+          </p>
         </motion.div>
       </div>
     </motion.div>
