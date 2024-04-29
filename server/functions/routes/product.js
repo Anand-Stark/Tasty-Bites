@@ -19,6 +19,8 @@ routes.post("/addToCart/:userId",userControl.addToCart);
 
   routes.post("/create-checkout-session", userControl.stripePayment);
 
+  routes.post("/create-checkout-seesion-premium",userControl.stripePayementPremium)
+
   routes.post("/webhook",express.raw({ type: "application/json" }),userControl.webHook);
   
   // orders

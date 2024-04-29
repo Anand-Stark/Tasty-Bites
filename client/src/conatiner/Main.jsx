@@ -18,6 +18,10 @@ import Footer2 from "../Components/Footer2";
 import { getUserTypes } from "../api";
 import { setUserType } from "../context/actions/userTypeActions";
 import Image from "../assets/img/image.png";
+import { designer } from "../assets";
+import axios from "axios";
+import {toast }from "react-toastify"
+import { baseUrl } from "../api";
 
 const Main = () => {
   const products = useSelector((state) => state.products);
@@ -25,6 +29,19 @@ const Main = () => {
   const userType = useSelector((state) => state.userType);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+
+
+  const checkoutPremium = () => { 
+    toast.info('Premium Membership Checkout',{position:"top-right"})
+
+    axios.post(`${baseUrl}/api/products/create-checkout-seesion-premium`)
+    .then((res) => {
+      if (res.data.url) {
+        window.location.href = res.data.url;
+      }
+    })
+    .catch((err) => console.log(err));
+  }
 
   useEffect(() => {
     if (!products) {
@@ -108,6 +125,39 @@ const Main = () => {
               alt="Reservation"
               className="aspect-square w-1/4"
             />
+          </div>
+
+          <div className=" w-full px-24 flex items-center justify-between ">
+            <div className="flex flex-col items-start justify-start gap-1">
+              <p className="text-2xl text-headingColor font-bold">
+                Gold Membership
+              </p>
+              <div className="w-64 h-1 rounded-md bg-orange-500"></div>
+            </div>
+          </div>
+
+          <div className="w-full flex justify-around items-center mb-8 py-6">
+          <img
+              src={designer}
+              alt="Reservation"
+              className="aspect-square w-1/4"
+            />
+            <div className="w-1/2 flex flex-col flex-wrap justify-center items-center gap-8">
+              <h1 className="text-3xl font-bold text-center text-gray-900 mb-4">
+                 Buy our Membership !
+              </h1>
+
+              <p className="text-lg text-center text-gray-700">
+              Unlock exclusive discounts with our premium membership! Enjoy extra savings on all your food orders as a valued member. Elevate your dining experience and indulge in delicious meals while keeping more money in your pocket. Join now to start enjoying the benefits of our premium membership!
+              </p>
+              <Link
+                onClick={checkoutPremium}
+                className="block w-full max-w-xs mx-auto bg-gradient-to-bl from-orange-400 to-orange-600 px-4 py-2 rounded-xl text-black text-base font-semibold text-center hover:from-orange-400 hover:to-orange-600 hover:bg-gradient-to-tl hover:scale-105 transition ease-in-out"
+              >
+                Buy Premium
+              </Link>
+            </div>
+            
           </div>
 
           <Footer2 />
