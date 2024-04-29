@@ -55,10 +55,6 @@ const userRoutes = require("./routes/user")
 const productRoutes = require("./routes/product")
 
 
-// routes : backend apis -> 
-app.use('/api/user',userRoutes)
-app.use('/api/products',productRoutes)
-
 // multer usage : 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
