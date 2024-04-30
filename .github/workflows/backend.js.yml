@@ -26,10 +26,5 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Install dependencies and run tests
-      run: |
-        npm install
-      env:
-        DBHOST: ${{ secrets.DBHOST }}
-        SECRET: ${{ secrets.SECRET }}
-        TOKEN_SECRET: ${{ secrets.TOKEN_SECRET }}
+      run: npm install
       working-directory: server/functions
