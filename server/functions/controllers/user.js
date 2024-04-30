@@ -8,6 +8,8 @@ const stripe = require("stripe")(process.env.STRIPE_KEY);
 const { v4: uuid4 } = require("uuid");
 const nodemailer = require("nodemailer");
 const { log } = require("firebase-functions/logger");
+const redis = require('redis');
+const client = require('../util/redis');
 
 // const otp = 123789;
 
@@ -59,11 +61,11 @@ exports.createProduct = async (req, res) => {
       prod_image: req.body.prod_image,
     };
 
-    console.log(data);
+    // console.log(data);
 
     const response = await db.collection("products").doc(`/${id}/`).set(data);
-    console.log(response);
-    return res.status(200).send({ success: true, data: response });
+    
+    return res.status(200).send({ success: true, data: data });
   } catch {
     return res.send({ success: false, msg: `Error :${err}` });
   }
@@ -81,7 +83,7 @@ exports.getAllProducts = async (req, res) => {
         });
         return response;
       });
-      return res.status(200).send({ success: true, data: response });
+      return res.status(200).json({ success: true, data: response });
     } catch (err) {
       return res.send({ success: false, msg: `Error :${err}` });
     }
@@ -144,8 +146,12 @@ exports.createUserType = async (req, res) => {
 exports.getUserType = async (req, res) => {
   const userId = req.params.userId;
 
+  console.log(userId);
+
   try {
     const response = await db.collection("users").doc(`/${userId}/`).get();
+
+    // console.log(response);
 
     return res.status(200).send({ success: true, data: response });
   } catch (err) {
@@ -167,27 +173,63 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
+// exports.getUserInfo = async (req, res) => {
+//   const uid = req.params.userId;
+
+//   try {
+//     const userRecord = await admin.auth().getUser(uid);
+
+//     // Extract relevant user data
+//     const userData = {
+//       uid: userRecord.uid,
+//       email: userRecord.email,
+//       emailVerified: userRecord.emailVerified,
+//       photo: userRecord.photoURL,
+//       name: userRecord.displayName,
+//     };
+
+//     return res.status(200).send({ success: true, data: userData });
+//   } catch (er) {
+//     return res.send({
+//       success: false,
+//       msg: `Error in listing users :,${er}`,
+//     });
+//   }
+// };
+
 exports.getUserInfo = async (req, res) => {
   const uid = req.params.userId;
 
   try {
-    const userRecord = await admin.auth().getUser(uid);
+    const cacheKey = `user-${uid}`;
+    let userData = await client.get(cacheKey);
 
-    // Extract relevant user data
-    const userData = {
-      uid: userRecord.uid,
-      email: userRecord.email,
-      emailVerified: userRecord.emailVerified,
-      photo: userRecord.photoURL,
-      name: userRecord.displayName,
-      // Add other fields you need
-    };
+    if (!userData) {
+      const userRecord = await admin.auth().getUser(uid);
+
+      // Extract relevant user data
+      userData = {
+        uid: userRecord.uid,
+        email: userRecord.email,
+        emailVerified: userRecord.emailVerified,
+        photo: userRecord.photoURL,
+        name: userRecord.displayName,
+        // Add other fields you need
+      };
+
+      client.set(cacheKey, JSON.stringify(userData));
+      console.log('User data set into Redis cache');
+    } else {
+      console.log('User data retrieved from Redis cache');
+      userData = JSON.parse(userData);
+    }
 
     return res.status(200).send({ success: true, data: userData });
-  } catch (er) {
+  } catch (error) {
+    console.error('Error retrieving user data:', error);
     return res.send({
       success: false,
-      msg: `Error in listing users :,${er}`,
+      msg: `Error in fetching user data: ${error}`,
     });
   }
 };
@@ -303,11 +345,64 @@ exports.getUserProfileInformation = async (req, res) => {
   }
 };
 
+// exports.addToCart = async (req, res) => {
+//   const userId = req.params.userId;
+//   const productId = req.body.productId;
+
+//   try {
+//     const doc = await db
+//       .collection("cartItems")
+//       .doc(`/${userId}/`)
+//       .collection("items")
+//       .doc(`/${productId}/`)
+//       .get();
+
+//     if (doc.data()) {
+//       const quantity = doc.data().quantity + 1;
+//       const updatedItem = await db
+//         .collection("cartItems")
+//         .doc(`/${userId}/`)
+//         .collection("items")
+//         .doc(`/${productId}/`)
+//         .update({ quantity });
+//       return res.status(200).send({ success: true, data: updatedItem });
+//     } else {
+//       const data = {
+//         productId: productId,
+//         prod_name: req.body.prod_name,
+//         prod_category: req.body.prod_category,
+//         prod_price: req.body.prod_price,
+//         prod_image: req.body.prod_image,
+//         quantity: 1,
+//       };
+//       const addItems = await db
+//         .collection("cartItems")
+//         .doc(`/${userId}/`)
+//         .collection("items")
+//         .doc(`/${productId}/`)
+//         .set(data);
+//       return res.status(200).send({ success: true, data: addItems });
+//     }
+//   } catch (err) {
+//     return res.send({ success: false, msg: `Error :${err}` });
+//   }
+// };
+
 exports.addToCart = async (req, res) => {
   const userId = req.params.userId;
   const productId = req.body.productId;
 
   try {
+    // Check if the data is cached
+    const cacheKey = `addToCart:${userId}:${productId}`;
+    const cachedData = await client.get(cacheKey);
+    
+    if (cachedData) {
+      // If data is cached, return the cached response
+      const parsedData = JSON.parse(cachedData);
+      return res.status(200).send(parsedData);
+    }
+
     const doc = await db
       .collection("cartItems")
       .doc(`/${userId}/`)
@@ -323,7 +418,11 @@ exports.addToCart = async (req, res) => {
         .collection("items")
         .doc(`/${productId}/`)
         .update({ quantity });
-      return res.status(200).send({ success: true, data: updatedItem });
+      
+      // Cache the updated response
+      const data = { success: true, data: updatedItem };
+      client.setex(cacheKey, 3600, JSON.stringify(data)); // Cache for 1 hour
+      return res.status(200).send(data);
     } else {
       const data = {
         productId: productId,
@@ -339,12 +438,68 @@ exports.addToCart = async (req, res) => {
         .collection("items")
         .doc(`/${productId}/`)
         .set(data);
-      return res.status(200).send({ success: true, data: addItems });
+      
+      // Cache the added item response
+      const responseData = { success: true, data: addItems };
+      client.setex(cacheKey, 3600, JSON.stringify(responseData)); // Cache for 1 hour
+      return res.status(200).send(responseData);
     }
   } catch (err) {
-    return res.send({ success: false, msg: `Error :${err}` });
+    return res.send({ success: false, msg: `Error: ${err}` });
   }
 };
+
+
+// exports.updateCart = async (req, res) => {
+//   const userId = req.params.user_id;
+//   const productId = req.query.productId;
+//   const type = req.query.type;
+
+//   try {
+//     const doc = await db
+//       .collection("cartItems")
+//       .doc(`/${userId}/`)
+//       .collection("items")
+//       .doc(`/${productId}/`)
+//       .get();
+
+//     if (doc.data()) {
+//       if (type === "increment") {
+//         const quantity = doc.data().quantity + 1;
+//         const updatedItem = await db
+//           .collection("cartItems")
+//           .doc(`/${userId}/`)
+//           .collection("items")
+//           .doc(`/${productId}/`)
+//           .update({ quantity });
+//         return res.status(200).send({ success: true, data: updatedItem });
+//       } else {
+//         if (doc.data().quantity === 1) {
+//           await db
+//             .collection("cartItems")
+//             .doc(`/${userId}/`)
+//             .collection("items")
+//             .doc(`/${productId}/`)
+//             .delete()
+//             .then((result) => {
+//               return res.status(200).send({ success: true, data: result });
+//             });
+//         } else {
+//           const quantity = doc.data().quantity - 1;
+//           const updatedItem = await db
+//             .collection("cartItems")
+//             .doc(`/${userId}/`)
+//             .collection("items")
+//             .doc(`/${productId}/`)
+//             .update({ quantity });
+//           return res.status(200).send({ success: true, data: updatedItem });
+//         }
+//       }
+//     }
+//   } catch (err) {
+//     return res.send({ success: false, msg: `Error :${err}` });
+//   }
+// };
 
 exports.updateCart = async (req, res) => {
   const userId = req.params.user_id;
@@ -352,6 +507,16 @@ exports.updateCart = async (req, res) => {
   const type = req.query.type;
 
   try {
+    // Check if the data is cached
+    const cacheKey = `updateCart:${userId}:${productId}:${type}`;
+    const cachedData = await client.get(cacheKey);
+    
+    if (cachedData) {
+      // If data is cached, return the cached response
+      const parsedData = JSON.parse(cachedData);
+      return res.status(200).send(parsedData);
+    }
+
     const doc = await db
       .collection("cartItems")
       .doc(`/${userId}/`)
@@ -359,16 +524,16 @@ exports.updateCart = async (req, res) => {
       .doc(`/${productId}/`)
       .get();
 
-    if (doc.data()) {
+    if (doc.exists) {
+      let updatedItem;
       if (type === "increment") {
         const quantity = doc.data().quantity + 1;
-        const updatedItem = await db
+        updatedItem = await db
           .collection("cartItems")
           .doc(`/${userId}/`)
           .collection("items")
           .doc(`/${productId}/`)
           .update({ quantity });
-        return res.status(200).send({ success: true, data: updatedItem });
       } else {
         if (doc.data().quantity === 1) {
           await db
@@ -376,24 +541,28 @@ exports.updateCart = async (req, res) => {
             .doc(`/${userId}/`)
             .collection("items")
             .doc(`/${productId}/`)
-            .delete()
-            .then((result) => {
-              return res.status(200).send({ success: true, data: result });
-            });
+            .delete();
+          updatedItem = { success: true, data: "Item deleted" };
         } else {
           const quantity = doc.data().quantity - 1;
-          const updatedItem = await db
+          updatedItem = await db
             .collection("cartItems")
             .doc(`/${userId}/`)
             .collection("items")
             .doc(`/${productId}/`)
             .update({ quantity });
-          return res.status(200).send({ success: true, data: updatedItem });
         }
       }
+
+      // Cache the updated response
+      const responseData = { success: true, data: updatedItem };
+      client.setex(cacheKey, 3600, JSON.stringify(responseData)); // Cache for 1 hour
+      return res.status(200).send(responseData);
+    } else {
+      return res.status(404).send({ success: false, msg: "Item not found" });
     }
   } catch (err) {
-    return res.send({ success: false, msg: `Error :${err}` });
+    return res.send({ success: false, msg: `Error: ${err}` });
   }
 };
 
@@ -421,6 +590,7 @@ exports.getCartItems = async (req, res) => {
     }
   })();
 };
+
 
 exports.deleteCartItem = async (req, res) => {
   try {
