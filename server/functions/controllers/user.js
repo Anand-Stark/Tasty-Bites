@@ -173,6 +173,31 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
+// exports.getAllUsers = async (req, res) => {
+//   try {
+//     // Check if the data is cached
+//     const cacheKey = 'allUsers';
+//     const cachedData = await client.get(cacheKey);
+    
+//     if (cachedData) {
+//       // If data is cached, return the cached response
+//       const parsedData = JSON.parse(cachedData);
+//       return res.status(200).send(parsedData);
+//     }
+
+//     // If data is not cached, fetch data (assuming listAllUsers function retrieves it)
+//     // Replace the following line with your actual logic to fetch all users' data
+//     const data = await listAllUsers();
+
+//     // Cache the response
+//     const responseData = { success: true, data: data, dataCount: data.length };
+//     client.setex(cacheKey, 3600, JSON.stringify(responseData)); // Cache for 1 hour
+//     return res.status(200).send(responseData);
+//   } catch (err) {
+//     return res.status(500).send({ success: false, msg: `Error: ${err}` });
+//   }
+// };
+
 // exports.getUserInfo = async (req, res) => {
 //   const uid = req.params.userId;
 
@@ -341,7 +366,7 @@ exports.getUserProfileInformation = async (req, res) => {
 
     return res.status(200).send({ success: true, data: response });
   } catch (err) {
-    res.status(400).send({ success: false, Error: `${err}` });
+    res.status(404).send({ success: false, Error: `${err}` });
   }
 };
 

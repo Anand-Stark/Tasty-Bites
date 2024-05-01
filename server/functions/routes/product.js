@@ -8,7 +8,7 @@ routes.delete('/delete/:productId',userControl.deleteProduct)
 
 
 routes.post("/addToCart/:userId",userControl.addToCart);
-  
+
   // update cart to increase and decrease the quantity
   routes.post("/updateCart/:user_id", userControl.updateCart);
   
