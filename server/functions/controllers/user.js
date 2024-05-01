@@ -10,6 +10,9 @@ const nodemailer = require("nodemailer");
 const { log } = require("firebase-functions/logger");
 const redis = require('redis');
 const client = require('../util/redis');
+const PDFDocument = require('pdfkit');
+const fs = require('fs');
+const path = require('path')
 
 // const otp = 123789;
 
@@ -792,6 +795,35 @@ const createPremiumCostmers = async (customer, res) => {
   }
 };
 
+// const createOrder = async (customer, intent, res) => {
+//   try {
+//     const orderId = Date.now();
+//     const data = {
+//       intentId: intent.id,
+//       orderId: orderId,
+//       amount: intent.amount_total,
+//       created: intent.created,
+//       payment_method_types: intent.payment_method_types,
+//       status: intent.payment_status,
+//       customer: intent.customer_details,
+//       shipping_details: intent.shipping_details,
+//       userId: customer.metadata.user_id,
+//       items: JSON.parse(customer.metadata.cart),
+//       total: customer.metadata.total,
+//       sts: "preparing",
+//     };
+
+//     await db.collection("orders").doc(`/${orderId}/`).set(data);
+
+//     deleteCart(customer.metadata.user_id, JSON.parse(customer.metadata.cart));
+//     console.log("*****************************************");
+
+//     return res.status(200).send({ success: true });
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
+
 const createOrder = async (customer, intent, res) => {
   try {
     const orderId = Date.now();
@@ -799,7 +831,7 @@ const createOrder = async (customer, intent, res) => {
       intentId: intent.id,
       orderId: orderId,
       amount: intent.amount_total,
-      created: intent.created,
+      created: new Date(intent.created).toLocaleString(),
       payment_method_types: intent.payment_method_types,
       status: intent.payment_status,
       customer: intent.customer_details,
@@ -809,6 +841,36 @@ const createOrder = async (customer, intent, res) => {
       total: customer.metadata.total,
       sts: "preparing",
     };
+
+    // Create a new PDF document
+    const doc = new PDFDocument();
+    doc.pipe(fs.createWriteStream(`order_${orderId}.pdf`));
+
+    // Set up fonts and styles
+    doc.font('Helvetica-Bold').fontSize(16).text('Order Summary', { align: 'center' });
+    doc.moveDown();
+
+    // Add order details
+    doc.font('Helvetica').fontSize(12);
+    doc.text(`Order ID: ${data.orderId}`);
+    doc.text(`Date: ${data.created}`);
+    doc.text(`Customer: ${data.customer.email}`);
+    doc.text(`Status: ${data.status}`);
+    doc.text(`Total Amount: ₹${data.amount/100}`);
+    doc.text(`Payment Method: ${data.payment_method_types}`);
+    doc.text(`Shipping Address: ${data.shipping_details.address.line1}, ${data.shipping_details.address.city}, ${data.shipping_details.address.country}`);
+
+    doc.moveDown();
+
+    // Add ordered items
+    doc.font('Helvetica-Bold').fontSize(14).text('Ordered Items', { align: 'center' });
+    doc.moveDown();
+    data.items.forEach(item => {
+      doc.text(`${item.prod_name} - Quantity: ${item.quantity} - Price: $${item.prod_price}`);
+    });
+
+    // Finalize the PDF
+    doc.end();
 
     await db.collection("orders").doc(`/${orderId}/`).set(data);
 
@@ -820,6 +882,86 @@ const createOrder = async (customer, intent, res) => {
     console.log(err);
   }
 };
+
+
+// const createOrder = async (customer, intent, res) => {
+//   try {
+//     const orderId = Date.now();
+//     const data = {
+//       intentId: intent.id,
+//       orderId: orderId,
+//       amount: intent.amount_total,
+//       payment_method_types: intent.payment_method_types,
+//       status: intent.payment_status,
+//       customer: intent.customer_details,
+//       shipping_details: intent.shipping_details,
+//       userId: customer.metadata.user_id,
+//       items: JSON.parse(customer.metadata.cart),
+//       total: customer.metadata.total,
+//       sts: "preparing",
+//     };
+
+//     // Generate PDF
+//     const doc = new PDFDocument();
+//     const RecordName = `Order-${orderId}.pdf`;
+//     res.setHeader("Content-Type", "application/pdf");
+//     res.setHeader(
+//       "Content-Disposition",
+//       'inline; filename="' + RecordName + '"'
+//     );
+//     doc.pipe(res);
+
+//     // Title
+//     doc.fontSize(24).text("Order Details", { align: "center", underline: true });
+//     doc.moveDown();
+
+//     // Order ID and amount
+//     doc.fontSize(18).text(`Order ID: ${orderId}`, { underline: true });
+//     doc.fontSize(18).text(`Amount: $${(data.amount / 100).toFixed(2)}`, { underline: true });
+//     doc.moveDown();
+
+//     // Status
+//     doc.fontSize(18).text(`Status: ${data.status}`, { underline: true });
+//     doc.moveDown();
+
+//     // Customer details
+//     doc.fontSize(18).text("Customer Details", { underline: true });
+//     doc.fontSize(14).text(`Name: ${data.customer.name}`);
+//     doc.fontSize(14).text(`Email: ${data.customer.email}`);
+//     doc.fontSize(14).text(`Phone: ${data.customer.phone}`);
+//     doc.moveDown();
+
+//     // Shipping details
+//     doc.fontSize(18).text("Shipping Details", { underline: true });
+//     doc.fontSize(14).text(`Address: ${data.shipping_details.address}`);
+//     doc.fontSize(14).text(`City: ${data.shipping_details.city}`);
+//     doc.fontSize(14).text(`Country: ${data.shipping_details.country}`);
+//     doc.moveDown();
+
+//     // Billing details
+//     doc.fontSize(18).text("Billing Details", { underline: true });
+//     doc.fontSize(14).text(`Address: ${data.customer.billing_address.address}`);
+//     doc.fontSize(14).text(`City: ${data.customer.billing_address.city}`);
+//     doc.fontSize(14).text(`Country: ${data.customer.billing_address.country}`);
+
+//     // Close the PDF document
+//     doc.end();
+
+//     // Save order data to Firestore
+//     await db.collection("orders").doc(`/${orderId}/`).set(data);
+
+//     // Delete cart
+//     deleteCart(customer.metadata.user_id, JSON.parse(customer.metadata.cart));
+    
+//     // Respond with success
+//     console.log("Order placed successfully");
+//     return res.status(200).send({ success: true });
+//   } catch (err) {
+//     console.log(err);
+//     return res.status(500).send({ success: false, error: err.message });
+//   }
+// };
+
 
 const deleteCart = async (userId, items) => {
   console.log("Inside the delete");
