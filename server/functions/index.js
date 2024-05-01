@@ -10,6 +10,11 @@ const rfs = require("rotating-file-stream");
 const app = express();
 const multer = require("multer");
 
+
+const swaggerUi = require("swagger-ui-express");
+const swaggerJsdoc = require("swagger-jsdoc");
+
+
 app.use(express.json());
 
 const logsDirectory = path.join(__dirname, "logs");
@@ -33,6 +38,31 @@ app.use((req, res, next) => {
   res.set("Access-Control-Allow-Origin", "*");
   next();
 });
+
+
+// Swagger definition
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "TastyBites APIs",
+      version: "1.0.0",
+      description: "API documentation for TastyBites",
+    },
+    servers: [
+      {
+        url: "http://127.0.0.1:5001/food-cart-2/us-central1/app/",
+      },
+    ],
+  },
+  apis: ['./routes/*.js'],
+};
+
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use("/api-docs", swaggerUi.serve);
+app.get("/api-docs", swaggerUi.setup(swaggerSpec));
+
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccountKey),
