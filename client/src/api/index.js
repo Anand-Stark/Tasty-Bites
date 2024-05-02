@@ -122,6 +122,17 @@ export const getAllUsers = async () => {
   }
 };
 
+export const getPremiumUsers = async () => {
+  try {
+    const res = await axios.get(`${baseUrl}/api/products/premiumUsers`);
+    console.log(res.data.data);
+    return res.data.data;
+  } catch (err) {
+    return null;
+  }
+};
+
+
 export const getUserInfo = async(userId) => {
     try{
       const res = await axios.get(`${baseUrl}/api/user//user-info/${userId}`)
@@ -158,6 +169,7 @@ export const addUserType  = async(userId,type) => {
    }
 }
 
+
 export const getUserTypes = async (userId) => {
    try {   
           // console.log(userId);
@@ -177,6 +189,8 @@ export const getUserTypes = async (userId) => {
 
    }
 }
+
+
 
 export const getAllCartItems = async (user_id) => {
   try {

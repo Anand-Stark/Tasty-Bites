@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProducts } from "../api";
+import { getAllProducts,getPremiumUsers } from "../api";
 import {
   Cart,
   DeliveryMapSlider,
@@ -31,6 +31,7 @@ const Main = () => {
   const isCart = useSelector((state) => state.isCart);
   const userType = useSelector((state) => state.userType);
   const user = useSelector((state) => state.user);
+  const premium = useSelector((state) => state.premium)
   const dispatch = useDispatch();
   
 
@@ -59,6 +60,27 @@ const Main = () => {
       });
     }
   }, []);
+
+  useEffect(() => { 
+     if(user){
+       getPremiumUsers()
+       .then((res) => {
+          // console.log(res);
+          const userId = user.user_id;
+
+          console.log(userId);
+
+          getPremiumUsers()
+          .then(allUsers => { 
+            const userExists = allUsers.some(obj => obj.userId === userId);
+            dispatch(setPremium(userExists))
+          })
+
+       })
+     }
+  }, [user]);
+
+  
 
   useEffect(() => {
     if (!userType && user) {

@@ -155,7 +155,7 @@ const ProfileReservations = () => {
         {showRejectedWaiting && (
           <div className="absolute mt-2 w-full bg-white border border-gray-400 rounded-lg shadow-lg z-10">
             {rejectedWaitingReservations.map((item, i) => (
-              <ReservationListData key={i} index={i} data={item} admin={false} />
+              <ReservationListData key={i} index={i} data={item} admin={true} />
             ))}
           </div>
         )}

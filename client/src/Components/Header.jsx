@@ -36,10 +36,13 @@ import {
   setUserType,
   setUserTypeNull,
 } from "../context/actions/userTypeActions";
+import { BiCrown } from "react-icons/bi";
+import { FaCrown } from "react-icons/fa";
 // import { actionType } from "../context/reducer";
 
 const Header = () => {
   const firebaseAuth = getAuth(app);
+  const premium = useSelector((state) => state.premium); 
 
   //   // using use state
   const [isMenu, setIsMenu] = useState(false);
@@ -118,6 +121,7 @@ const Header = () => {
           </motion.ul>
 
           {userType === "user" && (
+            <>
             <motion.div
               whileTap={{ scale: 0.6 }}
               className="flex items-center justify-center px-2"
@@ -134,7 +138,16 @@ const Header = () => {
                 </div>
               )}
             </motion.div>
+
+            {
+            premium===true && (
+               <FaCrown className="w-8 h-8 drop-shadow-xl cursor-pointer rounded-full"/>
+            )
+          }
+          </>
           )}
+
+          
 
           {user ? (
             <>

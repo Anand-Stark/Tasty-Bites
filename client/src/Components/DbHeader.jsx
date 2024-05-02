@@ -12,13 +12,12 @@ import { app } from "../config/firebase";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setUserNULL } from "../context/actions/userActions";
-
+import { BiCrown } from "react-icons/bi";
 // toastify : 
 import { toast } from "react-toastify";
 
 const DbHeader = () => {
    const user = useSelector((state) => state.user);
-
 //   creating the signout functions for the user : 
 // we have to use a dispacther and a navigator for states ;
    const dispacther = useDispatch();
