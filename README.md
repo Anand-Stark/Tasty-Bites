@@ -45,9 +45,5 @@ steps to initialize and run the project :
 3. in the client -> npm i, to start the front-end . 
 4. All the firebase keys required for running are provided in the .env file . 
 
-Team Members :
-Anand Kumar Singh (S20210010017)
-Mohammad Zeeshan (S20210010151)
-Yashwanth babu 
-Nikhita (s20210010106)
-Vivek (S20210010243)
+By, 
+Anand Kumar Singh

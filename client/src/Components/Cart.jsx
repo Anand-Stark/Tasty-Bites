@@ -74,6 +74,9 @@ const Cart = () => {
         const discountAmount = (total * discountPercentage) / 100;
         finalTotal = total - discountAmount;
       }
+      else{
+        finalTotal = total
+      }
 
       // console.log(finalTotal);
 

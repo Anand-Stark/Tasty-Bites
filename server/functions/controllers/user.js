@@ -8,7 +8,7 @@ const stripe = require("stripe")(process.env.STRIPE_KEY);
 const { v4: uuid4 } = require("uuid");
 const nodemailer = require("nodemailer");
 const { log } = require("firebase-functions/logger");
-const redis = require('redis');
+// const redis = require('redis');
 const client = require('../util/redis');
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
@@ -176,91 +176,32 @@ exports.getAllUsers = async (req, res) => {
   }
 };
 
-// exports.getAllUsers = async (req, res) => {
-//   try {
-//     // Check if the data is cached
-//     const cacheKey = 'allUsers';
-//     const cachedData = await client.get(cacheKey);
-    
-//     if (cachedData) {
-//       // If data is cached, return the cached response
-//       const parsedData = JSON.parse(cachedData);
-//       return res.status(200).send(parsedData);
-//     }
 
-//     // If data is not cached, fetch data (assuming listAllUsers function retrieves it)
-//     // Replace the following line with your actual logic to fetch all users' data
-//     const data = await listAllUsers();
-
-//     // Cache the response
-//     const responseData = { success: true, data: data, dataCount: data.length };
-//     client.setex(cacheKey, 3600, JSON.stringify(responseData)); // Cache for 1 hour
-//     return res.status(200).send(responseData);
-//   } catch (err) {
-//     return res.status(500).send({ success: false, msg: `Error: ${err}` });
-//   }
-// };
-
-// exports.getUserInfo = async (req, res) => {
-//   const uid = req.params.userId;
-
-//   try {
-//     const userRecord = await admin.auth().getUser(uid);
-
-//     // Extract relevant user data
-//     const userData = {
-//       uid: userRecord.uid,
-//       email: userRecord.email,
-//       emailVerified: userRecord.emailVerified,
-//       photo: userRecord.photoURL,
-//       name: userRecord.displayName,
-//     };
-
-//     return res.status(200).send({ success: true, data: userData });
-//   } catch (er) {
-//     return res.send({
-//       success: false,
-//       msg: `Error in listing users :,${er}`,
-//     });
-//   }
-// };
 
 exports.getUserInfo = async (req, res) => {
   const uid = req.params.userId;
 
   try {
-    const cacheKey = `user-${uid}`;
-    let userData = await client.get(cacheKey);
+    const userRecord = await admin.auth().getUser(uid);
 
-    if (!userData) {
-      const userRecord = await admin.auth().getUser(uid);
-
-      // Extract relevant user data
-      userData = {
-        uid: userRecord.uid,
-        email: userRecord.email,
-        emailVerified: userRecord.emailVerified,
-        photo: userRecord.photoURL,
-        name: userRecord.displayName,
-        // Add other fields you need
-      };
-
-      client.set(cacheKey, JSON.stringify(userData));
-      console.log('User data set into Redis cache');
-    } else {
-      console.log('User data retrieved from Redis cache');
-      userData = JSON.parse(userData);
-    }
+    // Extract relevant user data
+    const userData = {
+      uid: userRecord.uid,
+      email: userRecord.email,
+      emailVerified: userRecord.emailVerified,
+      photo: userRecord.photoURL,
+      name: userRecord.displayName,
+    };
 
     return res.status(200).send({ success: true, data: userData });
-  } catch (error) {
-    console.error('Error retrieving user data:', error);
+  } catch (er) {
     return res.send({
       success: false,
-      msg: `Error in fetching user data: ${error}`,
+      msg: `Error in listing users :,${er}`,
     });
   }
 };
+
 
 exports.postUserReservation = async (req, res) => {
   const userId = req.params.userId;
@@ -416,118 +357,7 @@ exports.addToCart = async (req, res) => {
   }
 };
 
-// exports.addToCart = async (req, res) => {
-//   const userId = req.params.userId;
-//   const productId = req.body.productId;
 
-//   try {
-//     // Check if the data is cached
-//     const cacheKey = `addToCart:${userId}:${productId}`;
-//     const cachedData = await client.get(cacheKey);
-    
-//     if (cachedData) {
-//       // If data is cached, return the cached response
-//       const parsedData = JSON.parse(cachedData);
-//       return res.status(200).send(parsedData);
-//     }
-
-//     const doc = await db
-//       .collection("cartItems")
-//       .doc(`/${userId}/`)
-//       .collection("items")
-//       .doc(`/${productId}/`)
-//       .get();
-
-//     if (doc.data()) {
-//       const quantity = doc.data().quantity + 1;
-//       const updatedItem = await db
-//         .collection("cartItems")
-//         .doc(`/${userId}/`)
-//         .collection("items")
-//         .doc(`/${productId}/`)
-//         .update({ quantity });
-      
-//       // Cache the updated response
-//       const data = { success: true, data: updatedItem };
-//       client.setex(cacheKey, 3600, JSON.stringify(data)); // Cache for 1 hour
-//       return res.status(200).send(data);
-//     } else {
-//       const data = {
-//         productId: productId,
-//         prod_name: req.body.prod_name,
-//         prod_category: req.body.prod_category,
-//         prod_price: req.body.prod_price,
-//         prod_image: req.body.prod_image,
-//         quantity: 1,
-//       };
-//       const addItems = await db
-//         .collection("cartItems")
-//         .doc(`/${userId}/`)
-//         .collection("items")
-//         .doc(`/${productId}/`)
-//         .set(data);
-      
-//       // Cache the added item response
-//       const responseData = { success: true, data: addItems };
-//       client.setex(cacheKey, 3600, JSON.stringify(responseData)); // Cache for 1 hour
-//       return res.status(200).send(responseData);
-//     }
-//   } catch (err) {
-//     return res.send({ success: false, msg: `Error: ${err}` });
-//   }
-// };
-
-
-// exports.updateCart = async (req, res) => {
-//   const userId = req.params.user_id;
-//   const productId = req.query.productId;
-//   const type = req.query.type;
-
-//   try {
-//     const doc = await db
-//       .collection("cartItems")
-//       .doc(`/${userId}/`)
-//       .collection("items")
-//       .doc(`/${productId}/`)
-//       .get();
-
-//     if (doc.data()) {
-//       if (type === "increment") {
-//         const quantity = doc.data().quantity + 1;
-//         const updatedItem = await db
-//           .collection("cartItems")
-//           .doc(`/${userId}/`)
-//           .collection("items")
-//           .doc(`/${productId}/`)
-//           .update({ quantity });
-//         return res.status(200).send({ success: true, data: updatedItem });
-//       } else {
-//         if (doc.data().quantity === 1) {
-//           await db
-//             .collection("cartItems")
-//             .doc(`/${userId}/`)
-//             .collection("items")
-//             .doc(`/${productId}/`)
-//             .delete()
-//             .then((result) => {
-//               return res.status(200).send({ success: true, data: result });
-//             });
-//         } else {
-//           const quantity = doc.data().quantity - 1;
-//           const updatedItem = await db
-//             .collection("cartItems")
-//             .doc(`/${userId}/`)
-//             .collection("items")
-//             .doc(`/${productId}/`)
-//             .update({ quantity });
-//           return res.status(200).send({ success: true, data: updatedItem });
-//         }
-//       }
-//     }
-//   } catch (err) {
-//     return res.send({ success: false, msg: `Error :${err}` });
-//   }
-// };
 
 exports.updateCart = async (req, res) => {
   const userId = req.params.user_id;
@@ -535,16 +365,6 @@ exports.updateCart = async (req, res) => {
   const type = req.query.type;
 
   try {
-    // Check if the data is cached
-    const cacheKey = `updateCart:${userId}:${productId}:${type}`;
-    const cachedData = await client.get(cacheKey);
-    
-    if (cachedData) {
-      // If data is cached, return the cached response
-      const parsedData = JSON.parse(cachedData);
-      return res.status(200).send(parsedData);
-    }
-
     const doc = await db
       .collection("cartItems")
       .doc(`/${userId}/`)
@@ -552,16 +372,16 @@ exports.updateCart = async (req, res) => {
       .doc(`/${productId}/`)
       .get();
 
-    if (doc.exists) {
-      let updatedItem;
+    if (doc.data()) {
       if (type === "increment") {
         const quantity = doc.data().quantity + 1;
-        updatedItem = await db
+        const updatedItem = await db
           .collection("cartItems")
           .doc(`/${userId}/`)
           .collection("items")
           .doc(`/${productId}/`)
           .update({ quantity });
+        return res.status(200).send({ success: true, data: updatedItem });
       } else {
         if (doc.data().quantity === 1) {
           await db
@@ -569,30 +389,27 @@ exports.updateCart = async (req, res) => {
             .doc(`/${userId}/`)
             .collection("items")
             .doc(`/${productId}/`)
-            .delete();
-          updatedItem = { success: true, data: "Item deleted" };
+            .delete()
+            .then((result) => {
+              return res.status(200).send({ success: true, data: result });
+            });
         } else {
           const quantity = doc.data().quantity - 1;
-          updatedItem = await db
+          const updatedItem = await db
             .collection("cartItems")
             .doc(`/${userId}/`)
             .collection("items")
             .doc(`/${productId}/`)
             .update({ quantity });
+          return res.status(200).send({ success: true, data: updatedItem });
         }
       }
-
-      // Cache the updated response
-      const responseData = { success: true, data: updatedItem };
-      client.setex(cacheKey, 3600, JSON.stringify(responseData)); // Cache for 1 hour
-      return res.status(200).send(responseData);
-    } else {
-      return res.status(404).send({ success: false, msg: "Item not found" });
     }
   } catch (err) {
-    return res.send({ success: false, msg: `Error: ${err}` });
+    return res.send({ success: false, msg: `Error :${err}` });
   }
 };
+
 
 exports.getCartItems = async (req, res) => {
   const userId = req.params.user_id;
@@ -795,34 +612,6 @@ const createPremiumCostmers = async (customer, res) => {
   }
 };
 
-// const createOrder = async (customer, intent, res) => {
-//   try {
-//     const orderId = Date.now();
-//     const data = {
-//       intentId: intent.id,
-//       orderId: orderId,
-//       amount: intent.amount_total,
-//       created: intent.created,
-//       payment_method_types: intent.payment_method_types,
-//       status: intent.payment_status,
-//       customer: intent.customer_details,
-//       shipping_details: intent.shipping_details,
-//       userId: customer.metadata.user_id,
-//       items: JSON.parse(customer.metadata.cart),
-//       total: customer.metadata.total,
-//       sts: "preparing",
-//     };
-
-//     await db.collection("orders").doc(`/${orderId}/`).set(data);
-
-//     deleteCart(customer.metadata.user_id, JSON.parse(customer.metadata.cart));
-//     console.log("*****************************************");
-
-//     return res.status(200).send({ success: true });
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
 
 const createOrder = async (customer, intent, res) => {
   try {
@@ -884,83 +673,6 @@ const createOrder = async (customer, intent, res) => {
 };
 
 
-// const createOrder = async (customer, intent, res) => {
-//   try {
-//     const orderId = Date.now();
-//     const data = {
-//       intentId: intent.id,
-//       orderId: orderId,
-//       amount: intent.amount_total,
-//       payment_method_types: intent.payment_method_types,
-//       status: intent.payment_status,
-//       customer: intent.customer_details,
-//       shipping_details: intent.shipping_details,
-//       userId: customer.metadata.user_id,
-//       items: JSON.parse(customer.metadata.cart),
-//       total: customer.metadata.total,
-//       sts: "preparing",
-//     };
-
-//     // Generate PDF
-//     const doc = new PDFDocument();
-//     const RecordName = `Order-${orderId}.pdf`;
-//     res.setHeader("Content-Type", "application/pdf");
-//     res.setHeader(
-//       "Content-Disposition",
-//       'inline; filename="' + RecordName + '"'
-//     );
-//     doc.pipe(res);
-
-//     // Title
-//     doc.fontSize(24).text("Order Details", { align: "center", underline: true });
-//     doc.moveDown();
-
-//     // Order ID and amount
-//     doc.fontSize(18).text(`Order ID: ${orderId}`, { underline: true });
-//     doc.fontSize(18).text(`Amount: $${(data.amount / 100).toFixed(2)}`, { underline: true });
-//     doc.moveDown();
-
-//     // Status
-//     doc.fontSize(18).text(`Status: ${data.status}`, { underline: true });
-//     doc.moveDown();
-
-//     // Customer details
-//     doc.fontSize(18).text("Customer Details", { underline: true });
-//     doc.fontSize(14).text(`Name: ${data.customer.name}`);
-//     doc.fontSize(14).text(`Email: ${data.customer.email}`);
-//     doc.fontSize(14).text(`Phone: ${data.customer.phone}`);
-//     doc.moveDown();
-
-//     // Shipping details
-//     doc.fontSize(18).text("Shipping Details", { underline: true });
-//     doc.fontSize(14).text(`Address: ${data.shipping_details.address}`);
-//     doc.fontSize(14).text(`City: ${data.shipping_details.city}`);
-//     doc.fontSize(14).text(`Country: ${data.shipping_details.country}`);
-//     doc.moveDown();
-
-//     // Billing details
-//     doc.fontSize(18).text("Billing Details", { underline: true });
-//     doc.fontSize(14).text(`Address: ${data.customer.billing_address.address}`);
-//     doc.fontSize(14).text(`City: ${data.customer.billing_address.city}`);
-//     doc.fontSize(14).text(`Country: ${data.customer.billing_address.country}`);
-
-//     // Close the PDF document
-//     doc.end();
-
-//     // Save order data to Firestore
-//     await db.collection("orders").doc(`/${orderId}/`).set(data);
-
-//     // Delete cart
-//     deleteCart(customer.metadata.user_id, JSON.parse(customer.metadata.cart));
-    
-//     // Respond with success
-//     console.log("Order placed successfully");
-//     return res.status(200).send({ success: true });
-//   } catch (err) {
-//     console.log(err);
-//     return res.status(500).send({ success: false, error: err.message });
-//   }
-// };
 
 
 const deleteCart = async (userId, items) => {
